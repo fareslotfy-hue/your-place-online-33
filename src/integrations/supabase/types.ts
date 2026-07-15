@@ -14,7 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      enrollments: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          package_name: string
+          package_price: number
+          payment_method: string
+          phone: string
+          receipt_url: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          package_name: string
+          package_price: number
+          payment_method: string
+          phone: string
+          receipt_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          package_name?: string
+          package_price?: number
+          payment_method?: string
+          phone?: string
+          receipt_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subject_progress: {
+        Row: {
+          created_at: string
+          id: string
+          last_watched: string | null
+          subject_code: string
+          subject_name: string
+          total_lectures: number
+          updated_at: string
+          user_id: string
+          watched_lectures: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_watched?: string | null
+          subject_code: string
+          subject_name: string
+          total_lectures?: number
+          updated_at?: string
+          user_id: string
+          watched_lectures?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_watched?: string | null
+          subject_code?: string
+          subject_name?: string
+          total_lectures?: number
+          updated_at?: string
+          user_id?: string
+          watched_lectures?: number
+        }
+        Relationships: []
+      }
+      watch_history: {
+        Row: {
+          id: string
+          lecture_title: string
+          subject_code: string
+          user_id: string
+          watched_at: string
+        }
+        Insert: {
+          id?: string
+          lecture_title: string
+          subject_code: string
+          user_id: string
+          watched_at?: string
+        }
+        Update: {
+          id?: string
+          lecture_title?: string
+          subject_code?: string
+          user_id?: string
+          watched_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
