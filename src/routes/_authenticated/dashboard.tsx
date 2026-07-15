@@ -260,14 +260,49 @@ function DashboardPage() {
                   <motion.div key="profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
                     <div className="glass-card rounded-2xl p-6 border border-border/50">
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 to-emerald-500 flex items-center justify-center">
-                          <User className="w-10 h-10 text-white" />
+                        <div className="relative group">
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={uploadingAvatar}
+                            className="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-amber-500 to-emerald-500 flex items-center justify-center ring-2 ring-amber-400/30 hover:ring-amber-400/60 transition-all"
+                            aria-label="تغيير الصورة الشخصية"
+                          >
+                            {avatarUrl ? (
+                              <img src={avatarUrl} alt={displayName} className="w-full h-full object-cover" />
+                            ) : (
+                              <User className="w-12 h-12 text-white" />
+                            )}
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              {uploadingAvatar ? (
+                                <Loader2 className="w-6 h-6 text-white animate-spin" />
+                              ) : (
+                                <Camera className="w-6 h-6 text-white" />
+                              )}
+                            </div>
+                          </button>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarChange}
+                            className="hidden"
+                          />
                         </div>
                         <div>
                           <h2 className="font-display font-bold text-xl text-foreground">{displayName}</h2>
                           {profile?.phone && (
                             <p className="text-sm text-muted-foreground font-body" dir="ltr">{profile.phone}</p>
                           )}
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={uploadingAvatar}
+                            className="mt-2 text-xs text-amber-400 hover:text-amber-300 font-body inline-flex items-center gap-1"
+                          >
+                            <Camera className="w-3 h-3" />
+                            {uploadingAvatar ? "جاري الرفع..." : avatarUrl ? "تغيير الصورة" : "أضف صورة شخصية"}
+                          </button>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/50">
