@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -6,14 +6,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, BookOpen, Clock, TrendingUp, Trophy,
   PlayCircle, CheckCircle2, LogOut, User, Award, Flame,
-  Target, Zap, Home,
+  Target, Zap, Home, Camera, Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { getMyProfile, getMyProgress } from "@/lib/app.functions";
+import { getMyProfile, getMyProgress, updateMyAvatar } from "@/lib/app.functions";
 import { StudentTips } from "@/components/site/student-tips";
 import { DuasSection } from "@/components/site/duas-section";
 import { Logo } from "@/components/site/logo";
@@ -53,6 +53,47 @@ function DashboardPage() {
   const watchHours = Math.floor((watchedLectures * 45) / 60); // rough estimate 45min/lecture
 
   const displayName = profile?.full_name || "طالب";
+  const avatarUrl = profile?.avatar_signed_url ?? null;
+
+  const updateAvatarFn = useServerFn(updateMyAvatar);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("اختر صورة صالحة");
+      return;
+    }
+    if (file.size > 3 * 1024 * 1024) {
+      toast.error("الصورة كبيرة", { description: "أقصى حجم 3 ميجابايت" });
+      return;
+    }
+    const { data: userRes } = await supabase.auth.getUser();
+    const uid = userRes.user?.id;
+    if (!uid) {
+      toast.error("سجّل الدخول أولاً");
+      return;
+    }
+    setUploadingAvatar(true);
+    try {
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+      const path = `${uid}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("avatars")
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      await updateAvatarFn({ data: { avatar_path: path } });
+      await queryClient.invalidateQueries({ queryKey: ["profile"] });
+      toast.success("تم تحديث الصورة الشخصية");
+    } catch (err) {
+      toast.error("فشل رفع الصورة", { description: err instanceof Error ? err.message : "حاول تاني" });
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
 
   const handleLogout = async () => {
     await queryClient.cancelQueries();
@@ -219,14 +260,49 @@ function DashboardPage() {
                   <motion.div key="profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
                     <div className="glass-card rounded-2xl p-6 border border-border/50">
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 to-emerald-500 flex items-center justify-center">
-                          <User className="w-10 h-10 text-white" />
+                        <div className="relative group">
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={uploadingAvatar}
+                            className="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-amber-500 to-emerald-500 flex items-center justify-center ring-2 ring-amber-400/30 hover:ring-amber-400/60 transition-all"
+                            aria-label="تغيير الصورة الشخصية"
+                          >
+                            {avatarUrl ? (
+                              <img src={avatarUrl} alt={displayName} className="w-full h-full object-cover" />
+                            ) : (
+                              <User className="w-12 h-12 text-white" />
+                            )}
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              {uploadingAvatar ? (
+                                <Loader2 className="w-6 h-6 text-white animate-spin" />
+                              ) : (
+                                <Camera className="w-6 h-6 text-white" />
+                              )}
+                            </div>
+                          </button>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarChange}
+                            className="hidden"
+                          />
                         </div>
                         <div>
                           <h2 className="font-display font-bold text-xl text-foreground">{displayName}</h2>
                           {profile?.phone && (
                             <p className="text-sm text-muted-foreground font-body" dir="ltr">{profile.phone}</p>
                           )}
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={uploadingAvatar}
+                            className="mt-2 text-xs text-amber-400 hover:text-amber-300 font-body inline-flex items-center gap-1"
+                          >
+                            <Camera className="w-3 h-3" />
+                            {uploadingAvatar ? "جاري الرفع..." : avatarUrl ? "تغيير الصورة" : "أضف صورة شخصية"}
+                          </button>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/50">
