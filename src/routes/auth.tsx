@@ -68,15 +68,7 @@ function AuthPage() {
   };
 
   const handleGoogle = async () => {
-    try {
-      const { lovable } = await import("@/integrations/lovable/index");
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + "/dashboard",
-      });
-      if (result.error) toast.error("فشل تسجيل الدخول بـ Google", { description: result.error.message });
-    } catch (err) {
-      toast.error("Google غير مفعّل حالياً", { description: err instanceof Error ? err.message : "" });
-    }
+    toast.info("تسجيل الدخول بـ Google", { description: "سيتم تفعيله قريباً — استخدم البريد وكلمة المرور حالياً." });
   };
 
   return (
