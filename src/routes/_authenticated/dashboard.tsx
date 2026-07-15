@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -6,14 +6,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, BookOpen, Clock, TrendingUp, Trophy,
   PlayCircle, CheckCircle2, LogOut, User, Award, Flame,
-  Target, Zap, Home,
+  Target, Zap, Home, Camera, Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { getMyProfile, getMyProgress } from "@/lib/app.functions";
+import { getMyProfile, getMyProgress, updateMyAvatar } from "@/lib/app.functions";
 import { StudentTips } from "@/components/site/student-tips";
 import { DuasSection } from "@/components/site/duas-section";
 import { Logo } from "@/components/site/logo";
