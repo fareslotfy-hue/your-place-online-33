@@ -53,6 +53,47 @@ function DashboardPage() {
   const watchHours = Math.floor((watchedLectures * 45) / 60); // rough estimate 45min/lecture
 
   const displayName = profile?.full_name || "طالب";
+  const avatarUrl = profile?.avatar_signed_url ?? null;
+
+  const updateAvatarFn = useServerFn(updateMyAvatar);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("اختر صورة صالحة");
+      return;
+    }
+    if (file.size > 3 * 1024 * 1024) {
+      toast.error("الصورة كبيرة", { description: "أقصى حجم 3 ميجابايت" });
+      return;
+    }
+    const { data: userRes } = await supabase.auth.getUser();
+    const uid = userRes.user?.id;
+    if (!uid) {
+      toast.error("سجّل الدخول أولاً");
+      return;
+    }
+    setUploadingAvatar(true);
+    try {
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+      const path = `${uid}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("avatars")
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      await updateAvatarFn({ data: { avatar_path: path } });
+      await queryClient.invalidateQueries({ queryKey: ["profile"] });
+      toast.success("تم تحديث الصورة الشخصية");
+    } catch (err) {
+      toast.error("فشل رفع الصورة", { description: err instanceof Error ? err.message : "حاول تاني" });
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
 
   const handleLogout = async () => {
     await queryClient.cancelQueries();
