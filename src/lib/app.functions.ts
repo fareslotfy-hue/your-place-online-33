@@ -12,7 +12,27 @@ export const getMyProfile = createServerFn({ method: "GET" })
       .eq("id", context.userId)
       .maybeSingle();
     if (error) throw new Error(error.message);
-    return data;
+
+    let avatarSignedUrl: string | null = null;
+    if (data?.avatar_url) {
+      const { data: signed } = await context.supabase.storage
+        .from("avatars")
+        .createSignedUrl(data.avatar_url, 60 * 60 * 24 * 7);
+      avatarSignedUrl = signed?.signedUrl ?? null;
+    }
+    return data ? { ...data, avatar_signed_url: avatarSignedUrl } : null;
+  });
+
+export const updateMyAvatar = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ avatar_path: z.string().min(1).max(500) }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("profiles")
+      .update({ avatar_url: data.avatar_path })
+      .eq("id", context.userId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
 
 export const updateMyProfile = createServerFn({ method: "POST" })
