@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 import { Logo } from "@/components/site/logo";
 
 export const Route = createFileRoute("/auth")({
@@ -68,7 +69,21 @@ function AuthPage() {
   };
 
   const handleGoogle = async () => {
-    toast.info("تسجيل الدخول بـ Google", { description: "سيتم تفعيله قريباً — استخدم البريد وكلمة المرور حالياً." });
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) {
+        toast.error("فشل تسجيل الدخول بـ Google", { description: result.error.message });
+        return;
+      }
+      if (result.redirected) return;
+      const { data } = await supabase.auth.getSession();
+      if (data.session) navigate({ to: "/dashboard" });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "حصل خطأ غير متوقع";
+      toast.error("فشل تسجيل الدخول بـ Google", { description: msg });
+    }
   };
 
   return (
