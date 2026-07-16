@@ -152,6 +152,62 @@ export function EnglishBooks() {
           ))}
         </div>
       </div>
+
+      <Dialog open={!!previewBook} onOpenChange={(o) => !o && setPreviewBook(null)}>
+        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0 gap-0 overflow-hidden bg-background border-border/50">
+          <DialogTitle className="sr-only">{previewBook?.title ?? "معاينة الكتاب"}</DialogTitle>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-muted/30">
+            <div className="flex items-center gap-2 min-w-0">
+              {previewBook && <previewBook.icon className={`w-5 h-5 shrink-0 ${previewBook.iconColor}`} />}
+              <div className="min-w-0">
+                <h3 className="font-display font-bold text-sm md:text-base text-foreground truncate">
+                  {previewBook?.title}
+                </h3>
+                <p className="text-[11px] text-muted-foreground truncate">{previewBook?.subtitle}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              {previewBook && (
+                <>
+                  <a
+                    href={previewBook.file.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-foreground/80"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>فتح في تاب</span>
+                  </a>
+                  <a
+                    href={previewBook.file.url}
+                    download={previewBook.downloadName}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/20 hover:bg-primary/30 border border-primary/30 text-xs text-foreground"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>تحميل</span>
+                  </a>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={() => setPreviewBook(null)}
+                className="p-1.5 rounded-md hover:bg-white/10 text-muted-foreground hover:text-foreground"
+                aria-label="إغلاق"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+          {previewBook && (
+            <iframe
+              src={`${previewBook.file.url}#view=FitH`}
+              title={previewBook.title}
+              className="w-full h-full bg-neutral-900"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
+
