@@ -54,7 +54,9 @@ const books = [
 ];
 
 export function EnglishBooks() {
+  const [previewBook, setPreviewBook] = useState<(typeof books)[number] | null>(null);
   return (
+
     <section id="english-books" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 pattern-islamic opacity-20" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/[0.03] to-transparent" />
