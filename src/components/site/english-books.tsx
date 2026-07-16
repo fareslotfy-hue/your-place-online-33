@@ -129,15 +129,16 @@ export function EnglishBooks() {
                 </div>
 
                 <div className="flex items-center gap-2 pt-4 border-t border-border/50">
-                  <a
-                    href={book.file.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => setPreviewBook(book)}
                     className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-body text-foreground/80 hover:text-foreground transition-colors"
                   >
                     <BookOpen className="w-4 h-4" />
                     <span>معاينة</span>
-                  </a>
+                  </button>
+                  <a
+
                   <a
                     href={book.file.url}
                     download={book.downloadName}
