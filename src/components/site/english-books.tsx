@@ -155,9 +155,9 @@ export function EnglishBooks() {
 
       <Dialog open={!!previewBook} onOpenChange={(o) => !o && setPreviewBook(null)}>
         <DialogContent
-          className="max-w-none w-screen h-screen sm:max-w-none p-0 gap-0 overflow-hidden bg-background border-0 rounded-none"
-          showCloseButton={false}
+          className="max-w-none w-screen h-screen sm:max-w-none p-0 gap-0 overflow-hidden bg-background border-0 rounded-none [&>button.absolute]:hidden"
         >
+
           <DialogTitle className="sr-only">{previewBook?.title ?? "معاينة الكتاب"}</DialogTitle>
 
           {previewBook && (
