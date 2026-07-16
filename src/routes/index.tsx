@@ -25,6 +25,7 @@ function Home() {
         <Hero />
         <StatsSection />
         <Subjects />
+        <EnglishBooks />
         <Lectures />
         <About />
         <Features />
