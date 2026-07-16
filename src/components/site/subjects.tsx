@@ -259,6 +259,11 @@ export function Subjects() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.05 }}
               whileHover={{ y: -8 }}
+              onClick={() => {
+                if (subject.code === "ENG101") {
+                  document.getElementById("english-books")?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
               className={`group relative glass-card rounded-2xl p-6 border ${subject.borderColor} cursor-pointer transition-all duration-300`}
             >
               {/* Background gradient on hover */}
