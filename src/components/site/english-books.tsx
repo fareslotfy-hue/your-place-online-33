@@ -139,7 +139,6 @@ export function EnglishBooks() {
                   </button>
                   <a
 
-                  <a
                     href={book.file.url}
                     download={book.downloadName}
                     className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-gradient-to-br ${book.accent} border ${book.ring} text-sm font-body text-foreground hover:brightness-110 transition-all`}
