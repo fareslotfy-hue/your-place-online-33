@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "@tanstack/react-router";
 import { 
   Languages, BookOpen, PencilRuler, Compass, 
   Cpu, Code2, Dumbbell, Heart, Atom, FlaskConical,
@@ -207,6 +208,7 @@ const difficultyLabels: Record<Difficulty, { label: string; color: string; emoji
 };
 
 export function Subjects() {
+  const navigate = useNavigate();
   return (
     <section id="subjects" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
@@ -261,7 +263,7 @@ export function Subjects() {
               whileHover={{ y: -8 }}
               onClick={() => {
                 if (subject.code === "ENG101") {
-                  document.getElementById("english-books")?.scrollIntoView({ behavior: "smooth" });
+                  navigate({ to: "/subjects/english" });
                 }
               }}
               className={`group relative glass-card rounded-2xl p-6 border ${subject.borderColor} cursor-pointer transition-all duration-300`}
