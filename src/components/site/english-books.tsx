@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Download, FileText, Languages } from "lucide-react";
+import { BookOpen, Download, FileText, Languages, X, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import sharhAsset from "@/assets/english-sharh.pdf.asset.json";
 import yellowAsset from "@/assets/english-yellow-exams.pdf.asset.json";
 import tadribatAsset from "@/assets/english-tadribat.pdf.asset.json";
+
 
 const books = [
   {
