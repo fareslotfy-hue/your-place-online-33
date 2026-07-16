@@ -154,26 +154,37 @@ export function EnglishBooks() {
       </div>
 
       <Dialog open={!!previewBook} onOpenChange={(o) => !o && setPreviewBook(null)}>
-        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0 gap-0 overflow-hidden bg-background border-border/50">
+        <DialogContent
+          className="max-w-none w-screen h-screen sm:max-w-none p-0 gap-0 overflow-hidden bg-background border-0 rounded-none"
+          showCloseButton={false}
+        >
           <DialogTitle className="sr-only">{previewBook?.title ?? "معاينة الكتاب"}</DialogTitle>
-          <div className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-muted/30">
-            <div className="flex items-center gap-2 min-w-0">
-              {previewBook && <previewBook.icon className={`w-5 h-5 shrink-0 ${previewBook.iconColor}`} />}
-              <div className="min-w-0">
-                <h3 className="font-display font-bold text-sm md:text-base text-foreground truncate">
-                  {previewBook?.title}
-                </h3>
-                <p className="text-[11px] text-muted-foreground truncate">{previewBook?.subtitle}</p>
-              </div>
+
+          {previewBook && (
+            <iframe
+              src={`${previewBook.file.url}#view=FitH`}
+              title={previewBook.title}
+              className="absolute inset-0 w-full h-full bg-neutral-900"
+            />
+          )}
+
+          {/* Floating toolbar — stays visible while scrolling the PDF */}
+          <div className="pointer-events-none absolute top-3 right-3 left-3 z-50 flex items-center justify-between gap-2">
+            <div className="pointer-events-auto flex items-center gap-2 rounded-full bg-background/85 backdrop-blur-md border border-border/60 shadow-lg px-3 py-1.5 min-w-0">
+              {previewBook && <previewBook.icon className={`w-4 h-4 shrink-0 ${previewBook.iconColor}`} />}
+              <span className="font-display font-bold text-xs md:text-sm text-foreground truncate max-w-[40vw]">
+                {previewBook?.title}
+              </span>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
+
+            <div className="pointer-events-auto flex items-center gap-2">
               {previewBook && (
                 <>
                   <a
                     href={previewBook.file.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-foreground/80"
+                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-background/85 backdrop-blur-md border border-border/60 shadow-lg text-xs text-foreground/80 hover:text-foreground hover:bg-background"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>فتح في تاب</span>
@@ -181,7 +192,7 @@ export function EnglishBooks() {
                   <a
                     href={previewBook.file.url}
                     download={previewBook.downloadName}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/20 hover:bg-primary/30 border border-primary/30 text-xs text-foreground"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-primary/90 hover:bg-primary text-primary-foreground border border-primary/40 shadow-lg text-xs"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>تحميل</span>
@@ -191,22 +202,17 @@ export function EnglishBooks() {
               <button
                 type="button"
                 onClick={() => setPreviewBook(null)}
-                className="p-1.5 rounded-md hover:bg-white/10 text-muted-foreground hover:text-foreground"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-destructive/90 hover:bg-destructive text-destructive-foreground border border-destructive/40 shadow-lg text-xs font-semibold"
                 aria-label="إغلاق"
               >
                 <X className="w-4 h-4" />
+                <span className="hidden sm:inline">خروج</span>
               </button>
             </div>
           </div>
-          {previewBook && (
-            <iframe
-              src={`${previewBook.file.url}#view=FitH`}
-              title={previewBook.title}
-              className="w-full h-full bg-neutral-900"
-            />
-          )}
         </DialogContent>
       </Dialog>
+
     </section>
   );
 }
