@@ -3,7 +3,7 @@ import { Navbar } from "@/components/site/navbar";
 import { Hero } from "@/components/site/hero";
 import { StatsSection } from "@/components/site/stats-section";
 import { Subjects } from "@/components/site/subjects";
-import { EnglishBooks } from "@/components/site/english-books";
+
 import { Lectures } from "@/components/site/lectures";
 import { About } from "@/components/site/about";
 import { Features } from "@/components/site/features";
@@ -25,7 +25,6 @@ function Home() {
         <Hero />
         <StatsSection />
         <Subjects />
-        <EnglishBooks />
         <Lectures />
         <About />
         <Features />
