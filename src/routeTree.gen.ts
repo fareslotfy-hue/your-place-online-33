@@ -13,6 +13,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SubjectsFiqhRouteImport } from './routes/subjects.fiqh'
 import { Route as SubjectsEnglishRouteImport } from './routes/subjects.english'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubjectsFiqhRoute = SubjectsFiqhRouteImport.update({
+  id: '/subjects/fiqh',
+  path: '/subjects/fiqh',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubjectsEnglishRoute = SubjectsEnglishRouteImport.update({
   id: '/subjects/english',
   path: '/subjects/english',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/subjects/english': typeof SubjectsEnglishRoute
+  '/subjects/fiqh': typeof SubjectsFiqhRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/subjects/english': typeof SubjectsEnglishRoute
+  '/subjects/fiqh': typeof SubjectsFiqhRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/subjects/english': typeof SubjectsEnglishRoute
+  '/subjects/fiqh': typeof SubjectsFiqhRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -77,8 +86,15 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/dashboard'
     | '/subjects/english'
+    | '/subjects/fiqh'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/reset-password' | '/dashboard' | '/subjects/english'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/subjects/english'
+    | '/subjects/fiqh'
   id:
     | '__root__'
     | '/'
@@ -87,6 +103,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/dashboard'
     | '/subjects/english'
+    | '/subjects/fiqh'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +112,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SubjectsEnglishRoute: typeof SubjectsEnglishRoute
+  SubjectsFiqhRoute: typeof SubjectsFiqhRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -125,6 +143,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subjects/fiqh': {
+      id: '/subjects/fiqh'
+      path: '/subjects/fiqh'
+      fullPath: '/subjects/fiqh'
+      preLoaderRoute: typeof SubjectsFiqhRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subjects/english': {
@@ -161,6 +186,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SubjectsEnglishRoute: SubjectsEnglishRoute,
+  SubjectsFiqhRoute: SubjectsFiqhRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

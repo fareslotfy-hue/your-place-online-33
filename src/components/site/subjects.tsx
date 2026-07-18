@@ -264,6 +264,8 @@ export function Subjects() {
               onClick={() => {
                 if (subject.code === "ENG101") {
                   navigate({ to: "/subjects/english" });
+                } else if (subject.code === "FIQ101") {
+                  navigate({ to: "/subjects/fiqh" });
                 }
               }}
               className={`group relative glass-card rounded-2xl p-6 border ${subject.borderColor} cursor-pointer transition-all duration-300`}
