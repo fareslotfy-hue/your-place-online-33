@@ -1,12 +1,219 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Download, FileText, Languages, X, ExternalLink } from "lucide-react";
+import { BookOpen, Download, FileText, Languages, X, ExternalLink, Loader2, RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import sharhAsset from "@/assets/english-sharh.pdf.asset.json";
 import yellowAsset from "@/assets/english-yellow-exams.pdf.asset.json";
 import tadribatAsset from "@/assets/english-tadribat.pdf.asset.json";
 
+type PdfPageProxyLike = {
+  getViewport: (options: { scale: number; rotation?: number }) => { width: number; height: number };
+  render: (options: { canvasContext: CanvasRenderingContext2D; viewport: { width: number; height: number } }) => {
+    promise: Promise<void>;
+  };
+};
+
+type PdfDocumentProxyLike = {
+  numPages: number;
+  getPage: (pageNumber: number) => Promise<PdfPageProxyLike>;
+  destroy: () => Promise<void>;
+};
+
+type PdfViewerProps = {
+  fileUrl: string;
+  title: string;
+  zoom: number;
+  rotation: number;
+};
+
+function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
+  const [pdf, setPdf] = useState<PdfDocumentProxyLike | null>(null);
+  const [pageCount, setPageCount] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const [visiblePages, setVisiblePages] = useState(() => new Set<number>());
+  const renderedPagesRef = useRef(new Set<string>());
+  const canvasesRef = useRef(new Map<number, HTMLCanvasElement>());
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    let loadedPdf: PdfDocumentProxyLike | null = null;
+
+    setPdf(null);
+    setPageCount(0);
+    setError(null);
+    setVisiblePages(new Set([1, 2]));
+    renderedPagesRef.current.clear();
+    canvasesRef.current.clear();
+
+    async function loadPdf() {
+      try {
+        const pdfjs = await import("pdfjs-dist");
+        pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+          "pdfjs-dist/build/pdf.worker.mjs",
+          import.meta.url,
+        ).toString();
+
+        const loadingTask = pdfjs.getDocument({
+          url: fileUrl,
+          withCredentials: false,
+          disableAutoFetch: false,
+          disableStream: false,
+        });
+
+        loadedPdf = (await loadingTask.promise) as PdfDocumentProxyLike;
+        if (cancelled) {
+          await loadedPdf.destroy();
+          return;
+        }
+
+        setPdf(loadedPdf);
+        setPageCount(loadedPdf.numPages);
+      } catch {
+        if (!cancelled) {
+          setError("تعذر فتح الكتاب داخل الموقع. جرّب تحميله على جهازك من زر التحميل.");
+        }
+      }
+    }
+
+    loadPdf();
+
+    return () => {
+      cancelled = true;
+      observerRef.current?.disconnect();
+      if (loadedPdf) void loadedPdf.destroy();
+    };
+  }, [fileUrl]);
+
+  const renderPage = useCallback(
+    async (pageNumber: number, canvas: HTMLCanvasElement) => {
+      if (!pdf) return;
+      const renderKey = `${pageNumber}-${zoom}-${rotation}`;
+      if (renderedPagesRef.current.has(renderKey)) return;
+
+      renderedPagesRef.current.add(renderKey);
+      try {
+        const page = await pdf.getPage(pageNumber);
+        const viewport = page.getViewport({ scale: zoom, rotation });
+        const context = canvas.getContext("2d");
+        if (!context) return;
+
+        const ratio = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(viewport.width * ratio);
+        canvas.height = Math.floor(viewport.height * ratio);
+        canvas.style.width = `${Math.floor(viewport.width)}px`;
+        canvas.style.height = `${Math.floor(viewport.height)}px`;
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        context.clearRect(0, 0, viewport.width, viewport.height);
+        await page.render({ canvasContext: context, viewport }).promise;
+      } catch {
+        renderedPagesRef.current.delete(renderKey);
+      }
+    },
+    [pdf, rotation, zoom],
+  );
+
+  useEffect(() => {
+    renderedPagesRef.current.clear();
+    canvasesRef.current.forEach((canvas) => {
+      const context = canvas.getContext("2d");
+      context?.clearRect(0, 0, canvas.width, canvas.height);
+    });
+    visiblePages.forEach((pageNumber) => {
+      const canvas = canvasesRef.current.get(pageNumber);
+      if (canvas) void renderPage(pageNumber, canvas);
+    });
+  }, [renderPage, rotation, visiblePages, zoom]);
+
+  useEffect(() => {
+    if (!pdf || !containerRef.current) return;
+    observerRef.current?.disconnect();
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        setVisiblePages((current) => {
+          const next = new Set(current);
+          entries.forEach((entry) => {
+            const pageNumber = Number((entry.target as HTMLElement).dataset.pageNumber);
+            if (entry.isIntersecting && pageNumber) {
+              next.add(pageNumber);
+              if (pageNumber + 1 <= pdf.numPages) next.add(pageNumber + 1);
+            }
+          });
+          return next;
+        });
+      },
+      { root: containerRef.current, rootMargin: "900px 0px", threshold: 0.01 },
+    );
+
+    canvasesRef.current.forEach((canvas) => observerRef.current?.observe(canvas));
+
+    return () => observerRef.current?.disconnect();
+  }, [pdf, pageCount]);
+
+  const registerCanvas = useCallback(
+    (pageNumber: number) => (canvas: HTMLCanvasElement | null) => {
+      if (!canvas) {
+        canvasesRef.current.delete(pageNumber);
+        return;
+      }
+      canvasesRef.current.set(pageNumber, canvas);
+      canvas.dataset.pageNumber = String(pageNumber);
+      observerRef.current?.observe(canvas);
+      if (visiblePages.has(pageNumber)) void renderPage(pageNumber, canvas);
+    },
+    [renderPage, visiblePages],
+  );
+
+  if (error) {
+    return (
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-neutral-900 px-6 text-center">
+        <FileText className="w-10 h-10 text-muted-foreground" />
+        <p className="max-w-md text-sm md:text-base text-foreground/80 font-body leading-relaxed">{error}</p>
+        <a
+          href={fileUrl}
+          download
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+        >
+          <Download className="w-4 h-4" />
+          <span>تحميل الكتاب</span>
+        </a>
+      </div>
+    );
+  }
+
+  if (!pdf) {
+    return (
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-neutral-900 text-foreground">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <p className="text-sm font-body text-foreground/80">جاري فتح الكتاب...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={containerRef} className="absolute inset-0 overflow-auto bg-neutral-900 px-3 pb-10 pt-24 md:px-6" dir="ltr">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-5">
+        {Array.from({ length: pageCount }, (_, index) => {
+          const pageNumber = index + 1;
+          return (
+            <figure key={pageNumber} className="w-full max-w-full text-center">
+              <canvas
+                ref={registerCanvas(pageNumber)}
+                aria-label={`${title} — صفحة ${pageNumber}`}
+                className="mx-auto block max-w-full rounded-md bg-white shadow-2xl shadow-black/40"
+              />
+              <figcaption className="mt-2 text-xs text-white/50" dir="rtl">
+                صفحة {pageNumber} من {pageCount}
+              </figcaption>
+            </figure>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 const books = [
   {
@@ -55,6 +262,15 @@ const books = [
 
 export function EnglishBooks() {
   const [previewBook, setPreviewBook] = useState<(typeof books)[number] | null>(null);
+  const [zoom, setZoom] = useState(1.15);
+  const [rotation, setRotation] = useState(0);
+
+  const openPreview = (book: (typeof books)[number]) => {
+    setZoom(1.15);
+    setRotation(0);
+    setPreviewBook(book);
+  };
+
   return (
 
     <section id="english-books" className="relative py-24 md:py-32 overflow-hidden">
@@ -131,7 +347,7 @@ export function EnglishBooks() {
                 <div className="flex items-center gap-2 pt-4 border-t border-border/50">
                   <button
                     type="button"
-                    onClick={() => setPreviewBook(book)}
+                    onClick={() => openPreview(book)}
                     className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-body text-foreground/80 hover:text-foreground transition-colors"
                   >
                     <BookOpen className="w-4 h-4" />
@@ -161,11 +377,12 @@ export function EnglishBooks() {
           <DialogTitle className="sr-only">{previewBook?.title ?? "معاينة الكتاب"}</DialogTitle>
 
           {previewBook && (
-            <iframe
+            <PdfCanvasViewer
               key={previewBook.file.url}
-              src={`https://docs.google.com/viewer?url=${encodeURIComponent(previewBook.file.url)}&embedded=true`}
+              fileUrl={previewBook.file.url}
               title={previewBook.title}
-              className="absolute inset-0 w-full h-full bg-neutral-900"
+              zoom={zoom}
+              rotation={rotation}
             />
           )}
 
@@ -181,6 +398,30 @@ export function EnglishBooks() {
             <div className="pointer-events-auto flex items-center gap-2">
               {previewBook && (
                 <>
+                  <button
+                    type="button"
+                    onClick={() => setZoom((value) => Math.max(0.75, Number((value - 0.15).toFixed(2))))}
+                    className="inline-flex items-center justify-center rounded-full bg-background/85 backdrop-blur-md border border-border/60 shadow-lg w-9 h-9 text-foreground/80 hover:text-foreground hover:bg-background"
+                    aria-label="تصغير"
+                  >
+                    <ZoomOut className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setZoom((value) => Math.min(2, Number((value + 0.15).toFixed(2))))}
+                    className="inline-flex items-center justify-center rounded-full bg-background/85 backdrop-blur-md border border-border/60 shadow-lg w-9 h-9 text-foreground/80 hover:text-foreground hover:bg-background"
+                    aria-label="تكبير"
+                  >
+                    <ZoomIn className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRotation((value) => (value + 90) % 360)}
+                    className="hidden sm:inline-flex items-center justify-center rounded-full bg-background/85 backdrop-blur-md border border-border/60 shadow-lg w-9 h-9 text-foreground/80 hover:text-foreground hover:bg-background"
+                    aria-label="تدوير"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                  </button>
                   <a
                     href={previewBook.file.url}
                     target="_blank"
