@@ -9,7 +9,7 @@ import tadribatAsset from "@/assets/english-tadribat.pdf.asset.json";
 
 type PdfPageProxyLike = {
   getViewport: (options: { scale: number; rotation?: number }) => { width: number; height: number };
-  render: (options: { canvasContext: CanvasRenderingContext2D; viewport: { width: number; height: number } }) => {
+  render: (options: { canvasContext: CanvasRenderingContext2D; canvas: HTMLCanvasElement; viewport: { width: number; height: number } }) => {
     promise: Promise<void>;
   };
 };
@@ -63,7 +63,7 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
           disableStream: false,
         });
 
-        loadedPdf = (await loadingTask.promise) as PdfDocumentProxyLike;
+        loadedPdf = (await loadingTask.promise) as unknown as PdfDocumentProxyLike;
         if (cancelled) {
           await loadedPdf.destroy?.();
           return;
@@ -107,7 +107,7 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
         canvas.style.height = `${Math.floor(viewport.height)}px`;
         context.setTransform(ratio, 0, 0, ratio, 0, 0);
         context.clearRect(0, 0, viewport.width, viewport.height);
-        await page.render({ canvasContext: context, viewport }).promise;
+        await page.render({ canvasContext: context, canvas, viewport }).promise;
       } catch {
         renderedPagesRef.current.delete(renderKey);
       }
