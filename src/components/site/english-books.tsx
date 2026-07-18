@@ -95,7 +95,8 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
       renderedPagesRef.current.add(renderKey);
       try {
         const page = await pdf.getPage(pageNumber);
-        const viewport = page.getViewport({ scale: zoom, rotation });
+        const pageRotate = (page as unknown as { rotate?: number }).rotate ?? 0;
+        const viewport = page.getViewport({ scale: zoom, rotation: (pageRotate + rotation) % 360 });
         const context = canvas.getContext("2d");
         if (!context) return;
 
