@@ -95,8 +95,14 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
       renderedPagesRef.current.add(renderKey);
       try {
         const page = await pdf.getPage(pageNumber);
-        const pageRotate = (page as unknown as { rotate?: number }).rotate ?? 0;
-        const viewport = page.getViewport({ scale: zoom, rotation: (pageRotate + rotation) % 360 });
+        // Passing `rotation` to getViewport is absolute (overrides page.rotate),
+        // so combining with page.rotate double-rotates pages that already have
+        // baked-in rotation. Let pdf.js use the page's intrinsic rotation when
+        // the user hasn't rotated manually.
+        const viewport =
+          rotation === 0
+            ? page.getViewport({ scale: zoom })
+            : page.getViewport({ scale: zoom, rotation });
         const context = canvas.getContext("2d");
         if (!context) return;
 
@@ -115,17 +121,23 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
     [pdf, rotation, zoom],
   );
 
+  // Clear the render cache only when zoom/rotation change — clearing on every
+  // visiblePages update caused a re-render storm while scrolling (the "hang").
   useEffect(() => {
     renderedPagesRef.current.clear();
-    canvasesRef.current.forEach((canvas) => {
-      const context = canvas.getContext("2d");
-      context?.clearRect(0, 0, canvas.width, canvas.height);
+    canvasesRef.current.forEach((canvas, pageNumber) => {
+      if (visiblePages.has(pageNumber)) void renderPage(pageNumber, canvas);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [zoom, rotation, renderPage]);
+
+  // When new pages scroll into view, render just those.
+  useEffect(() => {
     visiblePages.forEach((pageNumber) => {
       const canvas = canvasesRef.current.get(pageNumber);
       if (canvas) void renderPage(pageNumber, canvas);
     });
-  }, [renderPage, rotation, visiblePages, zoom]);
+  }, [visiblePages, renderPage]);
 
   useEffect(() => {
     if (!pdf || !containerRef.current) return;
