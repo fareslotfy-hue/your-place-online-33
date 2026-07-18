@@ -17,7 +17,7 @@ type PdfPageProxyLike = {
 type PdfDocumentProxyLike = {
   numPages: number;
   getPage: (pageNumber: number) => Promise<PdfPageProxyLike>;
-  destroy: () => Promise<void>;
+  destroy?: () => Promise<void>;
 };
 
 type PdfViewerProps = {
@@ -65,7 +65,7 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
 
         loadedPdf = (await loadingTask.promise) as PdfDocumentProxyLike;
         if (cancelled) {
-          await loadedPdf.destroy();
+          await loadedPdf.destroy?.();
           return;
         }
 
@@ -83,7 +83,7 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
     return () => {
       cancelled = true;
       observerRef.current?.disconnect();
-      if (loadedPdf) void loadedPdf.destroy();
+      if (loadedPdf) void loadedPdf.destroy?.();
     };
   }, [fileUrl]);
 
