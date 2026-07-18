@@ -56,12 +56,10 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
           import.meta.url,
         ).toString();
 
-        const loadingTask = pdfjs.getDocument({
-          url: fileUrl,
-          withCredentials: false,
-          disableAutoFetch: false,
-          disableStream: false,
-        });
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        if (!response.ok) throw new Error("PDF file request failed");
+        const pdfData = new Uint8Array(await response.arrayBuffer());
+        const loadingTask = pdfjs.getDocument({ data: pdfData });
 
         loadedPdf = (await loadingTask.promise) as unknown as PdfDocumentProxyLike;
         if (cancelled) {
@@ -71,8 +69,7 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
 
         setPdf(loadedPdf);
         setPageCount(loadedPdf.numPages);
-      } catch (loadError) {
-        console.error("PDF preview load failed", loadError);
+      } catch {
         if (!cancelled) {
           setError("تعذر فتح الكتاب داخل الموقع. جرّب تحميله على جهازك من زر التحميل.");
         }
