@@ -69,7 +69,8 @@ function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
 
         setPdf(loadedPdf);
         setPageCount(loadedPdf.numPages);
-      } catch {
+      } catch (loadError) {
+        console.error("PDF preview load failed", loadError);
         if (!cancelled) {
           setError("تعذر فتح الكتاب داخل الموقع. جرّب تحميله على جهازك من زر التحميل.");
         }
