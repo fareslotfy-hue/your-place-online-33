@@ -161,27 +161,12 @@ export function EnglishBooks() {
           <DialogTitle className="sr-only">{previewBook?.title ?? "معاينة الكتاب"}</DialogTitle>
 
           {previewBook && (
-            <object
-              data={`${previewBook.file.url}#view=FitH&toolbar=1`}
-              type="application/pdf"
+            <iframe
+              key={previewBook.file.url}
+              src={`https://docs.google.com/viewer?url=${encodeURIComponent(previewBook.file.url)}&embedded=true`}
+              title={previewBook.title}
               className="absolute inset-0 w-full h-full bg-neutral-900"
-            >
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center bg-neutral-900">
-                <p className="text-foreground/80 font-body text-sm md:text-base max-w-md">
-                  متصفحك أو بيئة المعاينة بتحجب عرض ملفات PDF داخل الصفحة.
-                  اضغط الزر لفتح الكتاب في تاب جديد.
-                </p>
-                <a
-                  href={previewBook.file.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>فتح الكتاب</span>
-                </a>
-              </div>
-            </object>
+            />
           )}
 
           {/* Floating toolbar — stays visible while scrolling the PDF */}
