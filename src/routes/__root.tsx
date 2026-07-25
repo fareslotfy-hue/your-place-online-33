@@ -17,19 +17,47 @@ import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-gradient-gold font-display">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">الصفحة غير موجودة</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          الصفحة اللي بتدور عليها مش موجودة أو اتنقلت لمكان تاني.
+    <div
+      dir="rtl"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-emerald-950 via-background to-background px-4"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 20%, rgba(212,175,55,0.25), transparent 40%), radial-gradient(circle at 80% 70%, rgba(6,78,59,0.4), transparent 45%)",
+        }}
+      />
+      <div className="relative z-10 max-w-lg text-center">
+        <img src="/logo.svg" alt="الإمام الأكبر" className="mx-auto h-16 w-16 opacity-90" />
+        <p className="mt-6 font-display text-[9rem] leading-none font-bold text-gradient-gold">
+          404
         </p>
-        <div className="mt-6">
+        <h1 className="mt-2 font-display text-2xl font-bold text-foreground">
+          الصفحة غير موجودة
+        </h1>
+        <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+          يبدو أنّ الطريق الذي سلكته لا يؤدي إلى شيء.
+          <br />
+          عُد إلى الصفحة الرئيسية وابدأ من جديد بإذن الله.
+        </p>
+        <blockquote className="mt-6 border-r-2 border-primary/50 pr-4 text-sm italic text-muted-foreground/80">
+          «ومَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ»
+        </blockquote>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-primary/40"
           >
-            الرجوع للرئيسية
+            العودة للرئيسية
+          </Link>
+          <Link
+            to="/"
+            hash="subjects"
+            className="inline-flex items-center justify-center rounded-lg border border-border bg-background/60 px-6 py-2.5 text-sm font-semibold text-foreground backdrop-blur transition-colors hover:bg-accent"
+          >
+            تصفّح المواد
           </Link>
         </div>
       </div>
