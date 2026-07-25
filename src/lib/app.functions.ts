@@ -127,3 +127,115 @@ export const createEnrollment = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+// ---------- ADMIN ----------
+export const getMyRoles = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId);
+    if (error) throw new Error(error.message);
+    return { roles: (data ?? []).map((r) => r.role as string) };
+  });
+
+export const claimFirstAdmin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase.rpc("claim_first_admin");
+    if (error) throw new Error(error.message);
+    return { granted: !!data };
+  });
+
+export const getAdminStats = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: isAdmin, error: rErr } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
+    if (rErr) throw new Error(rErr.message);
+    if (!isAdmin) throw new Error("Forbidden");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+    const [viewsRes, enrollRes, usersRes] = await Promise.all([
+      supabaseAdmin
+        .from("page_views")
+        .select("path, referrer, created_at, user_id")
+        .gte("created_at", since)
+        .order("created_at", { ascending: false })
+        .limit(5000),
+      supabaseAdmin
+        .from("enrollments")
+        .select("id, full_name, phone, package_name, package_price, payment_method, status, created_at")
+        .order("created_at", { ascending: false })
+        .limit(200),
+      supabaseAdmin.from("profiles").select("id", { count: "exact", head: true }),
+    ]);
+    if (viewsRes.error) throw new Error(viewsRes.error.message);
+    if (enrollRes.error) throw new Error(enrollRes.error.message);
+
+    const views = viewsRes.data ?? [];
+    const enrollments = enrollRes.data ?? [];
+
+    // Aggregations
+    const dayMap = new Map<string, number>();
+    const pathMap = new Map<string, number>();
+    const refMap = new Map<string, number>();
+    const uniqueUsers = new Set<string>();
+    let viewsLast24h = 0;
+    const now = Date.now();
+    for (const v of views) {
+      const d = new Date(v.created_at);
+      const key = d.toISOString().slice(0, 10);
+      dayMap.set(key, (dayMap.get(key) ?? 0) + 1);
+      pathMap.set(v.path, (pathMap.get(v.path) ?? 0) + 1);
+      const host = (() => {
+        if (!v.referrer) return "مباشر";
+        try {
+          const u = new URL(v.referrer);
+          if (!u.hostname) return "مباشر";
+          return u.hostname.replace(/^www\./, "");
+        } catch {
+          return "مباشر";
+        }
+      })();
+      refMap.set(host, (refMap.get(host) ?? 0) + 1);
+      if (v.user_id) uniqueUsers.add(v.user_id);
+      if (now - d.getTime() <= 24 * 60 * 60 * 1000) viewsLast24h++;
+    }
+
+    const daily = Array.from(dayMap.entries())
+      .sort(([a], [b]) => (a < b ? -1 : 1))
+      .slice(-30)
+      .map(([date, count]) => ({ date, count }));
+
+    const topPaths = Array.from(pathMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([path, count]) => ({ path, count }));
+
+    const topReferrers = Array.from(refMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([source, count]) => ({ source, count }));
+
+    return {
+      totals: {
+        views: views.length,
+        viewsLast24h,
+        uniqueSignedInVisitors: uniqueUsers.size,
+        totalUsers: usersRes.count ?? 0,
+        enrollments: enrollments.length,
+        pendingEnrollments: enrollments.filter((e) => e.status === "pending").length,
+      },
+      daily,
+      topPaths,
+      topReferrers,
+      recentEnrollments: enrollments.slice(0, 20),
+    };
+  });
