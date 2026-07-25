@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, BookOpen, Clock, TrendingUp, Trophy,
   PlayCircle, CheckCircle2, LogOut, User, Award, Flame,
-  Target, Zap, Home, Camera, Loader2,
+  Target, Zap, Home, Camera, Loader2, ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
