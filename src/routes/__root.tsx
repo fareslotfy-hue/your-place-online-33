@@ -84,14 +84,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "منصة الإمام الأكبر التعليمية للفرقة الإعدادية بكلية الهندسة. محاضرات، ملخصات، جداول، وموارد تعليمية شاملة لطلاب الهندسة.",
+          "منصة الإمام الأكبر التعليمية للفرقة الإعدادية بكلية الهندسة جامعة الأزهر. محاضرات، كتب، ملخصات، امتحانات، وموارد دراسية شاملة.",
       },
       { name: "author", content: "منصة الإمام الأكبر" },
-      { property: "og:title", content: "الإمام الأكبر | منصة الفرقة الإعدادية" },
-      {
-        property: "og:description",
-        content: "منصة تعليمية متكاملة لطلاب الفرقة الإعدادية بكلية الهندسة",
-      },
+      { name: "theme-color", content: "#064e3b" },
+      { property: "og:site_name", content: "منصة الإمام الأكبر" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "ar_EG" },
       { name: "twitter:card", content: "summary_large_image" },

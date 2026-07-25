@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /auth
+Disallow: /reset-password
+
+Sitemap: https://your-place-online-33.lovable.app/sitemap.xml

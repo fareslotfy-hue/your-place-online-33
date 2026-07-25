@@ -3,15 +3,27 @@ import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
 import { FiqhBooks } from "@/components/site/fiqh-books";
+import ogImage from "@/assets/og-image.jpg.asset.json";
+
+const URL = "https://your-place-online-33.lovable.app/subjects/fiqh";
+const OG = `https://your-place-online-33.lovable.app${ogImage.url}`;
+const TITLE = "الفقه — كتب الإمام الأكبر";
+const DESC = "سبع مراجع لمادة الفقه للفرقة الأولى هندسة الأزهر: الشرح، المذكرة، الملخّص، بنك الأسئلة، الخرائط الذهنية، كارت المراجعة، ودرس الخطبة.";
 
 export const Route = createFileRoute("/subjects/fiqh")({
   head: () => ({
     meta: [
-      { title: "الفقه — كتب الإمام الأكبر" },
-      { name: "description", content: "سبع مراجع لمادة الفقه للفرقة الأولى هندسة الأزهر: الشرح، المذكرة، الملخّص، بنك الأسئلة، الخرائط الذهنية، كارت المراجعة، ودرس الخطبة." },
-      { property: "og:title", content: "الفقه — كتب الإمام الأكبر" },
-      { property: "og:description", content: "مراجع مادة الفقه المقرّرة على الفرقة الأولى — كلية الهندسة، جامعة الأزهر." },
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:url", content: URL },
+      { property: "og:image", content: OG },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESC },
+      { name: "twitter:image", content: OG },
     ],
+    links: [{ rel: "canonical", href: URL }],
   }),
   component: FiqhSubjectPage,
 });

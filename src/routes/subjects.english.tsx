@@ -3,15 +3,27 @@ import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
 import { EnglishBooks } from "@/components/site/english-books";
+import ogImage from "@/assets/og-image.jpg.asset.json";
+
+const URL = "https://your-place-online-33.lovable.app/subjects/english";
+const OG = `https://your-place-online-33.lovable.app${ogImage.url}`;
+const TITLE = "اللغة الإنجليزية — كتب الإمام الأكبر";
+const DESC = "كتب مادة اللغة الإنجليزية للفرقة الإعدادية: الشرح الكامل، الشيت الأصفر والامتحانات بحلولها، وكتاب التدريبات والخرائط الذهنية.";
 
 export const Route = createFileRoute("/subjects/english")({
   head: () => ({
     meta: [
-      { title: "اللغة الإنجليزية — كتب الإمام الأكبر" },
-      { name: "description", content: "كتب مادة اللغة الإنجليزية للفرقة الإعدادية: الشرح، الشيت الأصفر والامتحانات، والتدريبات." },
-      { property: "og:title", content: "اللغة الإنجليزية — كتب الإمام الأكبر" },
-      { property: "og:description", content: "ثلاث كتب مرتبة لمادة اللغة الإنجليزية بالفرقة الإعدادية — كلية الهندسة، جامعة الأزهر." },
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:url", content: URL },
+      { property: "og:image", content: OG },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESC },
+      { name: "twitter:image", content: OG },
     ],
+    links: [{ rel: "canonical", href: URL }],
   }),
   component: EnglishSubjectPage,
 });
