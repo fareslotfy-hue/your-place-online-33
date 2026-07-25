@@ -14,6 +14,7 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { supabase } from "@/integrations/supabase/client";
+import { usePageViewTracking } from "@/hooks/use-page-view-tracking";
 
 function NotFoundComponent() {
   return (
@@ -164,6 +165,8 @@ function RootComponent() {
     });
     return () => data.subscription.unsubscribe();
   }, [router, queryClient]);
+
+  usePageViewTracking();
 
   return (
     <QueryClientProvider client={queryClient}>
