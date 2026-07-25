@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, BookOpen, Clock, TrendingUp, Trophy,
   PlayCircle, CheckCircle2, LogOut, User, Award, Flame,
-  Target, Zap, Home, Camera, Loader2,
+  Target, Zap, Home, Camera, Loader2, ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -125,11 +125,13 @@ function DashboardPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <Link to="/admin"><Button variant="ghost" size="sm" className="text-amber-400 hover:text-amber-300"><ShieldCheck className="w-4 h-4 ml-1" />الإدارة</Button></Link>
               <Link to="/"><Button variant="ghost" size="sm"><Home className="w-4 h-4 ml-1" />الرئيسية</Button></Link>
               <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground hover:text-red-400">
                 <LogOut className="w-4 h-4 ml-1" />خروج
               </Button>
             </div>
+
           </div>
         </div>
       </div>
