@@ -4,12 +4,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
   BarChart3, Users, Eye, TrendingUp, ShieldCheck, ArrowRight,
-  Globe, FileText, Clock, Package, Loader2, Home,
+  Globe, FileText, Clock, Package, Loader2, Home, CheckCircle2, XCircle, MessageCircle, ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { getMyRoles, getAdminStats, claimFirstAdmin } from "@/lib/app.functions";
+import { getMyRoles, getAdminStats, claimFirstAdmin, updateEnrollmentStatus } from "@/lib/app.functions";
 import { Logo } from "@/components/site/logo";
 
 export const Route = createFileRoute("/_authenticated/admin")({
