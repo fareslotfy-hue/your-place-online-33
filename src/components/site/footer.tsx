@@ -3,11 +3,15 @@ import { Sparkles, ArrowLeft, Mail, Phone, MapPin, Facebook, Twitter, Youtube, I
 import { Logo } from "./logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSession } from "@/lib/use-session";
 
 export function Footer() {
+  const { user } = useSession();
   return (
     <footer className="relative mt-auto overflow-hidden">
       {/* CTA Section */}
+      {/* CTA Section — only for guests */}
+      {!user && (
       <section id="login" className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-950/40 via-background to-amber-950/20" />
         <div className="absolute inset-0 pattern-islamic opacity-50" />
@@ -60,6 +64,9 @@ export function Footer() {
           </motion.div>
         </div>
       </section>
+      )}
+
+
 
       {/* Main Footer */}
       <div className="relative border-t border-border/50">
