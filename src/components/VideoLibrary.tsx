@@ -302,3 +302,80 @@ export default function VideoLibrary() {
     </div>
   );
 }
+
+function VideoCard({
+  v,
+  channel,
+  isRec,
+  onPlay,
+}: {
+  v: Video;
+  channel?: Channel;
+  isRec: boolean;
+  onPlay: () => void;
+}) {
+  const playlistThumb = usePlaylistThumb(
+    v.type === "playlist" ? v.playlist_id : undefined,
+  );
+  const videoThumb = v.youtube_id
+    ? `https://i.ytimg.com/vi/${v.youtube_id}/hqdefault.jpg`
+    : null;
+  const thumb = videoThumb || playlistThumb;
+
+  return (
+    <button
+      onClick={onPlay}
+      className={`group relative aspect-video w-full overflow-hidden rounded-xl border text-right shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg ${
+        isRec ? "ring-2 ring-primary/60" : ""
+      }`}
+      style={
+        thumb
+          ? { backgroundImage: `url(${thumb})`, backgroundSize: "cover", backgroundPosition: "center" }
+          : undefined
+      }
+    >
+      {!thumb && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted text-5xl">
+          🎬
+        </div>
+      )}
+
+      {/* dark gradient overlay for legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
+
+      {/* play button (center) */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
+          ▶
+        </span>
+      </div>
+
+      {/* recommendation badge */}
+      {isRec && (
+        <span className="absolute top-2 right-2 rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground shadow">
+          ⭐ الترشيح
+        </span>
+      )}
+
+      {/* playlist badge */}
+      {v.type === "playlist" && (
+        <span className="absolute top-2 left-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
+          📺 بلاي ليست
+        </span>
+      )}
+
+      {/* channel badge (bottom-left) */}
+      {channel?.badge && (
+        <span className="absolute bottom-3 left-3 rounded-lg bg-yellow-400/95 px-2 py-0.5 text-xs font-semibold text-black shadow">
+          {channel.badge}
+        </span>
+      )}
+
+      {/* title + channel */}
+      <div className="absolute bottom-0 right-0 left-0 p-4 text-white">
+        <h3 className="line-clamp-2 text-sm font-semibold drop-shadow">{v.title}</h3>
+        <p className="mt-1 text-xs text-white/80">{channel?.name}</p>
+      </div>
+    </button>
+  );
+}
