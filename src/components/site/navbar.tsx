@@ -11,6 +11,7 @@ const navLinks = [
   { label: "الرئيسية", href: "#home" },
   { label: "المواد", href: "#subjects" },
   { label: "المحاضرات", href: "#lectures" },
+  { label: "الفيديوهات", to: "/videos" as const },
   { label: "عن المنصة", href: "#about" },
   { label: "المميزات", href: "#features" },
   { label: "الباقات", href: "#pricing" },
