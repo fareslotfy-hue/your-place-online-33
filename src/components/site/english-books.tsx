@@ -245,7 +245,7 @@ const books = [
       "الكتاب الرئيسي في اللغة الإنجليزية للفرقة الإعدادية: شرح كامل للقواعد، القراءات الإسلامية والعلمية، الشيت الأصفر محلولاً، وامتحانات نهاية الترم بالحل.",
     pages: 141,
     file: sharhAsset,
-    downloadName: "كتاب_الإمام_الأكبر_في_اللغة_الإنجليزية.pdf",
+    isExam: false,
     accent: "from-indigo-500/25 to-blue-500/10",
     ring: "border-indigo-400/30 hover:border-indigo-400/60",
     icon: BookOpen,
@@ -259,7 +259,7 @@ const books = [
       "كل تدريبات الشيت الأصفر وامتحانات يناير 2017 و 2018 بالحل النموذجي، مع شرح مبسّط لكل سؤال وترجمات كاملة ومراجعة شاملة قبل الامتحان.",
     pages: 52,
     file: yellowAsset,
-    downloadName: "كتاب_الإمام_الأكبر_للتدريبات_والامتحانات.pdf",
+    isExam: true,
     accent: "from-amber-500/25 to-orange-500/10",
     ring: "border-amber-400/30 hover:border-amber-400/60",
     icon: FileText,
@@ -273,7 +273,7 @@ const books = [
       "خرائط ذهنية للقواعد (الأزمنة، الضمائر، حروف الجر، الجمع...) مع تدريبات محلولة، تصحيح أخطاء، تكوين أسئلة، وقطع ترجمة ثنائية اللغة لمراجعة سريعة قبل الامتحان.",
     pages: 26,
     file: tadribatAsset,
-    downloadName: "كتاب_الإمام_الأكبر_للتدريبات_والمراجعة.pdf",
+    isExam: false,
     accent: "from-emerald-500/25 to-teal-500/10",
     ring: "border-emerald-400/30 hover:border-emerald-400/60",
     icon: Languages,
@@ -283,15 +283,29 @@ const books = [
 ];
 
 export function EnglishBooks() {
+  const navigate = useNavigate();
+  const { level } = useAccessLevel();
   const [previewBook, setPreviewBook] = useState<(typeof books)[number] | null>(null);
+  const [authPromptOpen, setAuthPromptOpen] = useState(false);
+  const [subscribePromptOpen, setSubscribePromptOpen] = useState(false);
   const [zoom, setZoom] = useState(1.15);
   const [rotation, setRotation] = useState(0);
 
   const openPreview = (book: (typeof books)[number]) => {
+    if (level === "guest") {
+      setAuthPromptOpen(true);
+      return;
+    }
+    if (level === "free" && book.isExam) {
+      setSubscribePromptOpen(true);
+      return;
+    }
     setZoom(1.15);
     setRotation(0);
     setPreviewBook(book);
   };
+
+  const isLimited = previewBook ? level === "free" && !previewBook.isExam : false;
 
   return (
 
