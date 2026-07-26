@@ -75,6 +75,11 @@ export const getMyProgress = createServerFn({ method: "GET" })
 export const getMyAccessLevel = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { data: isAdmin } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
+    if (isAdmin) return { subscribed: true };
     const { data, error } = await context.supabase
       .from("enrollments")
       .select("id")
