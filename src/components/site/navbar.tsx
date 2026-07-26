@@ -102,12 +102,20 @@ export function Navbar() {
 
             <nav className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => (
-                <button key={link.href} onClick={() => handleNavClick(link.href)} className="px-3 py-2 text-sm font-body text-foreground/80 hover:text-foreground transition-colors relative group rounded-lg hover:bg-muted/50">
-                  {link.label}
-                  <span className="absolute bottom-1 right-1/2 translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-amber-400 group-hover:w-6 transition-all duration-300" />
-                </button>
+                link.to ? (
+                  <Link key={link.to} to={link.to} className="px-3 py-2 text-sm font-body text-foreground/80 hover:text-foreground transition-colors relative group rounded-lg hover:bg-muted/50">
+                    {link.label}
+                    <span className="absolute bottom-1 right-1/2 translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-amber-400 group-hover:w-6 transition-all duration-300" />
+                  </Link>
+                ) : (
+                  <button key={link.href} onClick={() => handleNavClick(link.href!)} className="px-3 py-2 text-sm font-body text-foreground/80 hover:text-foreground transition-colors relative group rounded-lg hover:bg-muted/50">
+                    {link.label}
+                    <span className="absolute bottom-1 right-1/2 translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-amber-400 group-hover:w-6 transition-all duration-300" />
+                  </button>
+                )
               ))}
             </nav>
+
 
             <div className="flex items-center gap-2">
               <ThemeToggle />
