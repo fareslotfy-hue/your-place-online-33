@@ -1,50 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import videosData from "@/data/videos.json";
-
-// simple in-memory + sessionStorage cache للـ playlist thumbnails
-const thumbCache = new Map<string, string>();
-function usePlaylistThumb(playlistId?: string) {
-  const [url, setUrl] = useState<string | null>(() => {
-    if (!playlistId) return null;
-    if (thumbCache.has(playlistId)) return thumbCache.get(playlistId)!;
-    try {
-      const cached = sessionStorage.getItem(`plthumb:${playlistId}`);
-      if (cached) {
-        thumbCache.set(playlistId, cached);
-        return cached;
-      }
-    } catch {}
-    return null;
-  });
-  useEffect(() => {
-    if (!playlistId || url) return;
-    let cancelled = false;
-    const plUrl = `https://www.youtube.com/playlist?list=${playlistId}`;
-    fetch(`https://noembed.com/embed?url=${encodeURIComponent(plUrl)}`)
-      .then((r) => r.json())
-      .then((d) => {
-        const t = d?.thumbnail_url as string | undefined;
-        if (t && !cancelled) {
-          thumbCache.set(playlistId, t);
-          try {
-            sessionStorage.setItem(`plthumb:${playlistId}`, t);
-          } catch {}
-          setUrl(t);
-        }
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [playlistId, url]);
-  return url;
-}
 
 /**
  * VideoLibrary — مكتبة فيديوهات المنهج
- * - يستخدم semantic tokens (bg-card, text-foreground, bg-primary...) عشان يورث ألوان موقعك تلقائي
- * - Route المقترح: /videos
- * - Data source: src/data/videos.json
  */
 
 type Video = {
@@ -53,8 +11,10 @@ type Video = {
   type: "video" | "playlist";
   youtube_id?: string;
   playlist_id?: string;
+  thumb_id?: string;
   url: string;
 };
+
 
 type Topic = {
   id: string;
