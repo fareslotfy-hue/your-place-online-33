@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { BookOpen, Download, FileText, Languages, X, ExternalLink, Loader2, RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
+import { BookOpen, FileText, Languages, X, Loader2, RotateCcw, ZoomIn, ZoomOut, Lock, LogIn } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useAccessLevel, FREE_PREVIEW_PAGES } from "@/lib/use-access-level";
 import sharhAsset from "@/assets/english-sharh.pdf.asset.json";
 import yellowAsset from "@/assets/english-yellow-exams.pdf.asset.json";
 import tadribatAsset from "@/assets/english-tadribat.pdf.asset.json";
@@ -25,9 +28,11 @@ type PdfViewerProps = {
   title: string;
   zoom: number;
   rotation: number;
+  maxPages?: number;
+  lockedNotice?: string;
 };
 
-export function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
+export function PdfCanvasViewer({ fileUrl, title, zoom, rotation, maxPages, lockedNotice }: PdfViewerProps) {
   const [pdf, setPdf] = useState<PdfDocumentProxyLike | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -183,14 +188,6 @@ export function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerPro
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-neutral-900 px-6 text-center">
         <FileText className="w-10 h-10 text-muted-foreground" />
         <p className="max-w-md text-sm md:text-base text-foreground/80 font-body leading-relaxed">{error}</p>
-        <a
-          href={fileUrl}
-          download
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          <Download className="w-4 h-4" />
-          <span>تحميل الكتاب</span>
-        </a>
       </div>
     );
   }
@@ -204,10 +201,13 @@ export function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerPro
     );
   }
 
+  const effectivePageCount = maxPages ? Math.min(pageCount, maxPages) : pageCount;
+  const isLimited = !!maxPages && pageCount > effectivePageCount;
+
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-auto bg-neutral-900 px-3 pb-10 pt-24 md:px-6" dir="ltr">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-5">
-        {Array.from({ length: pageCount }, (_, index) => {
+        {Array.from({ length: effectivePageCount }, (_, index) => {
           const pageNumber = index + 1;
           return (
             <figure key={pageNumber} className="w-full max-w-full text-center">
@@ -222,6 +222,16 @@ export function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerPro
             </figure>
           );
         })}
+        {isLimited && (
+          <div className="w-full max-w-2xl rounded-2xl border border-amber-400/40 bg-amber-500/10 p-6 text-center text-amber-100" dir="rtl">
+            <p className="font-display font-bold text-lg mb-2">
+              {lockedNotice ?? `عرضت أول ${effectivePageCount} صفحات من أصل ${pageCount}`}
+            </p>
+            <p className="text-sm text-amber-100/80 leading-relaxed">
+              اشترك في المنصة لفتح الكتاب كاملاً — تواصل معنا لرفع إيصال الدفع وتفعيل اشتراكك.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -235,7 +245,7 @@ const books = [
       "الكتاب الرئيسي في اللغة الإنجليزية للفرقة الإعدادية: شرح كامل للقواعد، القراءات الإسلامية والعلمية، الشيت الأصفر محلولاً، وامتحانات نهاية الترم بالحل.",
     pages: 141,
     file: sharhAsset,
-    downloadName: "كتاب_الإمام_الأكبر_في_اللغة_الإنجليزية.pdf",
+    isExam: false,
     accent: "from-indigo-500/25 to-blue-500/10",
     ring: "border-indigo-400/30 hover:border-indigo-400/60",
     icon: BookOpen,
@@ -249,7 +259,7 @@ const books = [
       "كل تدريبات الشيت الأصفر وامتحانات يناير 2017 و 2018 بالحل النموذجي، مع شرح مبسّط لكل سؤال وترجمات كاملة ومراجعة شاملة قبل الامتحان.",
     pages: 52,
     file: yellowAsset,
-    downloadName: "كتاب_الإمام_الأكبر_للتدريبات_والامتحانات.pdf",
+    isExam: true,
     accent: "from-amber-500/25 to-orange-500/10",
     ring: "border-amber-400/30 hover:border-amber-400/60",
     icon: FileText,
@@ -263,7 +273,7 @@ const books = [
       "خرائط ذهنية للقواعد (الأزمنة، الضمائر، حروف الجر، الجمع...) مع تدريبات محلولة، تصحيح أخطاء، تكوين أسئلة، وقطع ترجمة ثنائية اللغة لمراجعة سريعة قبل الامتحان.",
     pages: 26,
     file: tadribatAsset,
-    downloadName: "كتاب_الإمام_الأكبر_للتدريبات_والمراجعة.pdf",
+    isExam: false,
     accent: "from-emerald-500/25 to-teal-500/10",
     ring: "border-emerald-400/30 hover:border-emerald-400/60",
     icon: Languages,
@@ -273,15 +283,29 @@ const books = [
 ];
 
 export function EnglishBooks() {
+  const navigate = useNavigate();
+  const { level } = useAccessLevel();
   const [previewBook, setPreviewBook] = useState<(typeof books)[number] | null>(null);
+  const [authPromptOpen, setAuthPromptOpen] = useState(false);
+  const [subscribePromptOpen, setSubscribePromptOpen] = useState(false);
   const [zoom, setZoom] = useState(1.15);
   const [rotation, setRotation] = useState(0);
 
   const openPreview = (book: (typeof books)[number]) => {
+    if (level === "guest") {
+      setAuthPromptOpen(true);
+      return;
+    }
+    if (level === "free" && book.isExam) {
+      setSubscribePromptOpen(true);
+      return;
+    }
     setZoom(1.15);
     setRotation(0);
     setPreviewBook(book);
   };
+
+  const isLimited = previewBook ? level === "free" && !previewBook.isExam : false;
 
   return (
 
@@ -360,20 +384,25 @@ export function EnglishBooks() {
                   <button
                     type="button"
                     onClick={() => openPreview(book)}
-                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-body text-foreground/80 hover:text-foreground transition-colors"
+                    className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-gradient-to-br ${book.accent} border ${book.ring} text-sm font-body text-foreground hover:brightness-110 transition-all`}
                   >
-                    <BookOpen className="w-4 h-4" />
-                    <span>معاينة</span>
+                    {level === "guest" ? (
+                      <>
+                        <Lock className="w-4 h-4" />
+                        <span>سجّل الدخول للمعاينة</span>
+                      </>
+                    ) : level === "free" && book.isExam ? (
+                      <>
+                        <Lock className="w-4 h-4" />
+                        <span>اشترك لفتح الامتحانات</span>
+                      </>
+                    ) : (
+                      <>
+                        <BookOpen className="w-4 h-4" />
+                        <span>{level === "subscribed" ? "قراءة الكتاب" : `معاينة أول ${FREE_PREVIEW_PAGES} صفحات`}</span>
+                      </>
+                    )}
                   </button>
-                  <a
-
-                    href={book.file.url}
-                    download={book.downloadName}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-gradient-to-br ${book.accent} border ${book.ring} text-sm font-body text-foreground hover:brightness-110 transition-all`}
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>تحميل</span>
-                  </a>
                 </div>
               </div>
             </motion.div>
@@ -385,26 +414,32 @@ export function EnglishBooks() {
         <DialogContent
           className="max-w-none w-screen h-screen sm:max-w-none p-0 gap-0 overflow-hidden bg-background border-0 rounded-none [&>button.absolute]:hidden"
         >
-
           <DialogTitle className="sr-only">{previewBook?.title ?? "معاينة الكتاب"}</DialogTitle>
 
           {previewBook && (
             <PdfCanvasViewer
-              key={previewBook.file.url}
+              key={`${previewBook.file.url}-${level}`}
               fileUrl={previewBook.file.url}
               title={previewBook.title}
               zoom={zoom}
               rotation={rotation}
+              maxPages={isLimited ? FREE_PREVIEW_PAGES : undefined}
+              lockedNotice={isLimited ? `شاهدت أول ${FREE_PREVIEW_PAGES} صفحات من الكتاب — اشترك لفتح باقي الصفحات` : undefined}
             />
           )}
 
-          {/* Floating toolbar — stays visible while scrolling the PDF */}
           <div className="pointer-events-none absolute top-3 right-3 left-3 z-50 flex items-center justify-between gap-2">
             <div className="pointer-events-auto flex items-center gap-2 rounded-full bg-background/85 backdrop-blur-md border border-border/60 shadow-lg px-3 py-1.5 min-w-0">
               {previewBook && <previewBook.icon className={`w-4 h-4 shrink-0 ${previewBook.iconColor}`} />}
               <span className="font-display font-bold text-xs md:text-sm text-foreground truncate max-w-[40vw]">
                 {previewBook?.title}
               </span>
+              {isLimited && (
+                <span className="hidden md:inline-flex items-center gap-1 rounded-full bg-amber-500/20 text-amber-200 border border-amber-400/30 px-2 py-0.5 text-[10px]">
+                  <Lock className="w-3 h-3" />
+                  معاينة محدودة
+                </span>
+              )}
             </div>
 
             <div className="pointer-events-auto flex items-center gap-2">
@@ -434,23 +469,6 @@ export function EnglishBooks() {
                   >
                     <RotateCcw className="w-4 h-4" />
                   </button>
-                  <a
-                    href={previewBook.file.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-background/85 backdrop-blur-md border border-border/60 shadow-lg text-xs text-foreground/80 hover:text-foreground hover:bg-background"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    <span>فتح في تاب</span>
-                  </a>
-                  <a
-                    href={previewBook.file.url}
-                    download={previewBook.downloadName}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-primary/90 hover:bg-primary text-primary-foreground border border-primary/40 shadow-lg text-xs"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>تحميل</span>
-                  </a>
                 </>
               )}
               <button
@@ -464,6 +482,49 @@ export function EnglishBooks() {
               </button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={authPromptOpen} onOpenChange={setAuthPromptOpen}>
+        <DialogContent className="max-w-md" dir="rtl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 font-display">
+              <LogIn className="w-5 h-5 text-primary" />
+              سجّل دخولك أولاً
+            </DialogTitle>
+            <DialogDescription className="text-right leading-relaxed">
+              لازم تسجّل حساب في منصة الإمام الأكبر عشان تقدر تعاين الكتب.
+              التسجيل مجاني ويفتح لك أول {FREE_PREVIEW_PAGES} صفحات من كل كتاب.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" onClick={() => setAuthPromptOpen(false)}>لاحقاً</Button>
+            <Button onClick={() => { setAuthPromptOpen(false); navigate({ to: "/auth" }); }}>
+              <LogIn className="w-4 h-4 ml-1" />
+              تسجيل / إنشاء حساب
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={subscribePromptOpen} onOpenChange={setSubscribePromptOpen}>
+        <DialogContent className="max-w-md" dir="rtl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 font-display">
+              <Lock className="w-5 h-5 text-amber-500" />
+              محتوى الامتحانات للمشتركين فقط
+            </DialogTitle>
+            <DialogDescription className="text-right leading-relaxed">
+              كتب الامتحانات والحلول متاحة فقط للطلاب المشتركين. اشترك في الباقة وارفع إيصال الدفع
+              ليتم تفعيل اشتراكك من إدارة المنصة.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" onClick={() => setSubscribePromptOpen(false)}>لاحقاً</Button>
+            <Button onClick={() => { setSubscribePromptOpen(false); navigate({ to: "/", hash: "pricing" }); }}>
+              عرض الباقات
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
