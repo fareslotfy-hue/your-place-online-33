@@ -25,6 +25,8 @@ type PdfViewerProps = {
   title: string;
   zoom: number;
   rotation: number;
+  maxPages?: number;
+  lockedNotice?: string;
 };
 
 export function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
