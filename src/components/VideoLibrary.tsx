@@ -310,6 +310,43 @@ export default function VideoLibrary() {
           </div>
         </div>
       )}
+
+      {/* Subscribe CTA modal (free users) */}
+      {showSubscribeCta && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-sm"
+          onClick={() => setShowSubscribeCta(false)}
+        >
+          <div
+            className="w-full max-w-md overflow-hidden rounded-2xl border-2 border-primary/30 bg-card p-8 text-center shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/15">
+              <Crown className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold">اشترك عشان تشوف الفيديو</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              مشاهدة الفيديوهات متاحة للمشتركين فقط. اشترك دلوقتي وافتح كل الشروحات.
+            </p>
+            <div className="mt-6 flex flex-col gap-2">
+              <Link
+                to="/"
+                hash="pricing"
+                onClick={() => setShowSubscribeCta(false)}
+                className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90"
+              >
+                عرض الباقات والاشتراك
+              </Link>
+              <button
+                onClick={() => setShowSubscribeCta(false)}
+                className="rounded-xl bg-secondary px-6 py-2 text-sm text-secondary-foreground hover:bg-secondary/80"
+              >
+                إغلاق
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
