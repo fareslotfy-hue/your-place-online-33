@@ -162,6 +162,31 @@ export const claimFirstAdmin = createServerFn({ method: "POST" })
     return { granted: !!data };
   });
 
+export const updateEnrollmentStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z.object({
+      id: z.string().uuid(),
+      status: z.enum(["approved", "pending", "rejected"]),
+    }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { data: isAdmin, error: rErr } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
+    if (rErr) throw new Error(rErr.message);
+    if (!isAdmin) throw new Error("Forbidden");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin
+      .from("enrollments")
+      .update({ status: data.status, updated_at: new Date().toISOString() })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export const getAdminStats = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
