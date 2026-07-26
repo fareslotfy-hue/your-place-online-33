@@ -45,6 +45,7 @@ function MathSubjectPage() {
           </Link>
         </div>
         <MathBooks />
+        <VideoLibrary />
       </main>
       <Footer />
     </div>
