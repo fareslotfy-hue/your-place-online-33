@@ -90,6 +90,22 @@ function AdminPage() {
 }
 
 function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<ReturnType<typeof getAdminStats>>>> }) {
+  const qc = useQueryClient();
+  const updateFn = useServerFn(updateEnrollmentStatus);
+  const updateM = useMutation({
+    mutationFn: (v: { id: string; status: "approved" | "rejected" | "pending" }) => updateFn({ data: v }),
+    onSuccess: (_r, v) => {
+      toast.success(v.status === "approved" ? "تم تفعيل الاشتراك" : v.status === "rejected" ? "تم رفض الطلب" : "تم التحديث");
+      qc.invalidateQueries({ queryKey: ["admin-stats"] });
+    },
+    onError: (e) => toast.error("فشل التحديث", { description: e instanceof Error ? e.message : "" }),
+  });
+
+  const waLink = (phone: string, name: string) => {
+    const clean = phone.replace(/\D/g, "").replace(/^0/, "20");
+    const msg = encodeURIComponent(`السلام عليكم ${name}، بخصوص طلب اشتراكك في منصة الإمام الأكبر…`);
+    return `https://wa.me/${clean}?text=${msg}`;
+  };
   const data = statsQ.data;
   const loading = statsQ.isLoading;
 
