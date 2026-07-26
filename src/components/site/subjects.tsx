@@ -312,29 +312,6 @@ export function Subjects() {
           ))}
         </div>
 
-        {/* Important note */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-12 max-w-4xl mx-auto"
-        >
-          <div className="glass-card rounded-2xl p-6 border border-amber-400/20 bg-gradient-to-br from-amber-500/5 to-orange-500/5">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                <TrendingUp className="w-5 h-5 text-amber-400" />
-              </div>
-              <div>
-                <h4 className="font-display font-bold text-foreground mb-2">ملاحظة هامة حول المواد المتصلة</h4>
-                <p className="text-sm text-muted-foreground font-body leading-relaxed">
-                  مواد <span className="text-amber-400 font-semibold">الكيمياء</span> و<span className="text-amber-400 font-semibold">هندسة الإنتاج</span> مواد متصلة، 
-                  يعني بتدرسها على مدار الترمين وتمتحن فيها امتحان واحد في آخر السنة (الترم الثاني). 
-                  احرص على المذاكرة المستمرة فيها من بداية الترم الأول عشان ماتتراكمش عليك.
-                </p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
