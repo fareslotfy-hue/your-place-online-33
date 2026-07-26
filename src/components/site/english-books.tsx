@@ -206,10 +206,13 @@ export function PdfCanvasViewer({ fileUrl, title, zoom, rotation, maxPages, lock
     );
   }
 
+  const effectivePageCount = maxPages ? Math.min(pageCount, maxPages) : pageCount;
+  const isLimited = !!maxPages && pageCount > effectivePageCount;
+
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-auto bg-neutral-900 px-3 pb-10 pt-24 md:px-6" dir="ltr">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-5">
-        {Array.from({ length: pageCount }, (_, index) => {
+        {Array.from({ length: effectivePageCount }, (_, index) => {
           const pageNumber = index + 1;
           return (
             <figure key={pageNumber} className="w-full max-w-full text-center">
@@ -224,6 +227,16 @@ export function PdfCanvasViewer({ fileUrl, title, zoom, rotation, maxPages, lock
             </figure>
           );
         })}
+        {isLimited && (
+          <div className="w-full max-w-2xl rounded-2xl border border-amber-400/40 bg-amber-500/10 p-6 text-center text-amber-100" dir="rtl">
+            <p className="font-display font-bold text-lg mb-2">
+              {lockedNotice ?? `عرضت أول ${effectivePageCount} صفحات من أصل ${pageCount}`}
+            </p>
+            <p className="text-sm text-amber-100/80 leading-relaxed">
+              اشترك في المنصة لفتح الكتاب كاملاً — تواصل معنا لرفع إيصال الدفع وتفعيل اشتراكك.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
