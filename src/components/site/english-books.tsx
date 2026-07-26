@@ -228,9 +228,15 @@ export function PdfCanvasViewer({ fileUrl, title, zoom, rotation, maxPages, lock
             <p className="font-display font-bold text-lg mb-2">
               {lockedNotice ?? `عرضت أول ${effectivePageCount} صفحات من أصل ${pageCount}`}
             </p>
-            <p className="text-sm text-amber-100/80 leading-relaxed">
+            <p className="text-sm text-amber-100/80 leading-relaxed mb-4">
               اشترك في المنصة لفتح الكتاب كاملاً — تواصل معنا لرفع إيصال الدفع وتفعيل اشتراكك.
             </p>
+            <Button
+              onClick={() => navigateViewer({ to: "/", hash: "pricing" })}
+              className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-emerald-950 font-bold shadow-lg"
+            >
+              عرض الباقات والاشتراكات
+            </Button>
           </div>
         )}
       </div>
