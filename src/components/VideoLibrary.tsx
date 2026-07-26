@@ -319,11 +319,13 @@ function VideoCard({
   channel,
   isRec,
   onPlay,
+  locked,
 }: {
   v: Video;
   channel?: Channel;
   isRec: boolean;
   onPlay: () => void;
+  locked: boolean;
 }) {
   const thumb = getThumb(v);
 
@@ -351,12 +353,13 @@ function VideoCard({
       {/* dark gradient overlay for legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
 
-      {/* play button (center) */}
+      {/* play / lock button (center) */}
       <div className="absolute inset-0 flex items-center justify-center">
         <span className="rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
-          ▶
+          {locked ? <Lock className="h-5 w-5" /> : "▶"}
         </span>
       </div>
+
 
       {/* recommendation badge */}
       {isRec && (
