@@ -188,14 +188,6 @@ export function PdfCanvasViewer({ fileUrl, title, zoom, rotation, maxPages, lock
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-neutral-900 px-6 text-center">
         <FileText className="w-10 h-10 text-muted-foreground" />
         <p className="max-w-md text-sm md:text-base text-foreground/80 font-body leading-relaxed">{error}</p>
-        <a
-          href={fileUrl}
-          download
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          <Download className="w-4 h-4" />
-          <span>تحميل الكتاب</span>
-        </a>
       </div>
     );
   }
