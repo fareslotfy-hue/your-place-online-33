@@ -16,6 +16,7 @@ type Video = {
   type: "video" | "playlist";
   youtube_id?: string;
   playlist_id?: string;
+  thumb_id?: string;
   url: string;
 };
 
@@ -37,6 +38,12 @@ function getEmbedUrl(v: Video) {
   }
   if (v.youtube_id) return `https://www.youtube.com/embed/${v.youtube_id}`;
   return v.url;
+}
+
+function getThumb(v: Video) {
+  const thumbId = v.youtube_id || v.thumb_id;
+  if (thumbId) return `/video-thumbnails/${thumbId}.jpg`;
+  return null;
 }
 
 export default function VideoBox({ topicId }: { topicId: string }) {
@@ -71,15 +78,28 @@ export default function VideoBox({ topicId }: { topicId: string }) {
             </div>
             <button
               onClick={() => setOpen(rec)}
-              className="flex w-full items-center justify-between rounded-lg border bg-background p-3 text-right transition-colors hover:bg-accent"
+              className="group relative aspect-video w-full overflow-hidden rounded-xl border text-right shadow-sm"
             >
-              <div>
-                <p className="text-sm font-medium">{rec.title}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
+              {getThumb(rec) ? (
+                <img
+                  src={getThumb(rec) ?? undefined}
+                  alt=""
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-muted" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+              <span className="absolute inset-0 m-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
+                ▶
+              </span>
+              <div className="absolute bottom-0 right-0 left-0 p-4 text-white">
+                <p className="line-clamp-2 text-sm font-semibold drop-shadow">{rec.title}</p>
+                <p className="mt-1 text-xs text-white/80">
                   {channelsById[rec.channel_id]?.name}
                 </p>
               </div>
-              <span className="rounded-full bg-primary p-2 text-primary-foreground">▶</span>
             </button>
           </div>
         )}
@@ -95,15 +115,28 @@ export default function VideoBox({ topicId }: { topicId: string }) {
                 <button
                   key={i}
                   onClick={() => setOpen(v)}
-                  className="flex items-center justify-between rounded-lg border bg-background/50 p-2.5 text-right text-sm transition-colors hover:bg-accent"
+                  className="group relative aspect-video overflow-hidden rounded-lg border text-right text-sm shadow-sm"
                 >
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium">{v.title}</p>
-                    <p className="text-xs text-muted-foreground">
+                  {getThumb(v) ? (
+                    <img
+                      src={getThumb(v) ?? undefined}
+                      alt=""
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-muted" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+                  <span className="absolute inset-0 m-auto flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
+                    ▶
+                  </span>
+                  <div className="absolute bottom-0 right-0 left-0 p-3 text-white">
+                    <p className="line-clamp-2 font-medium drop-shadow">{v.title}</p>
+                    <p className="mt-1 text-xs text-white/80">
                       {channelsById[v.channel_id]?.name}
                     </p>
                   </div>
-                  <span className="mr-2 text-muted-foreground">▶</span>
                 </button>
               ))}
             </div>

@@ -47,7 +47,8 @@ function getEmbedUrl(v: Video) {
 }
 
 function getThumb(v: Video) {
-  if (v.youtube_id) return `https://i.ytimg.com/vi/${v.youtube_id}/hqdefault.jpg`;
+  const thumbId = v.youtube_id || v.thumb_id;
+  if (thumbId) return `/video-thumbnails/${thumbId}.jpg`;
   return null;
 }
 
@@ -274,8 +275,7 @@ function VideoCard({
   isRec: boolean;
   onPlay: () => void;
 }) {
-  const thumbId = v.youtube_id || v.thumb_id;
-  const thumb = thumbId ? `https://i.ytimg.com/vi/${thumbId}/hqdefault.jpg` : null;
+  const thumb = getThumb(v);
 
 
   return (
@@ -284,13 +284,15 @@ function VideoCard({
       className={`group relative aspect-video w-full overflow-hidden rounded-xl border text-right shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg ${
         isRec ? "ring-2 ring-primary/60" : ""
       }`}
-      style={
-        thumb
-          ? { backgroundImage: `url(${thumb})`, backgroundSize: "cover", backgroundPosition: "center" }
-          : undefined
-      }
     >
-      {!thumb && (
+      {thumb ? (
+        <img
+          src={thumb}
+          alt=""
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-muted text-5xl">
           🎬
         </div>
