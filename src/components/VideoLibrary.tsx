@@ -81,6 +81,43 @@ export default function VideoLibrary() {
       .filter((t) => t.videos.length > 0);
   }, [term, topicId, channelId]);
 
+  if (accessLoading) {
+    return (
+      <div dir="rtl" className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">
+        جاري التحميل…
+      </div>
+    );
+  }
+
+  if (level === "guest") {
+    return (
+      <div dir="rtl" className="mx-auto max-w-4xl px-4 py-16">
+        <div className="rounded-3xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10 p-10 text-center shadow-lg">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-primary/15">
+            <Lock className="h-8 w-8 text-primary" />
+          </div>
+          <h2 className="text-2xl font-bold">مكتبة الفيديوهات مقفولة</h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            سجّل دخولك للمنصة عشان تقدر تشوف مكتبة فيديوهات المنهج، وتفتح صور الشرح لكل موضوع.
+          </p>
+          <Link
+            to="/auth"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90"
+          >
+            <LogIn className="h-4 w-4" />
+            تسجيل الدخول / إنشاء حساب
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const canPlay = level === "subscribed";
+  const handlePlay = (v: Video) => {
+    if (canPlay) setPlaying(v);
+    else setShowSubscribeCta(true);
+  };
+
   return (
     <div dir="rtl" className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-7xl px-4 py-10">
@@ -90,7 +127,14 @@ export default function VideoLibrary() {
           <p className="mt-3 text-muted-foreground">
             رياضة إعدادي هندسة · شرح دكاترة عرب · مع ترشيح الأنسب لكل جزئية
           </p>
+          {!canPlay && (
+            <div className="mx-auto mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-sm text-primary">
+              <Crown className="h-4 w-4" />
+              الاشتراك هيفتحلك مشاهدة كل الفيديوهات — دلوقتي بتشوف الصور فقط
+            </div>
+          )}
         </header>
+
 
         {/* Filters */}
         <div className="mb-8 grid gap-4 rounded-2xl border bg-card p-4 shadow-sm md:grid-cols-3">
