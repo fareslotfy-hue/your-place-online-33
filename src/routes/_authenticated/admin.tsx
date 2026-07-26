@@ -226,10 +226,55 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
               </div>
             </div>
 
+            {/* Pending enrollments — highest priority */}
+            {data.recentEnrollments.some((e) => e.status === "pending") && (
+              <div className="glass-card rounded-2xl p-6 border-2 border-yellow-500/40 bg-yellow-500/5">
+                <h2 className="font-display font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-yellow-400 animate-pulse" />
+                  طلبات بانتظار المراجعة
+                  <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
+                    {data.recentEnrollments.filter((e) => e.status === "pending").length}
+                  </Badge>
+                </h2>
+                <div className="space-y-3">
+                  {data.recentEnrollments.filter((e) => e.status === "pending").map((e) => (
+                    <div key={e.id} className="rounded-xl border border-border/50 bg-background/40 p-4 flex flex-wrap items-center gap-3 justify-between">
+                      <div className="min-w-0 flex-1">
+                        <div className="font-display font-bold text-foreground">{e.full_name}</div>
+                        <div className="text-xs text-muted-foreground font-body flex flex-wrap gap-x-3 gap-y-1 mt-1">
+                          <span dir="ltr">{e.phone}</span>
+                          {e.email && <span dir="ltr">{e.email}</span>}
+                          <span>{e.package_name} — <span className="text-emerald-400 font-semibold">{e.package_price} ج</span></span>
+                          <span>{e.payment_method === "instapay" ? "إنستا باي" : "فودافون كاش"}</span>
+                          <span>{new Date(e.created_at).toLocaleString("ar-EG")}</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {e.receipt_url && (
+                          <a href={e.receipt_url} target="_blank" rel="noopener noreferrer">
+                            <Button size="sm" variant="outline"><ExternalLink className="w-4 h-4 ml-1" />الإيصال</Button>
+                          </a>
+                        )}
+                        <a href={waLink(e.phone, e.full_name)} target="_blank" rel="noopener noreferrer">
+                          <Button size="sm" variant="outline" className="border-emerald-500/40 text-emerald-400"><MessageCircle className="w-4 h-4 ml-1" />واتساب</Button>
+                        </a>
+                        <Button size="sm" disabled={updateM.isPending} onClick={() => updateM.mutate({ id: e.id, status: "approved" })} className="bg-emerald-600 hover:bg-emerald-500 text-white">
+                          <CheckCircle2 className="w-4 h-4 ml-1" />تفعيل
+                        </Button>
+                        <Button size="sm" variant="destructive" disabled={updateM.isPending} onClick={() => updateM.mutate({ id: e.id, status: "rejected" })}>
+                          <XCircle className="w-4 h-4 ml-1" />رفض
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Recent enrollments */}
             <div className="glass-card rounded-2xl p-6 border border-border/50">
               <h2 className="font-display font-bold text-foreground mb-4 flex items-center gap-2">
-                <Package className="w-5 h-5 text-rose-400" /> آخر الاشتراكات
+                <Package className="w-5 h-5 text-rose-400" /> كل الاشتراكات
               </h2>
               {data.recentEnrollments.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-6">لا توجد اشتراكات بعد</p>
@@ -245,6 +290,7 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                         <th className="p-2">الدفع</th>
                         <th className="p-2">الحالة</th>
                         <th className="p-2">التاريخ</th>
+                        <th className="p-2">إجراءات</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -262,14 +308,36 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                                   ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
                                   : e.status === "approved"
                                   ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                                  : "bg-muted"
+                                  : "bg-rose-500/20 text-rose-400 border-rose-500/30"
                               }
                             >
-                              {e.status === "pending" ? "قيد المراجعة" : e.status === "approved" ? "مقبول" : e.status}
+                              {e.status === "pending" ? "قيد المراجعة" : e.status === "approved" ? "مفعّل" : "مرفوض"}
                             </Badge>
                           </td>
                           <td className="p-2 text-xs text-muted-foreground">
                             {new Date(e.created_at).toLocaleDateString("ar-EG")}
+                          </td>
+                          <td className="p-2">
+                            <div className="flex gap-1">
+                              {e.receipt_url && (
+                                <a href={e.receipt_url} target="_blank" rel="noopener noreferrer" title="عرض الإيصال">
+                                  <Button size="icon" variant="ghost" className="h-7 w-7"><ExternalLink className="w-3.5 h-3.5" /></Button>
+                                </a>
+                              )}
+                              <a href={waLink(e.phone, e.full_name)} target="_blank" rel="noopener noreferrer" title="واتساب">
+                                <Button size="icon" variant="ghost" className="h-7 w-7 text-emerald-400"><MessageCircle className="w-3.5 h-3.5" /></Button>
+                              </a>
+                              {e.status !== "approved" && (
+                                <Button size="icon" variant="ghost" className="h-7 w-7 text-emerald-400" title="تفعيل" disabled={updateM.isPending} onClick={() => updateM.mutate({ id: e.id, status: "approved" })}>
+                                  <CheckCircle2 className="w-3.5 h-3.5" />
+                                </Button>
+                              )}
+                              {e.status !== "rejected" && (
+                                <Button size="icon" variant="ghost" className="h-7 w-7 text-rose-400" title="رفض" disabled={updateM.isPending} onClick={() => updateM.mutate({ id: e.id, status: "rejected" })}>
+                                  <XCircle className="w-3.5 h-3.5" />
+                                </Button>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}
