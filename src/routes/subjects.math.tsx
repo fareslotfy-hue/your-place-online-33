@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
 import { MathBooks } from "@/components/site/math-books";
+import VideoLibrary from "@/components/VideoLibrary";
 import ogImage from "@/assets/og-image.jpg.asset.json";
 
 const URL_ = "https://your-place-online-33.lovable.app/subjects/math";
@@ -44,6 +45,7 @@ function MathSubjectPage() {
           </Link>
         </div>
         <MathBooks />
+        <VideoLibrary />
       </main>
       <Footer />
     </div>
