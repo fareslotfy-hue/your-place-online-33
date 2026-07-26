@@ -65,12 +65,20 @@ export function Navbar() {
           <motion.nav initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="lg:hidden fixed top-20 right-4 left-4 rounded-2xl overflow-hidden border border-border shadow-2xl bg-background z-50">
             <div className="flex flex-col p-4 gap-1">
               {navLinks.map((link) => (
-                <button key={link.href} onClick={() => handleNavClick(link.href)} className="px-4 py-3 text-right text-foreground hover:text-amber-400 hover:bg-muted rounded-lg transition-colors font-body flex items-center justify-between group">
-                  <span>{link.label}</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400/40 group-hover:bg-amber-400 group-hover:scale-150 transition-all" />
-                </button>
+                link.to ? (
+                  <Link key={link.to} to={link.to} onClick={() => setMobileOpen(false)} className="px-4 py-3 text-right text-foreground hover:text-amber-400 hover:bg-muted rounded-lg transition-colors font-body flex items-center justify-between group">
+                    <span>{link.label}</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400/40 group-hover:bg-amber-400 group-hover:scale-150 transition-all" />
+                  </Link>
+                ) : (
+                  <button key={link.href} onClick={() => handleNavClick(link.href!)} className="px-4 py-3 text-right text-foreground hover:text-amber-400 hover:bg-muted rounded-lg transition-colors font-body flex items-center justify-between group">
+                    <span>{link.label}</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400/40 group-hover:bg-amber-400 group-hover:scale-150 transition-all" />
+                  </button>
+                )
               ))}
               <div className="h-px bg-border/50 my-2" />
+
               {user ? (
                 <Button className="mt-1 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white" onClick={goToDashboard}>
                   <LayoutDashboard className="w-4 h-4 ml-2" />
