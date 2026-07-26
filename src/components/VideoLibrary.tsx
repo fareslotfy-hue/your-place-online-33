@@ -56,10 +56,12 @@ function getThumb(v: Video) {
 }
 
 export default function VideoLibrary() {
+  const { level, loading: accessLoading } = useAccessLevel();
   const [term, setTerm] = useState<0 | 1 | 2>(0);
   const [topicId, setTopicId] = useState<string>("all");
   const [channelId, setChannelId] = useState<string>("all");
   const [playing, setPlaying] = useState<Video | null>(null);
+  const [showSubscribeCta, setShowSubscribeCta] = useState(false);
 
   const channelsById = useMemo(
     () => Object.fromEntries(data.channels.map((c) => [c.id, c])),
