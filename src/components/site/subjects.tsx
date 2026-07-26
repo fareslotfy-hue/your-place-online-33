@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
 import { 
-  Languages, BookOpen, PencilRuler, Compass, 
-  Cpu, Code2, Dumbbell, Heart, Atom, FlaskConical,
-  Factory, BookMarked, ArrowLeft, Clock, FileText, TrendingUp, Sigma
+  Languages, BookOpen, PencilRuler, 
+  Cpu, Heart, Atom, FlaskConical,
+  Factory, BookMarked, ArrowLeft, Clock, FileText, Sigma
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
