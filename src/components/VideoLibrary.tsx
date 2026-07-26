@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { Lock, LogIn, Crown } from "lucide-react";
 import videosData from "@/data/videos.json";
+import { useAccessLevel } from "@/lib/use-access-level";
 
 /**
  * VideoLibrary — مكتبة فيديوهات المنهج
@@ -53,10 +56,12 @@ function getThumb(v: Video) {
 }
 
 export default function VideoLibrary() {
+  const { level, loading: accessLoading } = useAccessLevel();
   const [term, setTerm] = useState<0 | 1 | 2>(0);
   const [topicId, setTopicId] = useState<string>("all");
   const [channelId, setChannelId] = useState<string>("all");
   const [playing, setPlaying] = useState<Video | null>(null);
+  const [showSubscribeCta, setShowSubscribeCta] = useState(false);
 
   const channelsById = useMemo(
     () => Object.fromEntries(data.channels.map((c) => [c.id, c])),
@@ -76,6 +81,43 @@ export default function VideoLibrary() {
       .filter((t) => t.videos.length > 0);
   }, [term, topicId, channelId]);
 
+  if (accessLoading) {
+    return (
+      <div dir="rtl" className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">
+        جاري التحميل…
+      </div>
+    );
+  }
+
+  if (level === "guest") {
+    return (
+      <div dir="rtl" className="mx-auto max-w-4xl px-4 py-16">
+        <div className="rounded-3xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10 p-10 text-center shadow-lg">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-primary/15">
+            <Lock className="h-8 w-8 text-primary" />
+          </div>
+          <h2 className="text-2xl font-bold">مكتبة الفيديوهات مقفولة</h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            سجّل دخولك للمنصة عشان تقدر تشوف مكتبة فيديوهات المنهج، وتفتح صور الشرح لكل موضوع.
+          </p>
+          <Link
+            to="/auth"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90"
+          >
+            <LogIn className="h-4 w-4" />
+            تسجيل الدخول / إنشاء حساب
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const canPlay = level === "subscribed";
+  const handlePlay = (v: Video) => {
+    if (canPlay) setPlaying(v);
+    else setShowSubscribeCta(true);
+  };
+
   return (
     <div dir="rtl" className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-7xl px-4 py-10">
@@ -85,7 +127,14 @@ export default function VideoLibrary() {
           <p className="mt-3 text-muted-foreground">
             رياضة إعدادي هندسة · شرح دكاترة عرب · مع ترشيح الأنسب لكل جزئية
           </p>
+          {!canPlay && (
+            <div className="mx-auto mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-sm text-primary">
+              <Crown className="h-4 w-4" />
+              الاشتراك هيفتحلك مشاهدة كل الفيديوهات — دلوقتي بتشوف الصور فقط
+            </div>
+          )}
         </header>
+
 
         {/* Filters */}
         <div className="mb-8 grid gap-4 rounded-2xl border bg-card p-4 shadow-sm md:grid-cols-3">
@@ -200,7 +249,8 @@ export default function VideoLibrary() {
                     v={v}
                     channel={channelsById[v.channel_id]}
                     isRec={v.channel_id === topic.recommended}
-                    onPlay={() => setPlaying(v)}
+                    onPlay={() => handlePlay(v)}
+                    locked={!canPlay}
                   />
                 ))}
               </div>
@@ -260,6 +310,43 @@ export default function VideoLibrary() {
           </div>
         </div>
       )}
+
+      {/* Subscribe CTA modal (free users) */}
+      {showSubscribeCta && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-sm"
+          onClick={() => setShowSubscribeCta(false)}
+        >
+          <div
+            className="w-full max-w-md overflow-hidden rounded-2xl border-2 border-primary/30 bg-card p-8 text-center shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/15">
+              <Crown className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold">اشترك عشان تشوف الفيديو</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              مشاهدة الفيديوهات متاحة للمشتركين فقط. اشترك دلوقتي وافتح كل الشروحات.
+            </p>
+            <div className="mt-6 flex flex-col gap-2">
+              <Link
+                to="/"
+                hash="pricing"
+                onClick={() => setShowSubscribeCta(false)}
+                className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90"
+              >
+                عرض الباقات والاشتراك
+              </Link>
+              <button
+                onClick={() => setShowSubscribeCta(false)}
+                className="rounded-xl bg-secondary px-6 py-2 text-sm text-secondary-foreground hover:bg-secondary/80"
+              >
+                إغلاق
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -269,11 +356,13 @@ function VideoCard({
   channel,
   isRec,
   onPlay,
+  locked,
 }: {
   v: Video;
   channel?: Channel;
   isRec: boolean;
   onPlay: () => void;
+  locked: boolean;
 }) {
   const thumb = getThumb(v);
 
@@ -301,12 +390,13 @@ function VideoCard({
       {/* dark gradient overlay for legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
 
-      {/* play button (center) */}
+      {/* play / lock button (center) */}
       <div className="absolute inset-0 flex items-center justify-center">
         <span className="rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
-          ▶
+          {locked ? <Lock className="h-5 w-5" /> : "▶"}
         </span>
       </div>
+
 
       {/* recommendation badge */}
       {isRec && (
