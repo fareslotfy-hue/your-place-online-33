@@ -29,7 +29,7 @@ type PdfViewerProps = {
   lockedNotice?: string;
 };
 
-export function PdfCanvasViewer({ fileUrl, title, zoom, rotation }: PdfViewerProps) {
+export function PdfCanvasViewer({ fileUrl, title, zoom, rotation, maxPages, lockedNotice }: PdfViewerProps) {
   const [pdf, setPdf] = useState<PdfDocumentProxyLike | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
