@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { BookOpen, Download, FileText, Languages, X, ExternalLink, Loader2, RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
+import { BookOpen, FileText, Languages, X, Loader2, RotateCcw, ZoomIn, ZoomOut, Lock, LogIn } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useAccessLevel, FREE_PREVIEW_PAGES } from "@/lib/use-access-level";
 import sharhAsset from "@/assets/english-sharh.pdf.asset.json";
 import yellowAsset from "@/assets/english-yellow-exams.pdf.asset.json";
 import tadribatAsset from "@/assets/english-tadribat.pdf.asset.json";
