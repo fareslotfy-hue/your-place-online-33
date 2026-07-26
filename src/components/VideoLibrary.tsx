@@ -1,5 +1,44 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import videosData from "@/data/videos.json";
+
+// simple in-memory + sessionStorage cache للـ playlist thumbnails
+const thumbCache = new Map<string, string>();
+function usePlaylistThumb(playlistId?: string) {
+  const [url, setUrl] = useState<string | null>(() => {
+    if (!playlistId) return null;
+    if (thumbCache.has(playlistId)) return thumbCache.get(playlistId)!;
+    try {
+      const cached = sessionStorage.getItem(`plthumb:${playlistId}`);
+      if (cached) {
+        thumbCache.set(playlistId, cached);
+        return cached;
+      }
+    } catch {}
+    return null;
+  });
+  useEffect(() => {
+    if (!playlistId || url) return;
+    let cancelled = false;
+    const plUrl = `https://www.youtube.com/playlist?list=${playlistId}`;
+    fetch(`https://noembed.com/embed?url=${encodeURIComponent(plUrl)}`)
+      .then((r) => r.json())
+      .then((d) => {
+        const t = d?.thumbnail_url as string | undefined;
+        if (t && !cancelled) {
+          thumbCache.set(playlistId, t);
+          try {
+            sessionStorage.setItem(`plthumb:${playlistId}`, t);
+          } catch {}
+          setUrl(t);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [playlistId, url]);
+  return url;
+}
 
 /**
  * VideoLibrary — مكتبة فيديوهات المنهج
