@@ -63,9 +63,29 @@
       "recommended": "kimcam",
       "recommendation_reason": "بيبني الفهم البصري للدوال من الصفر",
       "videos": [
-        { "channel_id": "kimcam", "title": "Real Functions - Lec 1", "type": "video", "youtube_id": "UW9RPILzphM", "url": "https://youtu.be/UW9RPILzphM" },
-        { "channel_id": "fathy",  "title": "Math 1 Calculus 1 — Playlist (23 فيديو)", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU" },
-        { "channel_id": "emad_ecu", "title": "ECU-Calculus (3) — Playlist", "type": "playlist", "playlist_id": "PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k" }
+        {
+          "channel_id": "kimcam",
+          "title": "Real Functions - Lec 1",
+          "type": "video",
+          "youtube_id": "UW9RPILzphM",
+          "url": "https://youtu.be/UW9RPILzphM"
+        },
+        {
+          "channel_id": "fathy",
+          "title": "Math 1 Calculus 1 — Playlist (23 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU",
+          "thumb_id": "PYrt-HqQeO8"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "ECU-Calculus (3) — Playlist",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k",
+          "thumb_id": "beckMlClwXY"
+        }
       ]
     },
     {
@@ -76,9 +96,30 @@
       "recommended": "fathy",
       "recommendation_reason": "تقسيمه دقيق: نهايات لا نهائية، L'Hôpital، الاتصال",
       "videos": [
-        { "channel_id": "fathy",  "title": "Calculus 1 — Playlist", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU" },
-        { "channel_id": "kimcam", "title": "Differentiation Playlist (يبدأ بالنهايات)", "type": "playlist", "playlist_id": "PLR2RsKKRngz4ODm2uvxHhYG6dChkv2e4q", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz4ODm2uvxHhYG6dChkv2e4q" },
-        { "channel_id": "emad_ecu", "title": "ECU-Calculus (3)", "type": "playlist", "playlist_id": "PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k" }
+        {
+          "channel_id": "fathy",
+          "title": "Calculus 1 — Playlist",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU",
+          "thumb_id": "PYrt-HqQeO8"
+        },
+        {
+          "channel_id": "kimcam",
+          "title": "Differentiation Playlist (يبدأ بالنهايات)",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz4ODm2uvxHhYG6dChkv2e4q",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz4ODm2uvxHhYG6dChkv2e4q",
+          "thumb_id": "UW9RPILzphM"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "ECU-Calculus (3)",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k",
+          "thumb_id": "beckMlClwXY"
+        }
       ]
     },
     {
@@ -89,9 +130,30 @@
       "recommended": "kimcam",
       "recommendation_reason": "بلاي ليست مخصصة كاملة (12 فيديو) - الأفضل تأسيساً",
       "videos": [
-        { "channel_id": "kimcam", "title": "Differentiation - Prep Engineers (12 فيديو)", "type": "playlist", "playlist_id": "PLR2RsKKRngz4ODm2uvxHhYG6dChkv2e4q", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz4ODm2uvxHhYG6dChkv2e4q" },
-        { "channel_id": "fathy",  "title": "Calculus 1 Playlist", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU" },
-        { "channel_id": "emad_ecu", "title": "ECU-Calculus (3)", "type": "playlist", "playlist_id": "PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k" }
+        {
+          "channel_id": "kimcam",
+          "title": "Differentiation - Prep Engineers (12 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz4ODm2uvxHhYG6dChkv2e4q",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz4ODm2uvxHhYG6dChkv2e4q",
+          "thumb_id": "UW9RPILzphM"
+        },
+        {
+          "channel_id": "fathy",
+          "title": "Calculus 1 Playlist",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU",
+          "thumb_id": "PYrt-HqQeO8"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "ECU-Calculus (3)",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k",
+          "thumb_id": "beckMlClwXY"
+        }
       ]
     },
     {
@@ -103,9 +165,30 @@
       "recommended": "fathy",
       "recommendation_reason": "أمثلة الرسم البياني عنده أوضح",
       "videos": [
-        { "channel_id": "fathy",  "title": "Calculus 1 — أواخر البلاي ليست", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU" },
-        { "channel_id": "kimcam", "title": "Analytics - Prep Engineers (10 فيديو)", "type": "playlist", "playlist_id": "PLR2RsKKRngz7ZDfT9LtFCPETkBJ3DeGm4", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz7ZDfT9LtFCPETkBJ3DeGm4" },
-        { "channel_id": "emad_ecu", "title": "ECU-Calculus (3)", "type": "playlist", "playlist_id": "PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k" }
+        {
+          "channel_id": "fathy",
+          "title": "Calculus 1 — أواخر البلاي ليست",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSpxJbOi1p8tV8UFPQ4IuPVU",
+          "thumb_id": "PYrt-HqQeO8"
+        },
+        {
+          "channel_id": "kimcam",
+          "title": "Analytics - Prep Engineers (10 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz7ZDfT9LtFCPETkBJ3DeGm4",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz7ZDfT9LtFCPETkBJ3DeGm4",
+          "thumb_id": "of3P8pRi3pA"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "ECU-Calculus (3)",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKoDm39hZGoKwCMi-wJF_5k",
+          "thumb_id": "beckMlClwXY"
+        }
       ]
     },
     {
@@ -116,9 +199,30 @@
       "recommended": "kimcam",
       "recommendation_reason": "بيدخل من الشكل القطبي بتدرج ممتاز",
       "videos": [
-        { "channel_id": "fathy",  "title": "Math(1) Geometry — Playlist", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSp7_KI3QITopaSkgXQL7rh0", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSp7_KI3QITopaSkgXQL7rh0" },
-        { "channel_id": "kimcam", "title": "Algebra - Prep Engineers (13 فيديو)", "type": "playlist", "playlist_id": "PLR2RsKKRngz7aNdnOmqvBU3laVwWJEslg", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz7aNdnOmqvBU3laVwWJEslg" },
-        { "channel_id": "emad_ecu", "title": "Linear Algebra Playlist", "type": "playlist", "playlist_id": "PLUDkhVlxDirLYAGEqh-b7zfVgQ0_3wyex", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirLYAGEqh-b7zfVgQ0_3wyex" }
+        {
+          "channel_id": "fathy",
+          "title": "Math(1) Geometry — Playlist",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSp7_KI3QITopaSkgXQL7rh0",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSp7_KI3QITopaSkgXQL7rh0",
+          "thumb_id": "ua1FYI3zAIY"
+        },
+        {
+          "channel_id": "kimcam",
+          "title": "Algebra - Prep Engineers (13 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz7aNdnOmqvBU3laVwWJEslg",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz7aNdnOmqvBU3laVwWJEslg",
+          "thumb_id": "k2u0yWoOFHc"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "Linear Algebra Playlist",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirLYAGEqh-b7zfVgQ0_3wyex",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirLYAGEqh-b7zfVgQ0_3wyex",
+          "thumb_id": "CSMczIhNW7Q"
+        }
       ]
     },
     {
@@ -129,10 +233,37 @@
       "recommended": "engineer",
       "recommendation_reason": "سكاشن مصفوفات مرتبة بحلول مفصلة",
       "videos": [
-        { "channel_id": "fathy",  "title": "Math(1) Algebra — Playlist (9 فيديو)", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSoC-CKPt0CThFOlYhIB6Grg", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSoC-CKPt0CThFOlYhIB6Grg" },
-        { "channel_id": "engineer", "title": "رياضة إعدادي هندسة الزقازيق (12 فيديو)", "type": "playlist", "playlist_id": "PLRE94MsOGt7jHIV68-AQiMSydxMNdctA9", "url": "https://youtube.com/playlist?list=PLRE94MsOGt7jHIV68-AQiMSydxMNdctA9" },
-        { "channel_id": "emad_ecu", "title": "Linear Algebra & Analytic Geometry", "type": "playlist", "playlist_id": "PLUDkhVlxDirLYAGEqh-b7zfVgQ0_3wyex", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirLYAGEqh-b7zfVgQ0_3wyex" },
-        { "channel_id": "reda_math", "title": "الاستقراء الرياضي", "type": "video", "youtube_id": "tFqPK18KX-U", "url": "https://youtu.be/tFqPK18KX-U" }
+        {
+          "channel_id": "fathy",
+          "title": "Math(1) Algebra — Playlist (9 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSoC-CKPt0CThFOlYhIB6Grg",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSoC-CKPt0CThFOlYhIB6Grg",
+          "thumb_id": "d05GwKPSC2s"
+        },
+        {
+          "channel_id": "engineer",
+          "title": "رياضة إعدادي هندسة الزقازيق (12 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLRE94MsOGt7jHIV68-AQiMSydxMNdctA9",
+          "url": "https://youtube.com/playlist?list=PLRE94MsOGt7jHIV68-AQiMSydxMNdctA9",
+          "thumb_id": "AqiCRBqK-VQ"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "Linear Algebra & Analytic Geometry",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirLYAGEqh-b7zfVgQ0_3wyex",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirLYAGEqh-b7zfVgQ0_3wyex",
+          "thumb_id": "CSMczIhNW7Q"
+        },
+        {
+          "channel_id": "reda_math",
+          "title": "الاستقراء الرياضي",
+          "type": "video",
+          "youtube_id": "tFqPK18KX-U",
+          "url": "https://youtu.be/tFqPK18KX-U"
+        }
       ]
     },
     {
@@ -143,10 +274,36 @@
       "recommended": "kimcam",
       "recommendation_reason": "تأسيس ممتاز من Lec 1، مع Eng Fathy للتعمق",
       "videos": [
-        { "channel_id": "kimcam", "title": "Integration - Prep Engineers (12 فيديو)", "type": "playlist", "playlist_id": "PLR2RsKKRngz44PFKJwNTQt_HEkOlG6bW-", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz44PFKJwNTQt_HEkOlG6bW-" },
-        { "channel_id": "fathy",  "title": "Math2 part1 Integration (22 فيديو)", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSrpx286SsNAQCPQy7tn2CQS", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSrpx286SsNAQCPQy7tn2CQS" },
-        { "channel_id": "reda_abdo", "title": "Lec 1 - Introduction to Integration", "type": "video", "youtube_id": "KEG_2VsiBAQ", "url": "https://youtu.be/KEG_2VsiBAQ" },
-        { "channel_id": "reda_abdo", "title": "Integration by Parts", "type": "video", "youtube_id": "e2wctSa6HYw", "url": "https://youtu.be/e2wctSa6HYw" }
+        {
+          "channel_id": "kimcam",
+          "title": "Integration - Prep Engineers (12 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz44PFKJwNTQt_HEkOlG6bW-",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz44PFKJwNTQt_HEkOlG6bW-",
+          "thumb_id": "SkardASGg3w"
+        },
+        {
+          "channel_id": "fathy",
+          "title": "Math2 part1 Integration (22 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSrpx286SsNAQCPQy7tn2CQS",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSrpx286SsNAQCPQy7tn2CQS",
+          "thumb_id": "V9KWB92V9uY"
+        },
+        {
+          "channel_id": "reda_abdo",
+          "title": "Lec 1 - Introduction to Integration",
+          "type": "video",
+          "youtube_id": "KEG_2VsiBAQ",
+          "url": "https://youtu.be/KEG_2VsiBAQ"
+        },
+        {
+          "channel_id": "reda_abdo",
+          "title": "Integration by Parts",
+          "type": "video",
+          "youtube_id": "e2wctSa6HYw",
+          "url": "https://youtu.be/e2wctSa6HYw"
+        }
       ]
     },
     {
@@ -158,9 +315,29 @@
       "recommended": "fathy",
       "recommendation_reason": "أمثلة الحجوم عنده أوضح",
       "videos": [
-        { "channel_id": "fathy",  "title": "Math2 part1 — التطبيقات", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSrpx286SsNAQCPQy7tn2CQS", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSrpx286SsNAQCPQy7tn2CQS" },
-        { "channel_id": "kimcam", "title": "Integration Playlist - أواخر الفيديوهات", "type": "playlist", "playlist_id": "PLR2RsKKRngz44PFKJwNTQt_HEkOlG6bW-", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz44PFKJwNTQt_HEkOlG6bW-" },
-        { "channel_id": "reda_abdo", "title": "Definite Integral", "type": "video", "youtube_id": "e2wctSa6HYw", "url": "https://youtu.be/e2wctSa6HYw" }
+        {
+          "channel_id": "fathy",
+          "title": "Math2 part1 — التطبيقات",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSrpx286SsNAQCPQy7tn2CQS",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSrpx286SsNAQCPQy7tn2CQS",
+          "thumb_id": "V9KWB92V9uY"
+        },
+        {
+          "channel_id": "kimcam",
+          "title": "Integration Playlist - أواخر الفيديوهات",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz44PFKJwNTQt_HEkOlG6bW-",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz44PFKJwNTQt_HEkOlG6bW-",
+          "thumb_id": "SkardASGg3w"
+        },
+        {
+          "channel_id": "reda_abdo",
+          "title": "Definite Integral",
+          "type": "video",
+          "youtube_id": "e2wctSa6HYw",
+          "url": "https://youtu.be/e2wctSa6HYw"
+        }
       ]
     },
     {
@@ -172,9 +349,30 @@
       "recommended": "fathy",
       "recommendation_reason": "تدرج من Separable لـ 2nd Order مرتّب ومفصّل",
       "videos": [
-        { "channel_id": "fathy",  "title": "Differential Equations Playlist", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSqOxFc1tVLkPT5NNfF9WAei", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSqOxFc1tVLkPT5NNfF9WAei" },
-        { "channel_id": "kimcam", "title": "Math II Playlist (13 فيديو)", "type": "playlist", "playlist_id": "PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A" },
-        { "channel_id": "emad_ecu", "title": "Differential Equations", "type": "playlist", "playlist_id": "PLUDkhVlxDirKJfuPaguhrb59HY6HsbLbL", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKJfuPaguhrb59HY6HsbLbL" }
+        {
+          "channel_id": "fathy",
+          "title": "Differential Equations Playlist",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSqOxFc1tVLkPT5NNfF9WAei",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSqOxFc1tVLkPT5NNfF9WAei",
+          "thumb_id": "dSrar1Aq03s"
+        },
+        {
+          "channel_id": "kimcam",
+          "title": "Math II Playlist (13 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A",
+          "thumb_id": "kUp-Q2tf_Us"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "Differential Equations",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirKJfuPaguhrb59HY6HsbLbL",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKJfuPaguhrb59HY6HsbLbL",
+          "thumb_id": "_OVLBOJD3gs"
+        }
       ]
     },
     {
@@ -185,9 +383,30 @@
       "recommended": "kimcam",
       "recommendation_reason": "تأسيس ممتاز لجدول لابلاس",
       "videos": [
-        { "channel_id": "kimcam", "title": "Math II Playlist - جزء لابلاس", "type": "playlist", "playlist_id": "PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A" },
-        { "channel_id": "fathy",  "title": "Math III Playlist", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSrfLKT3tHpjzysz_ts5oV4b", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSrfLKT3tHpjzysz_ts5oV4b" },
-        { "channel_id": "emad_ecu", "title": "Differential Equations", "type": "playlist", "playlist_id": "PLUDkhVlxDirKJfuPaguhrb59HY6HsbLbL", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKJfuPaguhrb59HY6HsbLbL" }
+        {
+          "channel_id": "kimcam",
+          "title": "Math II Playlist - جزء لابلاس",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A",
+          "thumb_id": "kUp-Q2tf_Us"
+        },
+        {
+          "channel_id": "fathy",
+          "title": "Math III Playlist",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSrfLKT3tHpjzysz_ts5oV4b",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSrfLKT3tHpjzysz_ts5oV4b",
+          "thumb_id": "dTO_ehDfbZQ"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "Differential Equations",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirKJfuPaguhrb59HY6HsbLbL",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKJfuPaguhrb59HY6HsbLbL",
+          "thumb_id": "_OVLBOJD3gs"
+        }
       ]
     },
     {
@@ -199,9 +418,30 @@
       "recommended": "fathy",
       "recommendation_reason": "17 فيديو مخصصين للمتسلسلات - الأشمل بدون منافس",
       "videos": [
-        { "channel_id": "fathy",  "title": "Math2 part2 - Infinite Series (17 فيديو)", "type": "playlist", "playlist_id": "PLPW5Qx0M5NSr6jDcGtP_gO15GWlJ1s2Gx", "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSr6jDcGtP_gO15GWlJ1s2Gx" },
-        { "channel_id": "kimcam", "title": "Math II Playlist - Series", "type": "playlist", "playlist_id": "PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A", "url": "https://youtube.com/playlist?list=PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A" },
-        { "channel_id": "emad_ecu", "title": "Numerical Analysis", "type": "playlist", "playlist_id": "PLUDkhVlxDirKPJzk1HdZvwmeRlNPiN3DC", "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKPJzk1HdZvwmeRlNPiN3DC" }
+        {
+          "channel_id": "fathy",
+          "title": "Math2 part2 - Infinite Series (17 فيديو)",
+          "type": "playlist",
+          "playlist_id": "PLPW5Qx0M5NSr6jDcGtP_gO15GWlJ1s2Gx",
+          "url": "https://youtube.com/playlist?list=PLPW5Qx0M5NSr6jDcGtP_gO15GWlJ1s2Gx",
+          "thumb_id": "62vLlK6oNjU"
+        },
+        {
+          "channel_id": "kimcam",
+          "title": "Math II Playlist - Series",
+          "type": "playlist",
+          "playlist_id": "PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A",
+          "url": "https://youtube.com/playlist?list=PLR2RsKKRngz74aGFaqTQPi9GxWVzDkB6A",
+          "thumb_id": "kUp-Q2tf_Us"
+        },
+        {
+          "channel_id": "emad_ecu",
+          "title": "Numerical Analysis",
+          "type": "playlist",
+          "playlist_id": "PLUDkhVlxDirKPJzk1HdZvwmeRlNPiN3DC",
+          "url": "https://youtube.com/playlist?list=PLUDkhVlxDirKPJzk1HdZvwmeRlNPiN3DC",
+          "thumb_id": "3ydPR9iIX5c"
+        }
       ]
     }
   ]
