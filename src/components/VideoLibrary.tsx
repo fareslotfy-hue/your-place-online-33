@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { Lock, LogIn, Crown } from "lucide-react";
 import videosData from "@/data/videos.json";
+import { useAccessLevel } from "@/lib/use-access-level";
 
 /**
  * VideoLibrary — مكتبة فيديوهات المنهج
