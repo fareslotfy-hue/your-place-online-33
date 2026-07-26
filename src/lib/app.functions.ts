@@ -71,6 +71,20 @@ export const getMyProgress = createServerFn({ method: "GET" })
     return { progress: progress ?? [], history: history ?? [] };
   });
 
+// ---------- ACCESS LEVEL ----------
+export const getMyAccessLevel = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase
+      .from("enrollments")
+      .select("id")
+      .eq("user_id", context.userId)
+      .eq("status", "approved")
+      .limit(1);
+    if (error) throw new Error(error.message);
+    return { subscribed: (data?.length ?? 0) > 0 };
+  });
+
 // ---------- ENROLLMENTS ----------
 export const createEnrollment = createServerFn({ method: "POST" })
   .inputValidator((input) =>
