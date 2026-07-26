@@ -33,6 +33,7 @@ type PdfViewerProps = {
 };
 
 export function PdfCanvasViewer({ fileUrl, title, zoom, rotation, maxPages, lockedNotice }: PdfViewerProps) {
+  const navigateViewer = useNavigate();
   const [pdf, setPdf] = useState<PdfDocumentProxyLike | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
