@@ -249,7 +249,8 @@ export default function VideoLibrary() {
                     v={v}
                     channel={channelsById[v.channel_id]}
                     isRec={v.channel_id === topic.recommended}
-                    onPlay={() => setPlaying(v)}
+                    onPlay={() => handlePlay(v)}
+                    locked={!canPlay}
                   />
                 ))}
               </div>
