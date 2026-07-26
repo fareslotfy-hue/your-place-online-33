@@ -14,6 +14,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SubjectsMathRouteImport } from './routes/subjects.math'
 import { Route as SubjectsFiqhRouteImport } from './routes/subjects.fiqh'
 import { Route as SubjectsEnglishRouteImport } from './routes/subjects.english'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -41,6 +42,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubjectsMathRoute = SubjectsMathRouteImport.update({
+  id: '/subjects/math',
+  path: '/subjects/math',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectsFiqhRoute = SubjectsFiqhRouteImport.update({
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/subjects/english': typeof SubjectsEnglishRoute
   '/subjects/fiqh': typeof SubjectsFiqhRoute
+  '/subjects/math': typeof SubjectsMathRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/subjects/english': typeof SubjectsEnglishRoute
   '/subjects/fiqh': typeof SubjectsFiqhRoute
+  '/subjects/math': typeof SubjectsMathRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/subjects/english': typeof SubjectsEnglishRoute
   '/subjects/fiqh': typeof SubjectsFiqhRoute
+  '/subjects/math': typeof SubjectsMathRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/subjects/english'
     | '/subjects/fiqh'
+    | '/subjects/math'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/subjects/english'
     | '/subjects/fiqh'
+    | '/subjects/math'
   id:
     | '__root__'
     | '/'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/subjects/english'
     | '/subjects/fiqh'
+    | '/subjects/math'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -138,6 +150,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubjectsEnglishRoute: typeof SubjectsEnglishRoute
   SubjectsFiqhRoute: typeof SubjectsFiqhRoute
+  SubjectsMathRoute: typeof SubjectsMathRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subjects/math': {
+      id: '/subjects/math'
+      path: '/subjects/math'
+      fullPath: '/subjects/math'
+      preLoaderRoute: typeof SubjectsMathRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subjects/fiqh': {
@@ -229,6 +249,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubjectsEnglishRoute: SubjectsEnglishRoute,
   SubjectsFiqhRoute: SubjectsFiqhRoute,
+  SubjectsMathRoute: SubjectsMathRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

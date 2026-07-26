@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { 
   Languages, BookOpen, PencilRuler, Compass, 
   Cpu, Code2, Dumbbell, Heart, Atom, FlaskConical,
-  Factory, BookMarked, ArrowLeft, Clock, FileText, TrendingUp 
+  Factory, BookMarked, ArrowLeft, Clock, FileText, TrendingUp, Sigma
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -24,6 +24,21 @@ const subjects = [
     code: "ENG101",
     term: "1" as TermType,
     difficulty: "easy" as Difficulty,
+    connected: false,
+  },
+  {
+    icon: Sigma,
+    name: "الرياضيات",
+    nameEn: "Engineering Mathematics",
+    description: "الرياضة الهندسية تُدرس في الترمين الأول والثاني (غير متصلة). مادة أساسية تشمل التفاضل والتكامل والجبر والهندسة التحليلية.",
+    lessons: 16,
+    hours: 32,
+    color: "from-indigo-500/20 to-blue-500/10",
+    iconColor: "text-indigo-400",
+    borderColor: "hover:border-indigo-400/40",
+    code: "MTH101",
+    term: "both" as TermType,
+    difficulty: "hard" as Difficulty,
     connected: false,
   },
   {
@@ -266,6 +281,8 @@ export function Subjects() {
                   navigate({ to: "/subjects/english" });
                 } else if (subject.code === "FIQ101") {
                   navigate({ to: "/subjects/fiqh" });
+                } else if (subject.code === "MTH101") {
+                  navigate({ to: "/subjects/math" });
                 }
               }}
               className={`group relative glass-card rounded-2xl p-6 border ${subject.borderColor} cursor-pointer transition-all duration-300`}
