@@ -10,6 +10,8 @@ export function Footer() {
   return (
     <footer className="relative mt-auto overflow-hidden">
       {/* CTA Section */}
+      {/* CTA Section — only for guests */}
+      {!user && (
       <section id="login" className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-950/40 via-background to-amber-950/20" />
         <div className="absolute inset-0 pattern-islamic opacity-50" />
