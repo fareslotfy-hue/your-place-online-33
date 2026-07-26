@@ -3,8 +3,10 @@ import { Sparkles, ArrowLeft, Mail, Phone, MapPin, Facebook, Twitter, Youtube, I
 import { Logo } from "./logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSession } from "@/lib/use-session";
 
 export function Footer() {
+  const { user } = useSession();
   return (
     <footer className="relative mt-auto overflow-hidden">
       {/* CTA Section */}
