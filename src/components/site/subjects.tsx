@@ -260,11 +260,6 @@ export function Subjects() {
                     <span className="text-[10px] font-mono text-muted-foreground px-2 py-1 rounded-md bg-muted/50">
                       {subject.code}
                     </span>
-                    {subject.connected && (
-                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                        متصلة
-                      </span>
-                    )}
                   </div>
                 </div>
 
