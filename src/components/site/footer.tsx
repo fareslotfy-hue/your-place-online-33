@@ -64,6 +64,9 @@ export function Footer() {
           </motion.div>
         </div>
       </section>
+      )}
+
+
 
       {/* Main Footer */}
       <div className="relative border-t border-border/50">
