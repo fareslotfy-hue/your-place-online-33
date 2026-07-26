@@ -1,5 +1,44 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import videosData from "@/data/videos.json";
+
+// simple in-memory + sessionStorage cache للـ playlist thumbnails
+const thumbCache = new Map<string, string>();
+function usePlaylistThumb(playlistId?: string) {
+  const [url, setUrl] = useState<string | null>(() => {
+    if (!playlistId) return null;
+    if (thumbCache.has(playlistId)) return thumbCache.get(playlistId)!;
+    try {
+      const cached = sessionStorage.getItem(`plthumb:${playlistId}`);
+      if (cached) {
+        thumbCache.set(playlistId, cached);
+        return cached;
+      }
+    } catch {}
+    return null;
+  });
+  useEffect(() => {
+    if (!playlistId || url) return;
+    let cancelled = false;
+    const plUrl = `https://www.youtube.com/playlist?list=${playlistId}`;
+    fetch(`https://noembed.com/embed?url=${encodeURIComponent(plUrl)}`)
+      .then((r) => r.json())
+      .then((d) => {
+        const t = d?.thumbnail_url as string | undefined;
+        if (t && !cancelled) {
+          thumbCache.set(playlistId, t);
+          try {
+            sessionStorage.setItem(`plthumb:${playlistId}`, t);
+          } catch {}
+          setUrl(t);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [playlistId, url]);
+  return url;
+}
 
 /**
  * VideoLibrary — مكتبة فيديوهات المنهج
@@ -194,64 +233,15 @@ export default function VideoLibrary() {
 
               {/* Video cards */}
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {topic.videos.map((v, i) => {
-                  const ch = channelsById[v.channel_id];
-                  const isRec = v.channel_id === topic.recommended;
-                  const thumb = getThumb(v);
-                  return (
-                    <button
-                      key={i}
-                      onClick={() => setPlaying(v)}
-                      className={`group overflow-hidden rounded-xl border bg-card text-right shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg ${
-                        isRec ? "ring-2 ring-primary/40" : ""
-                      }`}
-                    >
-                      {/* Thumb */}
-                      <div className="relative aspect-video overflow-hidden bg-muted">
-                        {thumb ? (
-                          <img
-                            src={thumb}
-                            alt={v.title}
-                            className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div className="flex h-full items-center justify-center text-4xl">
-                            🎬
-                          </div>
-                        )}
-                        <div className="absolute inset-0 flex items-center justify-center bg-background/0 transition-colors group-hover:bg-background/30">
-                          <span className="rounded-full bg-primary p-3 text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                            ▶
-                          </span>
-                        </div>
-                        {v.type === "playlist" && (
-                          <span className="absolute bottom-2 left-2 rounded bg-background/80 px-2 py-0.5 text-xs font-medium">
-                            📺 بلاي ليست
-                          </span>
-                        )}
-                        {isRec && (
-                          <span className="absolute top-2 right-2 rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
-                            ⭐ الترشيح
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Info */}
-                      <div className="p-4">
-                        <h3 className="line-clamp-2 text-sm font-semibold">{v.title}</h3>
-                        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-                          <span>{ch?.name}</span>
-                          {ch?.badge && (
-                            <span className="rounded bg-secondary px-2 py-0.5 text-secondary-foreground">
-                              {ch.badge}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
+                {topic.videos.map((v, i) => (
+                  <VideoCard
+                    key={i}
+                    v={v}
+                    channel={channelsById[v.channel_id]}
+                    isRec={v.channel_id === topic.recommended}
+                    onPlay={() => setPlaying(v)}
+                  />
+                ))}
               </div>
             </section>
           ))}
@@ -310,5 +300,82 @@ export default function VideoLibrary() {
         </div>
       )}
     </div>
+  );
+}
+
+function VideoCard({
+  v,
+  channel,
+  isRec,
+  onPlay,
+}: {
+  v: Video;
+  channel?: Channel;
+  isRec: boolean;
+  onPlay: () => void;
+}) {
+  const playlistThumb = usePlaylistThumb(
+    v.type === "playlist" ? v.playlist_id : undefined,
+  );
+  const videoThumb = v.youtube_id
+    ? `https://i.ytimg.com/vi/${v.youtube_id}/hqdefault.jpg`
+    : null;
+  const thumb = videoThumb || playlistThumb;
+
+  return (
+    <button
+      onClick={onPlay}
+      className={`group relative aspect-video w-full overflow-hidden rounded-xl border text-right shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg ${
+        isRec ? "ring-2 ring-primary/60" : ""
+      }`}
+      style={
+        thumb
+          ? { backgroundImage: `url(${thumb})`, backgroundSize: "cover", backgroundPosition: "center" }
+          : undefined
+      }
+    >
+      {!thumb && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted text-5xl">
+          🎬
+        </div>
+      )}
+
+      {/* dark gradient overlay for legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
+
+      {/* play button (center) */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
+          ▶
+        </span>
+      </div>
+
+      {/* recommendation badge */}
+      {isRec && (
+        <span className="absolute top-2 right-2 rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground shadow">
+          ⭐ الترشيح
+        </span>
+      )}
+
+      {/* playlist badge */}
+      {v.type === "playlist" && (
+        <span className="absolute top-2 left-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
+          📺 بلاي ليست
+        </span>
+      )}
+
+      {/* channel badge (bottom-left) */}
+      {channel?.badge && (
+        <span className="absolute bottom-3 left-3 rounded-lg bg-yellow-400/95 px-2 py-0.5 text-xs font-semibold text-black shadow">
+          {channel.badge}
+        </span>
+      )}
+
+      {/* title + channel */}
+      <div className="absolute bottom-0 right-0 left-0 p-4 text-white">
+        <h3 className="line-clamp-2 text-sm font-semibold drop-shadow">{v.title}</h3>
+        <p className="mt-1 text-xs text-white/80">{channel?.name}</p>
+      </div>
+    </button>
   );
 }
