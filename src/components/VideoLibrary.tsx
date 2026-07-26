@@ -274,13 +274,9 @@ function VideoCard({
   isRec: boolean;
   onPlay: () => void;
 }) {
-  const playlistThumb = usePlaylistThumb(
-    v.type === "playlist" ? v.playlist_id : undefined,
-  );
-  const videoThumb = v.youtube_id
-    ? `https://i.ytimg.com/vi/${v.youtube_id}/hqdefault.jpg`
-    : null;
-  const thumb = videoThumb || playlistThumb;
+  const thumbId = v.youtube_id || v.thumb_id;
+  const thumb = thumbId ? `https://i.ytimg.com/vi/${thumbId}/hqdefault.jpg` : null;
+
 
   return (
     <button
