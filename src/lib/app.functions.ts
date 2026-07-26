@@ -210,7 +210,7 @@ export const getAdminStats = createServerFn({ method: "GET" })
         .limit(5000),
       supabaseAdmin
         .from("enrollments")
-        .select("id, full_name, phone, package_name, package_price, payment_method, status, created_at")
+        .select("id, full_name, phone, email, package_name, package_price, payment_method, status, receipt_url, created_at")
         .order("created_at", { ascending: false })
         .limit(200),
       supabaseAdmin.from("profiles").select("id", { count: "exact", head: true }),
