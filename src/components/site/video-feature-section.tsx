@@ -14,14 +14,14 @@ export function VideoFeatureSection() {
           className="text-center max-w-3xl mx-auto mb-12"
         >
           <span className="inline-block px-4 py-1.5 rounded-full glass text-sm font-body text-emerald-400 mb-4">
-            تعرّف على المنصة
+            اختيار القسم الهندسي
           </span>
           <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mb-4">
-            <span className="text-foreground">شاهد</span>
-            <span className="text-gradient-gold"> الإمام الأكبر</span>
+            <span className="text-foreground">نصائح من</span>
+            <span className="text-gradient-gold"> رؤساء الأقسام الهندسية</span>
           </h2>
           <p className="text-muted-foreground font-body text-base md:text-lg leading-relaxed">
-            جولة سريعة داخل المنصة توضح لك كيف تستفيد من كل المحتوى والأدوات المتاحة لطلاب الفرقة الإعدادية.
+            شاهد نصائح قيّمة من عميد ووكلاء كلية الهندسة جامعة الأزهر الشريف لطلاب إعدادي هندسة، يساعدوك في اختيار القسم الهندسي المناسب لك.
           </p>
         </motion.div>
 
