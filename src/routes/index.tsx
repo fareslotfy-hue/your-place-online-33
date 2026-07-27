@@ -6,7 +6,7 @@ import { Subjects } from "@/components/site/subjects";
 
 import { Lectures } from "@/components/site/lectures";
 import { About } from "@/components/site/about";
-import { Features } from "@/components/site/features";
+import { VideoFeatureSection } from "@/components/site/video-feature-section";
 import { Pricing } from "@/components/site/pricing";
 import { Testimonials } from "@/components/site/testimonials";
 import { News } from "@/components/site/news";
@@ -65,7 +65,7 @@ function Home() {
         <Subjects />
         <Lectures />
         <About />
-        <Features />
+        <VideoFeatureSection />
         <Pricing />
         <Testimonials />
         <News />
