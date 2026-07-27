@@ -14,7 +14,7 @@ const packages = [
     id: "single",
     name: "باقة الترم الواحد",
     period: "ترم دراسي واحد",
-    price: 300,
+    price: 200,
     currency: "ج.م",
     oldPrice: null,
     description: "اشتراك كامل لترم دراسي واحد يشمل جميع المواد والمحاضرات",
