@@ -65,7 +65,7 @@ function Home() {
         <Subjects />
         <Lectures />
         <About />
-        <Features />
+        <VideoFeatureSection />
         <Pricing />
         <Testimonials />
         <News />
