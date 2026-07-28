@@ -237,6 +237,10 @@ const filters = [
 export function Lectures() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showAll, setShowAll] = useState(false);
+  
+  // عدد العناصر المعروضة في البداية
+  const INITIAL_DISPLAY_COUNT = 4;
 
   // تصفية المحتوى بناءً على الفلتر والبحث
   const filteredContent = useMemo(() => {
@@ -322,7 +326,10 @@ export function Lectures() {
             {filters.map((filter) => (
               <button
                 key={filter.id}
-                onClick={() => setActiveFilter(filter.id)}
+                onClick={() => {
+                  setActiveFilter(filter.id);
+                  setShowAll(false); // إعادة تعيين عند تغيير الفلتر
+                }}
                 className={`px-4 py-2 rounded-full text-sm font-body whitespace-nowrap transition-all relative ${
                   activeFilter === filter.id
                     ? "bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-emerald-glow"
@@ -366,14 +373,14 @@ export function Lectures() {
         <AnimatePresence mode="wait">
           {filteredContent.length > 0 ? (
             <motion.div
-              key={activeFilter + searchQuery}
+              key={activeFilter + searchQuery + (showAll ? 'all' : 'limited')}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {filteredContent.map((item, i) => (
+              {(showAll ? filteredContent : filteredContent.slice(0, INITIAL_DISPLAY_COUNT)).map((item, i) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -498,21 +505,34 @@ export function Lectures() {
           )}
         </AnimatePresence>
 
-        {/* View all button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <Button
-            size="lg"
-            variant="outline"
-            className="glass border-amber-400/30 text-foreground hover:bg-amber-400/10 px-8"
+        {/* View all / Show less button - يظهر فقط لو فيه أكتر من 4 عناصر */}
+        {filteredContent.length > INITIAL_DISPLAY_COUNT && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
           >
-            عرض كل المحاضرات ({allContent.length})
-          </Button>
-        </motion.div>
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => setShowAll(!showAll)}
+              className="glass border-amber-400/30 text-foreground hover:bg-amber-400/10 px-8 transition-all duration-300 hover:scale-105"
+            >
+              {showAll ? (
+                <>
+                  <span>عرض أقل</span>
+                  <span className="mr-2 text-xs opacity-70">({INITIAL_DISPLAY_COUNT} من {filteredContent.length})</span>
+                </>
+              ) : (
+                <>
+                  <span>عرض كل المحاضرات</span>
+                  <span className="mr-2 text-xs opacity-70">({filteredContent.length})</span>
+                </>
+              )}
+            </Button>
+          </motion.div>
+        )}
       </div>
     </section>
   );
