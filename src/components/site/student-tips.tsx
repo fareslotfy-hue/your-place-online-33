@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { 
   Trophy, Lightbulb, TrendingUp, AlertTriangle, 
   CheckCircle2, Star, BookOpen, Target, Clock, 
-  Flame, Award, Brain, Zap 
+  Flame, Award, Brain, Zap, PlayCircle 
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -149,6 +149,47 @@ export function StudentTips() {
               التوفيق من ربنا قبل أي حاجة.&quot;
             </p>
           </div>
+        </div>
+      </motion.div>
+
+      {/* Featured Video Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="glass-card rounded-2xl overflow-hidden border border-emerald-400/30 bg-gradient-to-br from-emerald-500/10 to-teal-500/5"
+      >
+        <div className="p-5 pb-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center flex-shrink-0">
+              <PlayCircle className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="font-display font-bold text-lg text-foreground">
+                فيديو حصري: نصائح للنجاح
+              </h3>
+              <p className="text-sm text-muted-foreground font-body">
+                شاهد فيديو مفيد من طالب متفوق يشاركك تجربته وأسرار النجاح
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* YouTube Video Embed */}
+        <div className="relative w-full aspect-video bg-black">
+          <iframe
+            src="https://www.youtube.com/embed/rCx_Om1kZfk?rel=0"
+            title="نصائح للنجاح - فيديو حصري"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full"
+          />
+        </div>
+        
+        <div className="p-4 pt-3">
+          <p className="text-xs text-muted-foreground font-body text-center">
+            💡 شاهد الفيديو كامل واستفد من النصائح العملية للتفوق في الفرقة الإعدادية
+          </p>
         </div>
       </motion.div>
 
