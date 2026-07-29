@@ -6,6 +6,7 @@ import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/use-session";
+import { NotificationsBell } from "./notifications-bell";
 
 const navLinks = [
   { label: "الرئيسية", href: "#home" },
@@ -119,6 +120,7 @@ export function Navbar() {
 
             <div className="flex items-center gap-2">
               <ThemeToggle />
+              {user && <NotificationsBell />}
               {user ? (
                 <>
                   <Button className="hidden md:flex bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white shadow-glow" size="sm" onClick={goToDashboard}>
