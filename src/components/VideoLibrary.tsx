@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Lock, LogIn, Crown } from "lucide-react";
+import { Lock, LogIn, Crown, BookOpen } from "lucide-react";
 import videosData from "@/data/videos.json";
 import { useAccessLevel } from "@/lib/use-access-level";
 
 /**
- * VideoLibrary — مكتبة فيديوهات المنهج
+ * VideoLibrary — مكتبة فيديوهات المنهج (جميع المواد)
  */
 
 type Video = {
@@ -18,9 +18,9 @@ type Video = {
   url: string;
 };
 
-
 type Topic = {
   id: string;
+  subject_id: string;
   term: 1 | 2;
   order: number;
   title: string;
@@ -37,9 +37,26 @@ type Channel = {
   language: string;
   style: string;
   badge?: string;
+  subjects?: string[];
 };
 
-const data = videosData as { channels: Channel[]; topics: Topic[] };
+type Subject = {
+  id: string;
+  name: string;
+  nameEn: string;
+  icon: string;
+  color: string;
+};
+
+const data = videosData as { 
+  channels: Channel[]; 
+  topics: Topic[]; 
+  subjects: Subject[];
+  meta: {
+    version: string;
+    total_channels: number;
+  };
+};
 
 function getEmbedUrl(v: Video) {
   if (v.type === "playlist" && v.playlist_id) {
@@ -58,6 +75,7 @@ function getThumb(v: Video) {
 export default function VideoLibrary() {
   const { level, loading: accessLoading } = useAccessLevel();
   const [term, setTerm] = useState<0 | 1 | 2>(0);
+  const [subjectId, setSubjectId] = useState<string>("all");
   const [topicId, setTopicId] = useState<string>("all");
   const [channelId, setChannelId] = useState<string>("all");
   const [playing, setPlaying] = useState<Video | null>(null);
@@ -68,8 +86,14 @@ export default function VideoLibrary() {
     [],
   );
 
+  const subjectsById = useMemo(
+    () => Object.fromEntries(data.subjects.map((s) => [s.id, s])),
+    [],
+  );
+
   const filteredTopics = useMemo(() => {
     return data.topics
+      .filter((t) => (subjectId === "all" ? true : t.subject_id === subjectId))
       .filter((t) => (term === 0 ? true : t.term === term))
       .filter((t) => (topicId === "all" ? true : t.id === topicId))
       .map((t) => ({
@@ -79,7 +103,13 @@ export default function VideoLibrary() {
         ),
       }))
       .filter((t) => t.videos.length > 0);
-  }, [term, topicId, channelId]);
+  }, [term, subjectId, topicId, channelId]);
+
+  // Get available subjects based on current filter
+  const availableSubjects = useMemo(() => {
+    const subjectIds = new Set(data.topics.map(t => t.subject_id));
+    return data.subjects.filter(s => subjectIds.has(s.id));
+  }, []);
 
   if (accessLoading) {
     return (
@@ -98,7 +128,7 @@ export default function VideoLibrary() {
           </div>
           <h2 className="text-2xl font-bold">مكتبة الفيديوهات مقفولة</h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            سجّل دخولك للمنصة عشان تقدر تشوف مكتبة فيديوهات المنهج، وتفتح صور الشرح لكل موضوع.
+            سجّل دخولك للمنصة عشان تقدر تشوف مكتبة فيديوهات المنهج لجميع المواد، وتفتح صور الشرح لكل موضوع.
           </p>
           <Link
             to="/auth"
@@ -123,10 +153,21 @@ export default function VideoLibrary() {
       <div className="mx-auto max-w-7xl px-4 py-10">
         {/* Header */}
         <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold tracking-tight">مكتبة فيديوهات المنهج</h1>
+          <h1 className="text-4xl font-bold tracking-tight">🎬 مكتبة فيديوهات المنهج</h1>
           <p className="mt-3 text-muted-foreground">
-            رياضة إعدادي هندسة · شرح دكاترة عرب · مع ترشيح الأنسب لكل جزئية
+            جميع مواد الفرقة الإعدادية · شرح دكاترة عرب · مع ترشيح الأنسب لكل جزئية
           </p>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+            <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
+              📚 {data.subjects.length} مواد
+            </span>
+            <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
+              📺 {data.channels.length} قنوات
+            </span>
+            <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
+              🎥 {data.topics.length} موضوع
+            </span>
+          </div>
           {!canPlay && (
             <div className="mx-auto mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-sm text-primary">
               <Crown className="h-4 w-4" />
@@ -135,9 +176,28 @@ export default function VideoLibrary() {
           )}
         </header>
 
-
         {/* Filters */}
-        <div className="mb-8 grid gap-4 rounded-2xl border bg-card p-4 shadow-sm md:grid-cols-3">
+        <div className="mb-8 grid gap-4 rounded-2xl border bg-card p-4 shadow-sm md:grid-cols-4">
+          {/* Subject Filter - NEW! */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-muted-foreground">
+              <BookOpen className="mr-1 inline h-4 w-4" />
+              المادة
+            </label>
+            <select
+              value={subjectId}
+              onChange={(e) => { setSubjectId(e.target.value); setTopicId("all"); }}
+              className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
+            >
+              <option value="all">📚 كل المواد ({data.subjects.length})</option>
+              {availableSubjects.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.icon} {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Term */}
           <div>
             <label className="mb-2 block text-sm font-medium text-muted-foreground">
@@ -152,7 +212,7 @@ export default function VideoLibrary() {
                 <button
                   key={o.v}
                   onClick={() => setTerm(o.v as 0 | 1 | 2)}
-                  className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                     term === o.v
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
@@ -176,6 +236,7 @@ export default function VideoLibrary() {
             >
               <option value="all">كل المواضيع</option>
               {data.topics
+                .filter((t) => (subjectId === "all" ? true : t.subject_id === subjectId))
                 .filter((t) => (term === 0 ? true : t.term === term))
                 .map((t) => (
                   <option key={t.id} value={t.id}>
@@ -198,64 +259,98 @@ export default function VideoLibrary() {
               <option value="all">كل الدكاترة</option>
               {data.channels.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {c.name}
+                  {c.badge ? `${c.badge} ` : ""}{c.name}
                 </option>
               ))}
             </select>
           </div>
         </div>
 
+        {/* Subject Pills - Quick Filter */}
+        {subjectId === "all" && (
+          <div className="mb-6 flex flex-wrap items-center justify-center gap-2">
+            <span className="text-xs text-muted-foreground">تصفية سريعة:</span>
+            {availableSubjects.slice(0, 6).map((s) => (
+              <button
+                key={s.id}
+                onClick={() => setSubjectId(s.id)}
+                className="rounded-full border px-3 py-1 text-xs font-medium transition-all hover:shadow-md"
+                style={{ 
+                  borderColor: s.color + '40', 
+                  backgroundColor: s.color + '15',
+                  color: s.color 
+                }}
+              >
+                {s.icon} {s.name}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Topics list */}
         <div className="space-y-10">
-          {filteredTopics.map((topic) => (
-            <section key={topic.id}>
-              <div className="mb-4 flex items-baseline justify-between border-b pb-2">
-                <div>
-                  <h2 className="text-2xl font-bold">
-                    <span className="text-primary">#{topic.order}</span> {topic.title}
-                  </h2>
-                  {topic.subtitle && (
-                    <p className="mt-1 text-sm text-muted-foreground">{topic.subtitle}</p>
-                  )}
-                </div>
-                <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-                  ترم {topic.term === 1 ? "أول" : "تاني"}
-                </span>
-              </div>
-
-              {/* Recommendation banner */}
-              <div className="mb-4 rounded-xl border border-primary/30 bg-primary/5 p-4">
-                <div className="flex items-start gap-3">
-                  <span className="text-lg">⭐</span>
-                  <div>
-                    <p className="text-sm">
-                      <span className="font-semibold text-primary">الأنسب ليك: </span>
-                      <span className="font-medium">
-                        {channelsById[topic.recommended]?.name}
+          {filteredTopics.map((topic) => {
+            const subject = subjectsById[topic.subject_id];
+            return (
+              <section key={topic.id}>
+                <div className="mb-4 flex items-baseline justify-between border-b pb-2">
+                  <div className="flex items-center gap-3">
+                    {subject && (
+                      <span 
+                        className="rounded-lg px-2 py-1 text-xs font-bold"
+                        style={{ backgroundColor: subject.color + '20', color: subject.color }}
+                      >
+                        {subject.icon} {subject.name}
                       </span>
-                    </p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {topic.recommendation_reason}
-                    </p>
+                    )}
+                    <div>
+                      <h2 className="text-2xl font-bold">
+                        <span style={{ color: subject?.color || 'inherit' }}>#{topic.order}</span> {topic.title}
+                      </h2>
+                      {topic.subtitle && (
+                        <p className="mt-1 text-sm text-muted-foreground">{topic.subtitle}</p>
+                      )}
+                    </div>
+                  </div>
+                  <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
+                    ترم {topic.term === 1 ? "أول" : "تاني"}
+                  </span>
+                </div>
+
+                {/* Recommendation banner */}
+                <div className="mb-4 rounded-xl border border-primary/30 bg-primary/5 p-4">
+                  <div className="flex items-start gap-3">
+                    <span className="text-lg">⭐</span>
+                    <div>
+                      <p className="text-sm">
+                        <span className="font-semibold text-primary">الأنسب ليك: </span>
+                        <span className="font-medium">
+                          {channelsById[topic.recommended]?.name}
+                        </span>
+                      </p>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {topic.recommendation_reason}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Video cards */}
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {topic.videos.map((v, i) => (
-                  <VideoCard
-                    key={i}
-                    v={v}
-                    channel={channelsById[v.channel_id]}
-                    isRec={v.channel_id === topic.recommended}
-                    onPlay={() => handlePlay(v)}
-                    locked={!canPlay}
-                  />
-                ))}
-              </div>
-            </section>
-          ))}
+                {/* Video cards */}
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {topic.videos.map((v, i) => (
+                    <VideoCard
+                      key={i}
+                      v={v}
+                      channel={channelsById[v.channel_id]}
+                      isRec={v.channel_id === topic.recommended}
+                      onPlay={() => handlePlay(v)}
+                      locked={!canPlay}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
 
           {filteredTopics.length === 0 && (
             <p className="py-20 text-center text-muted-foreground">
@@ -326,7 +421,7 @@ export default function VideoLibrary() {
             </div>
             <h3 className="text-xl font-bold">اشترك عشان تشوف الفيديو</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              مشاهدة الفيديوهات متاحة للمشتركين فقط. اشترك دلوقتي وافتح كل الشروحات.
+              مشاهدة الفيديوهات متاحة للمشتركين فقط. اشترك دلوقتي وافتح كل الشروحات لجميع المواد.
             </p>
             <div className="mt-6 flex flex-col gap-2">
               <Link
