@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { 
   Languages, BookOpen, PencilRuler, 
   Cpu, Heart, Atom, FlaskConical,
-  Factory, BookMarked, ArrowLeft, Clock, FileText, Sigma
+  Factory, BookMarked, ArrowLeft, Clock, FileText, Sigma, Wrench
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -120,6 +120,20 @@ const subjects = [
     iconColor: "text-blue-400",
     borderColor: "hover:border-blue-400/40",
     code: "PHY101",
+    term: "both" as TermType,
+    difficulty: "hard" as Difficulty,
+  },
+  {
+    icon: Wrench,
+    name: "الميكانيكا",
+    nameEn: "Mechanics",
+    description: "مادة الميكانيكا (الاستاتيكا + الديناميكا) تُدرس في الترمين. مادة أساسية تشمل قوانين نيوتن، التوازن، الحركة، الشغل والطاقة — مع 9 كتب مرجعية شاملة.",
+    lessons: 20,
+    hours: 40,
+    color: "from-violet-500/20 to-purple-500/10",
+    iconColor: "text-violet-400",
+    borderColor: "hover:border-violet-400/40",
+    code: "MEC101",
     term: "both" as TermType,
     difficulty: "hard" as Difficulty,
   },
@@ -242,6 +256,8 @@ export function Subjects() {
                   navigate({ to: "/subjects/fiqh" });
                 } else if (subject.code === "MTH101") {
                   navigate({ to: "/subjects/math" });
+                } else if (subject.code === "MEC101") {
+                  navigate({ to: "/subjects/mechanics" });
                 }
               }}
               className={`group relative glass-card rounded-2xl p-6 border ${subject.borderColor} cursor-pointer transition-all duration-300`}
