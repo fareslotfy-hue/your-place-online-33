@@ -22,12 +22,12 @@ import dynamicsSheetsAsset from "@/assets/dynamics-exams-sheets.pdf.asset.json";
 import imamMechanicsAsset from "@/assets/imam-mechanics-book.pdf.asset.json";
 
 const books = [
-  // === كتاب الإمام الأكبر - الميكانيكا ===
+  // === كتاب الإمام الأكبر - الميكانيكا (الشامل) ===
   {
     title: "كتاب الإمام الأكبر في الميكانيكا",
-    subtitle: "شامل للاستاتيكا والديناميكا — الترمين الأول والثاني",
+    subtitle: "شامل للديناميكا والاستاتيكا — الترمين الأول والثاني",
     description:
-      "الكتاب المرجعي الشامل من إعداد منصة الإمام الأكبر: يغطي الاستاتيكا والديناميكا بأسلوب مبسّط ومنظّم مع أمثلة محلولة وخرائط ذهنية لتسهيل فهم القوانين الأساسية.",
+      "الكتاب المرجعي الشامل من إعداد منصة الإمام الأكبر: يغطي الديناميكا والاستاتيكا بأسلوب مبسّط ومنظّم مع أمثلة محلولة وخرائط ذهنية لتسهيل فهم القوانين الأساسية.",
     pages: 180,
     file: imamMechanicsAsset,
     isExam: false,
@@ -37,69 +37,13 @@ const books = [
     iconColor: "text-violet-300",
     tag: "الكتاب الشامل",
   },
-  // === الاستاتيكا ===
-  {
-    title: "كتاب الإمام الأكبر في الاستاتيكا",
-    subtitle: "قوانين الاستاتيكا والتوازن — أسلوب الإمام الأكبر",
-    description:
-      "كتاب متخصص في الاستاتيكا من إعداد المنصة: يتناول قوانين نيوتن في التوازن، عزم القوى، مراكز الثقل، والاحتكاك بطريقة مبسّرة مع تمارين متنوعة.",
-    pages: 95,
-    file: imamStaticsAsset,
-    isExam: false,
-    accent: "from-blue-500/25 to-cyan-500/10",
-    ring: "border-blue-400/30 hover:border-blue-400/60",
-    icon: GraduationCap,
-    iconColor: "text-blue-300",
-    tag: "الاستاتيكا",
-  },
-  {
-    title: "ملخص الاستاتيكا",
-    subtitle: "مراجعة سريعة ومركّزة للاستاتيكا",
-    description:
-      "ملخص شامل لمادة الاستاتيكا يغطي جميع القوانين والنظريات المهمة بصيغة مركّزة وسهلة الحفظ، مناسب للمراجعة النهائية قبل الامتحان.",
-    pages: 45,
-    file: staticsSummaryAsset,
-    isExam: false,
-    accent: "from-cyan-500/25 to-teal-500/10",
-    ring: "border-cyan-400/30 hover:border-cyan-400/60",
-    icon: NotebookPen,
-    iconColor: "text-cyan-300",
-    tag: "ملخص",
-  },
-  {
-    title: "تدريبات الاستاتيكا",
-    subtitle: "تمارين متدرّجة مع الحلول",
-    description:
-      "مجموعة شاملة من التدريبات على الاستاتيكا مقسّمة حسب المستوى: من السهل إلى الصعب، مع حلول نموذجية مفصّلة لكل تمرين.",
-    pages: 78,
-    file: staticsExercisesAsset,
-    isExam: false,
-    accent: "from-emerald-500/25 to-green-500/10",
-    ring: "border-emerald-400/30 hover:border-emerald-400/60",
-    icon: PencilRuler,
-    iconColor: "text-emerald-300",
-    tag: "تدريبات",
-  },
-  {
-    title: "امتحانات الاستاتيكا",
-    subtitle: "بنك امتحانات سابق محلولة",
-    description:
-      "جمع شامل لامتحانات الاستاتيكا من السنوات السابقة مع الحلول النموذجية، يشمل امتحانات الترم الأول والثاني ونماذج الامتحانات.",
-    pages: 62,
-    file: staticsExamsAsset,
-    isExam: true,
-    accent: "from-rose-500/25 to-red-500/10",
-    ring: "border-rose-400/30 hover:border-rose-400/60",
-    icon: ClipboardList,
-    iconColor: "text-rose-300",
-    tag: "امتحانات محلولة",
-  },
-  // === الديناميكا ===
+
+  // ========== الديناميكا (الترم الأول) ==========
   {
     title: "ملخص الديناميكا",
-    subtitle: "مراجعة سريعة ومركّزة للديناميكا",
+    subtitle: "مراجعة سريعة ومركّزة للديناميكا — الترم الأول",
     description:
-      "ملخص شامل لمادة الديناميكا يغطي الحركة، السرعة، التسارع، قوانين نيوتن في الحركة، الشغل والطاقة، والكمية الحركة.",
+      "ملخص شامل لمادة الديناميكا (الترم الأول) يغطي الحركة، السرعة، التسارع، قوانين نيوتن في الحركة، الشغل والطاقة، والكمية الحركة بصيغة مركّزة وسهلة الحفظ.",
     pages: 52,
     file: dynamicsSummaryAsset,
     isExam: false,
@@ -107,13 +51,13 @@ const books = [
     ring: "border-orange-400/30 hover:border-orange-400/60",
     icon: NotebookPen,
     iconColor: "text-orange-300",
-    tag: "ملخص",
+    tag: "🔶 الديناميكا - ملخص",
   },
   {
     title: "تدريبات الديناميكا",
-    subtitle: "تمارين متدرّجة مع الحلول",
+    subtitle: "تمارين متدرّجة مع الحلول — الترم الأول",
     description:
-      "مجموعة شاملة من التدريبات على الديناميكا تغطي جميع أبواب المنهج مع حلول نموذجية مفصّلة، من الأساسية إلى المتقدمة.",
+      "مجموعة شاملة من التدريبات على الديناميكا (الترم الأول) تغطي جميع أبواب المنهج مع حلول نموذجية مفصّلة، من الأساسية إلى المتقدمة.",
     pages: 85,
     file: dynamicsExercisesAsset,
     isExam: false,
@@ -121,13 +65,13 @@ const books = [
     ring: "border-yellow-400/30 hover:border-yellow-400/60",
     icon: PencilRuler,
     iconColor: "text-yellow-300",
-    tag: "تدريبات",
+    tag: "🔶 الديناميكا - تدريبات",
   },
   {
     title: "امتحانات الديناميكا",
-    subtitle: "بنك امتحانات سابق محلولة",
+    subtitle: "بنك امتحانات سابق محلولة — الترم الأول",
     description:
-      "جمع شامل لامتحانات الديناميكا من السنوات السابقة مع الحلول النموذجية الكاملة، يشمل جميع أنواع الأسئلة.",
+      "جمع شامل لامتحانات الديناميكا (الترم الأول) من السنوات السابقة مع الحلول النموذجية الكاملة، يشمل جميع أنواع الأسئلة.",
     pages: 70,
     file: dynamicsExamsAsset,
     isExam: true,
@@ -135,13 +79,13 @@ const books = [
     ring: "border-red-400/30 hover:border-red-400/60",
     icon: ClipboardList,
     iconColor: "text-red-300",
-    tag: "امتحانات محلولة",
+    tag: "🔶 الديناميكا - امتحانات",
   },
   {
     title: "امتحانات وشيتات الديناميكا",
-    subtitle: "شيتات وامتحانات إضافية مع الحلول",
+    subtitle: "شيتات وامتحانات إضافية مع الحلول — الترم الأول",
     description:
-      "مجموعة إضافية من الشيتات والامتحانات للديناميكا مع الحلول الشاملة — مثالية للتدريب المكثّف قبل الامتحان.",
+      "مجموعة إضافية من الشيتات والامتحانات للديناميكا (الترم الأول) مع الحلول الشاملة — مثالية للتدريب المكثّف قبل الامتحان.",
     pages: 110,
     file: dynamicsSheetsAsset,
     isExam: true,
@@ -149,7 +93,65 @@ const books = [
     ring: "border-fuchsia-400/30 hover:border-fuchsia-400/60",
     icon: FileText,
     iconColor: "text-fuchsia-300",
-    tag: "شيتات وامتحانات",
+    tag: "🔶 الديناميكا - شيتات",
+  },
+
+  // ========== الاستاتيكا (الترم الثاني) ==========
+  {
+    title: "كتاب الإمام الأكبر في الاستاتيكا",
+    subtitle: "قوانين الاستاتيكا والتوازن — أسلوب الإمام الأكبر — الترم الثاني",
+    description:
+      "كتاب متخصص في الاستاتيكا (الترم الثاني) من إعداد المنصة: يتناول قوانين نيوتن في التوازن، عزم القوى، مراكز الثقل، والاحتكاك بطريقة مبسّرة مع تمارين متنوعة.",
+    pages: 95,
+    file: imamStaticsAsset,
+    isExam: false,
+    accent: "from-blue-500/25 to-cyan-500/10",
+    ring: "border-blue-400/30 hover:border-blue-400/60",
+    icon: GraduationCap,
+    iconColor: "text-blue-300",
+    tag: "🔵 الاستاتيكا - كتاب",
+  },
+  {
+    title: "ملخص الاستاتيكا",
+    subtitle: "مراجعة سريعة ومركّزة للاستاتيكا — الترم الثاني",
+    description:
+      "ملخص شامل لمادة الاستاتيكا (الترم الثاني) يغطي جميع القوانين والنظريات المهمة بصيغة مركّزة وسهلة الحفظ، مناسب للمراجعة النهائية قبل الامتحان.",
+    pages: 45,
+    file: staticsSummaryAsset,
+    isExam: false,
+    accent: "from-cyan-500/25 to-teal-500/10",
+    ring: "border-cyan-400/30 hover:border-cyan-400/60",
+    icon: NotebookPen,
+    iconColor: "text-cyan-300",
+    tag: "🔵 الاستاتيكا - ملخص",
+  },
+  {
+    title: "تدريبات الاستاتيكا",
+    subtitle: "تمارين متدرّجة مع الحلول — الترم الثاني",
+    description:
+      "مجموعة شاملة من التدريبات على الاستاتيكا (الترم الثاني) مقسّمة حسب المستوى: من السهل إلى الصعب، مع حلول نموذجية مفصّلة لكل تمرين.",
+    pages: 78,
+    file: staticsExercisesAsset,
+    isExam: false,
+    accent: "from-emerald-500/25 to-green-500/10",
+    ring: "border-emerald-400/30 hover:border-emerald-400/60",
+    icon: PencilRuler,
+    iconColor: "text-emerald-300",
+    tag: "🔵 الاستاتيكا - تدريبات",
+  },
+  {
+    title: "امتحانات الاستاتيكا",
+    subtitle: "بنك امتحانات سابق محلولة — الترم الثاني",
+    description:
+      "جمع شامل لامتحانات الاستاتيكا (الترم الثاني) من السنوات السابقة مع الحلول النموذجية، يشمل امتحانات الترم ونماذج الامتحانات.",
+    pages: 62,
+    file: staticsExamsAsset,
+    isExam: true,
+    accent: "from-rose-500/25 to-red-500/10",
+    ring: "border-rose-400/30 hover:border-rose-400/60",
+    icon: ClipboardList,
+    iconColor: "text-rose-300",
+    tag: "🔵 الاستاتيكا - امتحانات",
   },
 ];
 
@@ -199,19 +201,22 @@ export function MechanicsBooks() {
             <span className="text-foreground"> الإمام الأكبر — الميكانيكا</span>
           </h2>
           <p className="text-muted-foreground font-body text-base md:text-lg leading-relaxed">
-            تسع مراجع مرتّبة لمادة الميكانيكا (الاستاتيكا + الديناميكا) للفرقة الإعدادية: تبدأ بالكتاب الشامل وكتاب الاستاتيكا،
-            ثم الملخصات والتدريبات، وتنتهي ببنك الامتحانات والشيتات — كلها إعداد وتنسيق منصة الإمام الأكبر.
+            تسع مراجع مرتّبة لمادة الميكانيكا للفرقة الإعدادية: تبدأ بالكتاب الشامل، ثم كتب <span className="text-orange-400 font-semibold">الديناميكا (الترم الأول)</span>،
+            وبعدها كتب <span className="text-blue-400 font-semibold">الاستاتيكا (الترم الثاني)</span> — كلها إعداد وتنسيق منصة الإمام الأكبر.
           </p>
         </motion.div>
 
-        {/* Section divider for Statics vs Dynamics */}
+        {/* Section divider for Dynamics then Statics */}
         <div className="mb-8 flex items-center justify-center gap-4">
-          <div className="h-px flex-1 max-w-[120px] bg-gradient-to-r from-transparent to-blue-400/40" />
-          <Badge variant="outline" className="border-blue-400/30 text-blue-300 bg-blue-400/5 text-xs px-3 py-1">
-            <Atom className="w-3 h-3 ml-1" />
-            الاستاتيكا + الديناميكا
+          <div className="h-px flex-1 max-w-[120px] bg-gradient-to-r from-transparent to-orange-400/40" />
+          <Badge variant="outline" className="border-orange-400/30 text-orange-300 bg-orange-400/5 text-xs px-3 py-1">
+            🔶 الديناميكا (الترم الأول)
           </Badge>
-          <div className="h-px flex-1 max-w-[120px] bg-gradient-to-l from-transparent to-purple-400/40" />
+          <div className="mx-2 text-muted-foreground">→</div>
+          <Badge variant="outline" className="border-blue-400/30 text-blue-300 bg-blue-400/5 text-xs px-3 py-1">
+            🔵 الاستاتيكا (الترم الثاني)
+          </Badge>
+          <div className="h-px flex-1 max-w-[120px] bg-gradient-to-l from-transparent to-blue-400/40" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
