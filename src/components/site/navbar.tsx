@@ -6,6 +6,7 @@ import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/use-session";
+import { NotificationsBell } from "./notifications-bell";
 
 const navLinks = [
   { label: "الرئيسية", href: "#home" },
