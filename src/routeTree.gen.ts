@@ -9,31 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VideosRouteImport } from './routes/videos'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SubjectsMathRouteImport } from './routes/subjects.math'
-import { Route as SubjectsFiqhRouteImport } from './routes/subjects.fiqh'
-import { Route as SubjectsEnglishRouteImport } from './routes/subjects.english'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as SubjectsEnglishRouteImport } from './routes/subjects.english'
+import { Route as SubjectsFiqhRouteImport } from './routes/subjects.fiqh'
+import { Route as SubjectsMathRouteImport } from './routes/subjects.math'
+import { Route as SubjectsMechanicsRouteImport } from './routes/subjects.mechanics'
 
-const VideosRoute = VideosRouteImport.update({
-  id: '/videos',
-  path: '/videos',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -41,18 +36,34 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubjectsMathRoute = SubjectsMathRouteImport.update({
-  id: '/subjects/math',
-  path: '/subjects/math',
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const SubjectsEnglishRoute = SubjectsEnglishRouteImport.update({
+  id: '/subjects/english',
+  path: '/subjects/english',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectsFiqhRoute = SubjectsFiqhRouteImport.update({
@@ -60,20 +71,15 @@ const SubjectsFiqhRoute = SubjectsFiqhRouteImport.update({
   path: '/subjects/fiqh',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubjectsEnglishRoute = SubjectsEnglishRouteImport.update({
-  id: '/subjects/english',
-  path: '/subjects/english',
+const SubjectsMathRoute = SubjectsMathRouteImport.update({
+  id: '/subjects/math',
+  path: '/subjects/math',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const SubjectsMechanicsRoute = SubjectsMechanicsRouteImport.update({
+  id: '/subjects/mechanics',
+  path: '/subjects/mechanics',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/subjects/english': typeof SubjectsEnglishRoute
   '/subjects/fiqh': typeof SubjectsFiqhRoute
   '/subjects/math': typeof SubjectsMathRoute
+  '/subjects/mechanics': typeof SubjectsMechanicsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/subjects/english': typeof SubjectsEnglishRoute
   '/subjects/fiqh': typeof SubjectsFiqhRoute
   '/subjects/math': typeof SubjectsMathRoute
+  '/subjects/mechanics': typeof SubjectsMechanicsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/subjects/english': typeof SubjectsEnglishRoute
   '/subjects/fiqh': typeof SubjectsFiqhRoute
   '/subjects/math': typeof SubjectsMathRoute
+  '/subjects/mechanics': typeof SubjectsMechanicsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/subjects/english'
     | '/subjects/fiqh'
     | '/subjects/math'
+    | '/subjects/mechanics'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/subjects/english'
     | '/subjects/fiqh'
     | '/subjects/math'
+    | '/subjects/mechanics'
   id:
     | '__root__'
     | '/'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/subjects/english'
     | '/subjects/fiqh'
     | '/subjects/math'
+    | '/subjects/mechanics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -164,36 +176,16 @@ export interface RootRouteChildren {
   SubjectsEnglishRoute: typeof SubjectsEnglishRoute
   SubjectsFiqhRoute: typeof SubjectsFiqhRoute
   SubjectsMathRoute: typeof SubjectsMathRoute
+  SubjectsMechanicsRoute: typeof SubjectsMechanicsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/videos': {
-      id: '/videos'
-      path: '/videos'
-      fullPath: '/videos'
-      preLoaderRoute: typeof VideosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -203,18 +195,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subjects/math': {
-      id: '/subjects/math'
-      path: '/subjects/math'
-      fullPath: '/subjects/math'
-      preLoaderRoute: typeof SubjectsMathRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/subjects/english': {
+      id: '/subjects/english'
+      path: '/subjects/english'
+      fullPath: '/subjects/english'
+      preLoaderRoute: typeof SubjectsEnglishRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subjects/fiqh': {
@@ -224,26 +251,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectsFiqhRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subjects/english': {
-      id: '/subjects/english'
-      path: '/subjects/english'
-      fullPath: '/subjects/english'
-      preLoaderRoute: typeof SubjectsEnglishRouteImport
+    '/subjects/math': {
+      id: '/subjects/math'
+      path: '/subjects/math'
+      fullPath: '/subjects/math'
+      preLoaderRoute: typeof SubjectsMathRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/subjects/mechanics': {
+      id: '/subjects/mechanics'
+      path: '/subjects/mechanics'
+      fullPath: '/subjects/mechanics'
+      preLoaderRoute: typeof SubjectsMechanicsRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -271,6 +291,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubjectsEnglishRoute: SubjectsEnglishRoute,
   SubjectsFiqhRoute: SubjectsFiqhRoute,
   SubjectsMathRoute: SubjectsMathRoute,
+  SubjectsMechanicsRoute: SubjectsMechanicsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
