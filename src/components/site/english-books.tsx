@@ -29,6 +29,7 @@ import yellowAsset from "@/assets/english-yellow-exams.pdf.asset.json";
 import tadribatAsset from "@/assets/english-tadribat.pdf.asset.json";
 
 type PdfPageProxyLike = {
+  rotate?: number;
   getViewport: (options: { scale: number; rotation?: number }) => { width: number; height: number };
   render: (options: {
     canvasContext: CanvasRenderingContext2D;
@@ -130,14 +131,13 @@ export function PdfCanvasViewer({
       renderedPagesRef.current.add(renderKey);
       try {
         const page = await pdf.getPage(pageNumber);
-        // Passing `rotation` to getViewport is absolute (overrides page.rotate),
-        // so combining with page.rotate double-rotates pages that already have
-        // baked-in rotation. Let pdf.js use the page's intrinsic rotation when
-        // the user hasn't rotated manually.
-        const viewport =
-          rotation === 0
-            ? page.getViewport({ scale: zoom })
-            : page.getViewport({ scale: zoom, rotation });
+        // The uploaded books share an upside-down cover while their remaining
+        // pages are correctly oriented. Correct only page one, preserve any
+        // intrinsic PDF rotation, and then apply the user's manual rotation.
+        const intrinsicRotation = page.rotate ?? 0;
+        const coverCorrection = pageNumber === 1 ? 180 : 0;
+        const effectiveRotation = (intrinsicRotation + coverCorrection + rotation) % 360;
+        const viewport = page.getViewport({ scale: zoom, rotation: effectiveRotation });
         const context = canvas.getContext("2d");
         if (!context) return;
 
