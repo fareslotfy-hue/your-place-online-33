@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CalendarDays, ArrowLeft, Tag } from "lucide-react";
+import { CalendarDays, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const news = [
@@ -19,7 +19,7 @@ const news = [
     category: "محاضرات جديدة",
     title: "إضافة سلسلة محاضرات جديدة في مادة الرياضيات",
     excerpt:
-      "تمت إضافة سلسلة جديدة من المحاضرات المرئية في مادة الرياضيات ت covering التفاضل والتكامل المتقدم، يقدمها نخبة من أساتذة القسم. المحاضرات متاحة الآن في قسم المحاضرات.",
+      "تمت إضافة سلسلة جديدة من المحاضرات المرئية في مادة الرياضيات تغطي التفاضل والتكامل المتقدم، ويقدمها نخبة من أساتذة القسم. المحاضرات متاحة الآن في قسم المحاضرات.",
     date: "8 يوليو 2025",
     readTime: "2 دقائق",
     color: "from-emerald-500/20 to-teal-500/5",
@@ -64,13 +64,6 @@ export function News() {
               تابع آخر الأخبار والإعلانات الخاصة بالكلية والفرقة الإعدادية.
             </p>
           </div>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-sm font-body text-emerald-400 hover:text-emerald-300 transition-colors group"
-          >
-            عرض كل الأخبار
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          </a>
         </motion.div>
 
         {/* News grid */}
@@ -83,7 +76,7 @@ export function News() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               whileHover={{ y: -8 }}
-              className="group glass-card rounded-2xl overflow-hidden border border-border/50 hover:border-border transition-all duration-300 cursor-pointer"
+              className="group glass-card rounded-2xl overflow-hidden border border-border/50 hover:border-border transition-all duration-300"
             >
               {/* Image placeholder with gradient */}
               <div
@@ -120,13 +113,9 @@ export function News() {
                 <p className="text-sm text-muted-foreground font-body leading-relaxed line-clamp-3 mb-4">
                   {item.excerpt}
                 </p>
-                <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                <div className="pt-4 border-t border-border/50">
                   <span className="text-xs text-muted-foreground font-body">
                     {item.readTime} للقراءة
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-sm text-emerald-400 font-body group-hover:gap-2 transition-all">
-                    اقرأ المزيد
-                    <ArrowLeft className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </div>

@@ -1,15 +1,10 @@
+import { lazy, Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/navbar";
 import { Hero } from "@/components/site/hero";
 import { StatsSection } from "@/components/site/stats-section";
 import { Subjects } from "@/components/site/subjects";
 
-import { Lectures } from "@/components/site/lectures";
-import { About } from "@/components/site/about";
-import { VideoFeatureSection } from "@/components/site/video-feature-section";
-import { Pricing } from "@/components/site/pricing";
-import { Testimonials } from "@/components/site/testimonials";
-import { News } from "@/components/site/news";
 import { Footer } from "@/components/site/footer";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import ogImage from "@/assets/og-image.jpg.asset.json";
@@ -19,6 +14,7 @@ const OG_IMAGE = `${SITE_URL}${ogImage.url}`;
 const TITLE = "الإمام الأكبر | منصة الفرقة الإعدادية - كلية الهندسة الأزهر";
 const DESC =
   "منصة تعليمية متكاملة لطلاب الفرقة الإعدادية بكلية الهندسة جامعة الأزهر: محاضرات، كتب، شروحات، ملخصات، وامتحانات السنين السابقة بحلولها.";
+const DeferredHomeSections = lazy(() => import("@/components/site/deferred-home-sections"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -68,12 +64,15 @@ function Home() {
         <Hero />
         <StatsSection />
         <Subjects />
-        <Lectures />
-        <About />
-        <VideoFeatureSection />
-        <Pricing />
-        <Testimonials />
-        <News />
+        <Suspense
+          fallback={
+            <div className="container mx-auto px-4 py-24" aria-label="جاري تحميل باقي الصفحة">
+              <div className="h-40 animate-pulse rounded-3xl bg-muted/30" />
+            </div>
+          }
+        >
+          <DeferredHomeSections />
+        </Suspense>
       </main>
       <Footer />
       <WhatsAppButton />
