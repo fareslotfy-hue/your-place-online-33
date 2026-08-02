@@ -131,12 +131,11 @@ export function PdfCanvasViewer({
       renderedPagesRef.current.add(renderKey);
       try {
         const page = await pdf.getPage(pageNumber);
-        // The uploaded books share an upside-down cover while their remaining
-        // pages are correctly oriented. Correct only page one, preserve any
-        // intrinsic PDF rotation, and then apply the user's manual rotation.
+        // Preserve the PDF's own rotation and apply the user's manual rotation.
+        // The cover correction is applied directly to the first canvas below;
+        // doing it in getViewport can be cancelled by PDF.js rotation metadata.
         const intrinsicRotation = page.rotate ?? 0;
-        const coverCorrection = pageNumber === 1 ? 180 : 0;
-        const effectiveRotation = (intrinsicRotation + coverCorrection + rotation) % 360;
+        const effectiveRotation = (intrinsicRotation + rotation) % 360;
         const viewport = page.getViewport({ scale: zoom, rotation: effectiveRotation });
         const context = canvas.getContext("2d");
         if (!context) return;
@@ -251,6 +250,7 @@ export function PdfCanvasViewer({
                 ref={registerCanvas(pageNumber)}
                 aria-label={`${title} — صفحة ${pageNumber}`}
                 className="mx-auto block max-w-full rounded-md bg-white shadow-2xl shadow-black/40"
+                style={{ transform: pageNumber === 1 ? "rotate(180deg)" : undefined }}
               />
               <figcaption className="mt-2 text-xs text-white/50" dir="rtl">
                 صفحة {pageNumber} من {pageCount}
