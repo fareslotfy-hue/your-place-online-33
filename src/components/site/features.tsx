@@ -1,7 +1,17 @@
 import { motion } from "framer-motion";
-import { 
-  Video, FileText, Calendar, Bell, MessageCircle, Trophy,
-  Smartphone, Shield, Zap, BookOpen, Clock, BarChart3 
+import {
+  Video,
+  FileText,
+  Calendar,
+  Bell,
+  MessageCircle,
+  Trophy,
+  Smartphone,
+  Shield,
+  Zap,
+  BookOpen,
+  Clock,
+  BarChart3,
 } from "lucide-react";
 
 const features = [
@@ -75,7 +85,7 @@ export function Features() {
     <section id="features" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/30 to-transparent" />
-      
+
       <div className="container mx-auto px-4 relative z-10">
         {/* Section header */}
         <motion.div
@@ -93,8 +103,8 @@ export function Features() {
             <span className="text-gradient-gold"> الإمام الأكبر؟</span>
           </h2>
           <p className="text-muted-foreground font-body text-base md:text-lg leading-relaxed">
-            منصة تعليمية متكاملة مصممة بأحدث التقنيات لتوفير تجربة تعلم استثنائية
-            لطلاب الفرقة الإعدادية بكلية الهندسة.
+            منصة تعليمية متكاملة مصممة بأحدث التقنيات لتوفير تجربة تعلم استثنائية لطلاب الفرقة
+            الإعدادية بكلية الهندسة.
           </p>
         </motion.div>
 
@@ -111,10 +121,14 @@ export function Features() {
               className="group relative glass-card rounded-2xl p-6 border border-border/50 hover:border-border transition-all duration-300 overflow-hidden"
             >
               {/* Hover background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+              />
+
               <div className="relative z-10">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <div
+                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                >
                   <feature.icon className={`w-6 h-6 ${feature.iconColor}`} />
                 </div>
                 <h3 className="font-display font-bold text-lg text-foreground mb-2">

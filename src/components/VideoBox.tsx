@@ -56,7 +56,10 @@ export default function VideoBox({ topicId }: { topicId: string }) {
   const others = topic.videos.filter((v) => v !== rec);
 
   return (
-    <div dir="rtl" className="my-6 overflow-hidden rounded-2xl border-2 border-primary/30 bg-card shadow-sm">
+    <div
+      dir="rtl"
+      className="my-6 overflow-hidden rounded-2xl border-2 border-primary/30 bg-card shadow-sm"
+    >
       <div className="border-b bg-primary/5 px-5 py-3">
         <div className="flex items-center gap-2">
           <span className="text-lg">🎥</span>
@@ -72,9 +75,7 @@ export default function VideoBox({ topicId }: { topicId: string }) {
               <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
                 ⭐ الترشيح
               </span>
-              <span className="text-xs text-muted-foreground">
-                {topic.recommendation_reason}
-              </span>
+              <span className="text-xs text-muted-foreground">{topic.recommendation_reason}</span>
             </div>
             <button
               onClick={() => setOpen(rec)}
@@ -96,9 +97,7 @@ export default function VideoBox({ topicId }: { topicId: string }) {
               </span>
               <div className="absolute bottom-0 right-0 left-0 p-4 text-white">
                 <p className="line-clamp-2 text-sm font-semibold drop-shadow">{rec.title}</p>
-                <p className="mt-1 text-xs text-white/80">
-                  {channelsById[rec.channel_id]?.name}
-                </p>
+                <p className="mt-1 text-xs text-white/80">{channelsById[rec.channel_id]?.name}</p>
               </div>
             </button>
           </div>
@@ -107,9 +106,7 @@ export default function VideoBox({ topicId }: { topicId: string }) {
         {/* Others */}
         {others.length > 0 && (
           <div>
-            <p className="mb-2 text-xs font-medium text-muted-foreground">
-              اختيارات تانية:
-            </p>
+            <p className="mb-2 text-xs font-medium text-muted-foreground">اختيارات تانية:</p>
             <div className="grid gap-2">
               {others.map((v, i) => (
                 <button
@@ -133,9 +130,7 @@ export default function VideoBox({ topicId }: { topicId: string }) {
                   </span>
                   <div className="absolute bottom-0 right-0 left-0 p-3 text-white">
                     <p className="line-clamp-2 font-medium drop-shadow">{v.title}</p>
-                    <p className="mt-1 text-xs text-white/80">
-                      {channelsById[v.channel_id]?.name}
-                    </p>
+                    <p className="mt-1 text-xs text-white/80">{channelsById[v.channel_id]?.name}</p>
                   </div>
                 </button>
               ))}

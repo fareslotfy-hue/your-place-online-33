@@ -63,7 +63,7 @@ export function Testimonials() {
   return (
     <section id="testimonials" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 pattern-islamic opacity-30" />
-      
+
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <motion.div
@@ -73,7 +73,10 @@ export function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <Badge variant="outline" className="mb-4 border-amber-400/30 text-amber-400 bg-amber-400/5">
+          <Badge
+            variant="outline"
+            className="mb-4 border-amber-400/30 text-amber-400 bg-amber-400/5"
+          >
             آراء الطلبة
           </Badge>
           <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mb-4">
@@ -99,7 +102,7 @@ export function Testimonials() {
             >
               {/* Quote icon */}
               <Quote className="absolute top-4 left-4 w-10 h-10 text-foreground/5 group-hover:text-foreground/10 transition-colors" />
-              
+
               <div className="relative z-10">
                 {/* Stars */}
                 <div className="flex items-center gap-1 mb-4">
@@ -115,16 +118,14 @@ export function Testimonials() {
 
                 {/* Author */}
                 <div className="flex items-center gap-3 pt-4 border-t border-border/30">
-                  <div className={`w-12 h-12 rounded-full ${t.avatarColor} flex items-center justify-center font-display font-bold text-white text-lg`}>
+                  <div
+                    className={`w-12 h-12 rounded-full ${t.avatarColor} flex items-center justify-center font-display font-bold text-white text-lg`}
+                  >
                     {t.avatar}
                   </div>
                   <div>
-                    <h4 className="font-display font-bold text-sm text-foreground">
-                      {t.name}
-                    </h4>
-                    <p className="text-xs text-muted-foreground font-body">
-                      {t.role}
-                    </p>
+                    <h4 className="font-display font-bold text-sm text-foreground">{t.name}</h4>
+                    <p className="text-xs text-muted-foreground font-body">{t.role}</p>
                   </div>
                 </div>
               </div>
@@ -142,7 +143,8 @@ export function Testimonials() {
           <div className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl glass-card border border-emerald-400/20">
             <GraduationCap className="w-6 h-6 text-emerald-400" />
             <p className="text-sm md:text-base font-body text-foreground">
-              انضم لـ <span className="font-bold text-amber-400">+5000</span> طالب بيذاكروا بذكاء على منصة الإمام الأكبر
+              انضم لـ <span className="font-bold text-amber-400">+5000</span> طالب بيذاكروا بذكاء
+              على منصة الإمام الأكبر
             </p>
           </div>
         </motion.div>

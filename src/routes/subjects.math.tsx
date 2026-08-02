@@ -9,7 +9,8 @@ import ogImage from "@/assets/og-image.jpg.asset.json";
 const URL_ = "https://your-place-online-33.lovable.app/subjects/math";
 const OG = `https://your-place-online-33.lovable.app${ogImage.url}`;
 const TITLE = "الرياضيات — كتب الإمام الأكبر";
-const DESC = "خمس مراجع لمادة الرياضة الهندسية للفرقة الإعدادية هندسة الأزهر: الكتاب الأساسي، شروحات الدكاترة، التدريبات والمسائل، بنك الامتحانات، ومذكرة الشيتات.";
+const DESC =
+  "خمس مراجع لمادة الرياضة الهندسية للفرقة الإعدادية هندسة الأزهر: الكتاب الأساسي، شروحات الدكاترة، التدريبات والمسائل، بنك الامتحانات، ومذكرة الشيتات.";
 
 export const Route = createFileRoute("/subjects/math")({
   head: () => ({

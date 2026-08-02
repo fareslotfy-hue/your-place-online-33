@@ -8,8 +8,9 @@ import ogImage from "@/assets/og-image.jpg.asset.json";
 
 const URL_ = "https://your-place-online-33.lovable.app/subjects/mechanics";
 const OG = `https://your-place-online-33.lovable.app${ogImage.url}`;
-const TITLE = "الميكانيكا — كتب وفيديوهات الإمام الأكبر";
-const DESC = "كتب وفيديوهات مادة الميكانيكا (الاستاتيكا + الديناميكا) للفرقة الإعدادية هندسة الأزهر: 9 كتب مرجعية ومكتبة فيديوهات شاملة.";
+const TITLE = "الميكانيكا — كتب الإمام الأكبر";
+const DESC =
+  "تسع مراجع لمادة الميكانيكا (الاستاتيكا + الديناميكا) للفرقة الإعدادية هندسة الأزهر: الكتاب الشامل، كتاب الاستاتيكا، الملخصات، التدريبات، بنك الامتحانات، والشيتات.";
 
 export const Route = createFileRoute("/subjects/mechanics")({
   head: () => ({

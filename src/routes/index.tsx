@@ -17,14 +17,19 @@ import ogImage from "@/assets/og-image.jpg.asset.json";
 const SITE_URL = "https://your-place-online-33.lovable.app";
 const OG_IMAGE = `${SITE_URL}${ogImage.url}`;
 const TITLE = "الإمام الأكبر | منصة الفرقة الإعدادية - كلية الهندسة الأزهر";
-const DESC = "منصة تعليمية متكاملة لطلاب الفرقة الإعدادية بكلية الهندسة جامعة الأزهر: محاضرات، كتب، شروحات، ملخصات، وامتحانات السنين السابقة بحلولها.";
+const DESC =
+  "منصة تعليمية متكاملة لطلاب الفرقة الإعدادية بكلية الهندسة جامعة الأزهر: محاضرات، كتب، شروحات، ملخصات، وامتحانات السنين السابقة بحلولها.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: TITLE },
       { name: "description", content: DESC },
-      { name: "keywords", content: "الإمام الأكبر, هندسة الأزهر, الفرقة الإعدادية, ملخصات, امتحانات, محاضرات, اللغة الإنجليزية, الفقه" },
+      {
+        name: "keywords",
+        content:
+          "الإمام الأكبر, هندسة الأزهر, الفرقة الإعدادية, ملخصات, امتحانات, محاضرات, اللغة الإنجليزية, الفقه",
+      },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
       { property: "og:url", content: SITE_URL },

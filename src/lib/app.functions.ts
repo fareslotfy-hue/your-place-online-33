@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { SUBSCRIPTION_PACKAGES } from "@/lib/packages";
 
 // ---------- PROFILE ----------
 export const getMyProfile = createServerFn({ method: "GET" })
@@ -25,8 +26,11 @@ export const getMyProfile = createServerFn({ method: "GET" })
 
 export const updateMyAvatar = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ avatar_path: z.string().min(1).max(500) }).parse(input))
+  .validator((input) => z.object({ avatar_path: z.string().min(1).max(500) }).parse(input))
   .handler(async ({ data, context }) => {
+    if (!data.avatar_path.startsWith(`${context.userId}/`)) {
+      throw new Error("Invalid avatar path");
+    }
     const { error } = await context.supabase
       .from("profiles")
       .update({ avatar_url: data.avatar_path })
@@ -37,8 +41,10 @@ export const updateMyAvatar = createServerFn({ method: "POST" })
 
 export const updateMyProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) =>
-    z.object({ full_name: z.string().min(1).max(120), phone: z.string().max(30).optional() }).parse(input),
+  .validator((input) =>
+    z
+      .object({ full_name: z.string().min(1).max(120), phone: z.string().max(30).optional() })
+      .parse(input),
   )
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase
@@ -92,55 +98,45 @@ export const getMyAccessLevel = createServerFn({ method: "GET" })
 
 // ---------- ENROLLMENTS ----------
 export const createEnrollment = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .middleware([requireSupabaseAuth])
+  .validator((input) =>
     z
       .object({
         full_name: z.string().min(1).max(120),
         phone: z.string().min(6).max(30),
         email: z.string().email().max(120).optional().or(z.literal("")),
-        package_name: z.string().min(1).max(120),
-        package_price: z.number().int().positive(),
+        package_id: z.enum(["single", "double"]),
         payment_method: z.enum(["instapay", "vodafone"]),
-        receipt_path: z.string().max(500).optional(),
+        receipt_path: z.string().min(1).max(500),
       })
       .parse(input),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    let receiptUrl: string | null = null;
-    if (data.receipt_path) {
-      const { data: signed, error: sErr } = await supabaseAdmin.storage
-        .from("receipts")
-        .createSignedUrl(data.receipt_path, 60 * 60 * 24 * 365);
-      if (sErr) console.error("[enrollment] signed url error", sErr.message);
-      receiptUrl = signed?.signedUrl ?? data.receipt_path;
+    const selectedPackage = SUBSCRIPTION_PACKAGES[data.package_id];
+    if (!data.receipt_path.startsWith(`${context.userId}/`)) {
+      throw new Error("Invalid receipt path");
     }
 
-    // Server-side detect current user (optional; fallback to null for anon)
-    let userId: string | null = null;
-    try {
-      const { getRequest } = await import("@tanstack/react-start/server");
-      const req = getRequest();
-      const auth = req?.headers.get("authorization");
-      if (auth?.startsWith("Bearer ")) {
-        const token = auth.slice(7);
-        const { data: claims } = await supabaseAdmin.auth.getUser(token);
-        userId = claims.user?.id ?? null;
-      }
-    } catch {
-      userId = null;
+    const { data: signed, error: sErr } = await supabaseAdmin.storage
+      .from("receipts")
+      .createSignedUrl(data.receipt_path, 60);
+    if (sErr || !signed?.signedUrl) {
+      throw new Error("تعذر التحقق من إيصال الدفع");
     }
 
     const { error } = await supabaseAdmin.from("enrollments").insert({
-      user_id: userId,
+      user_id: context.userId,
       full_name: data.full_name,
       phone: data.phone,
       email: data.email || null,
-      package_name: data.package_name,
-      package_price: data.package_price,
+      package_name: selectedPackage.name,
+      package_price: selectedPackage.price,
       payment_method: data.payment_method,
-      receipt_url: receiptUrl,
+      // Store the private object path, not an expiring signed URL. Admin links
+      // are generated on demand below.
+      receipt_url: data.receipt_path,
       status: "pending",
     });
     if (error) throw new Error(error.message);
@@ -159,21 +155,15 @@ export const getMyRoles = createServerFn({ method: "GET" })
     return { roles: (data ?? []).map((r) => r.role as string) };
   });
 
-export const claimFirstAdmin = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data, error } = await context.supabase.rpc("claim_first_admin");
-    if (error) throw new Error(error.message);
-    return { granted: !!data };
-  });
-
 export const updateEnrollmentStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) =>
-    z.object({
-      id: z.string().uuid(),
-      status: z.enum(["approved", "pending", "rejected"]),
-    }).parse(input),
+  .validator((input) =>
+    z
+      .object({
+        id: z.string().uuid(),
+        status: z.enum(["approved", "pending", "rejected"]),
+      })
+      .parse(input),
   )
   .handler(async ({ data, context }) => {
     const { data: isAdmin, error: rErr } = await context.supabase.rpc("has_role", {
@@ -215,7 +205,9 @@ export const getAdminStats = createServerFn({ method: "GET" })
         .limit(5000),
       supabaseAdmin
         .from("enrollments")
-        .select("id, full_name, phone, email, package_name, package_price, payment_method, status, receipt_url, created_at")
+        .select(
+          "id, full_name, phone, email, package_name, package_price, payment_method, status, receipt_url, created_at",
+        )
         .order("created_at", { ascending: false })
         .limit(200),
       supabaseAdmin.from("profiles").select("id", { count: "exact", head: true }),
@@ -224,7 +216,17 @@ export const getAdminStats = createServerFn({ method: "GET" })
     if (enrollRes.error) throw new Error(enrollRes.error.message);
 
     const views = viewsRes.data ?? [];
-    const enrollments = enrollRes.data ?? [];
+    const enrollments = await Promise.all(
+      (enrollRes.data ?? []).map(async (enrollment) => {
+        if (!enrollment.receipt_url || /^https?:\/\//.test(enrollment.receipt_url)) {
+          return enrollment;
+        }
+        const { data: signedReceipt } = await supabaseAdmin.storage
+          .from("receipts")
+          .createSignedUrl(enrollment.receipt_url, 60 * 60);
+        return { ...enrollment, receipt_url: signedReceipt?.signedUrl ?? null };
+      }),
+    );
 
     // Aggregations
     const dayMap = new Map<string, number>();

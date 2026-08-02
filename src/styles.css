@@ -131,25 +131,36 @@
     color: var(--color-foreground);
     font-family: var(--font-body);
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
   }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); }
-  .font-body { font-family: var(--font-body); }
-  .font-serif-ar { font-family: var(--font-serif); }
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-body {
+    font-family: var(--font-body);
+  }
+  .font-serif-ar {
+    font-family: var(--font-serif);
+  }
 
   .text-gradient-gold {
-    background: linear-gradient(135deg, #E8B557 0%, #D4A574 50%, #F4D03F 100%);
+    background: linear-gradient(135deg, #e8b557 0%, #d4a574 50%, #f4d03f 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
   .text-gradient-emerald {
-    background: linear-gradient(135deg, #10B981 0%, #059669 50%, #0D9488 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 50%, #0d9488 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -184,28 +195,50 @@
   }
 
   .animated-gradient {
-    background: linear-gradient(-45deg, #0A1410, #0F1F1A, #1A2F26, #0D1F1A);
+    background: linear-gradient(-45deg, #0a1410, #0f1f1a, #1a2f26, #0d1f1a);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
   }
   @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
   }
-  .animate-float { animation: float 6s ease-in-out infinite; }
-  .animate-float-slow { animation: float 8s ease-in-out infinite; }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float 8s ease-in-out infinite;
+  }
 
   @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 20px -5px rgba(212, 165, 116, 0.3); }
-    50% { box-shadow: 0 0 40px -5px rgba(212, 165, 116, 0.6); }
+    0%,
+    100% {
+      box-shadow: 0 0 20px -5px rgba(212, 165, 116, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px -5px rgba(212, 165, 116, 0.6);
+    }
   }
-  .animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+  .animate-pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
 
   .geometric-divider {
     height: 1px;
@@ -213,18 +246,25 @@
   }
 
   .text-shadow-glow {
-    text-shadow: 0 0 30px rgba(212, 165, 116, 0.3), 0 0 60px rgba(212, 165, 116, 0.2);
+    text-shadow:
+      0 0 30px rgba(212, 165, 116, 0.3),
+      0 0 60px rgba(212, 165, 116, 0.2);
   }
 }
 
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #0D9488, #D4A574);
+  background: linear-gradient(180deg, #0d9488, #d4a574);
   border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #10B981, #E8B557);
+  background: linear-gradient(180deg, #10b981, #e8b557);
 }
 
 ::selection {

@@ -21,7 +21,8 @@ export function VideoFeatureSection() {
             <span className="text-gradient-gold"> رؤساء الأقسام الهندسية</span>
           </h2>
           <p className="text-muted-foreground font-body text-base md:text-lg leading-relaxed">
-            شاهد نصائح قيّمة من عميد ووكلاء كلية الهندسة جامعة الأزهر الشريف لطلاب إعدادي هندسة، يساعدوك في اختيار القسم الهندسي المناسب لك.
+            شاهد نصائح قيّمة من عميد ووكلاء كلية الهندسة جامعة الأزهر الشريف لطلاب إعدادي هندسة،
+            يساعدوك في اختيار القسم الهندسي المناسب لك.
           </p>
         </motion.div>
 

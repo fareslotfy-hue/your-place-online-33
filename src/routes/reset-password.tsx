@@ -41,7 +41,9 @@ function ResetPasswordPage() {
       toast.success("تم تحديث كلمة المرور بنجاح");
       navigate({ to: "/dashboard" });
     } catch (err) {
-      toast.error("فشل تحديث كلمة المرور", { description: err instanceof Error ? err.message : "" });
+      toast.error("فشل تحديث كلمة المرور", {
+        description: err instanceof Error ? err.message : "",
+      });
     } finally {
       setLoading(false);
     }
@@ -50,7 +52,9 @@ function ResetPasswordPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-background pattern-islamic">
       <div className="w-full max-w-md">
-        <div className="flex justify-center mb-6"><Logo size="lg" /></div>
+        <div className="flex justify-center mb-6">
+          <Logo size="lg" />
+        </div>
         <div className="glass-card rounded-2xl p-6 border border-border/50">
           <h1 className="font-display font-bold text-2xl text-center flex items-center justify-center gap-2 mb-6">
             <KeyRound className="w-6 h-6 text-amber-400" />
@@ -66,11 +70,30 @@ function ResetPasswordPage() {
                 <Label className="text-sm font-body">كلمة المرور الجديدة</Label>
                 <div className="relative">
                   <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="pr-10 bg-muted/30" required minLength={6} />
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="pr-10 bg-muted/30"
+                    required
+                    minLength={6}
+                  />
                 </div>
               </div>
-              <Button type="submit" disabled={loading} className="w-full h-12 bg-gradient-to-r from-amber-600 to-amber-500 text-white">
-                {loading ? <><Loader2 className="w-4 h-4 ml-2 animate-spin" />جاري التحديث...</> : "تحديث كلمة المرور"}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-12 bg-gradient-to-r from-amber-600 to-amber-500 text-white"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                    جاري التحديث...
+                  </>
+                ) : (
+                  "تحديث كلمة المرور"
+                )}
               </Button>
             </form>
           )}

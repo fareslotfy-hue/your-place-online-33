@@ -50,12 +50,17 @@ export function NotificationsBell() {
       .channel(`notif-${user.id}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
+          filter: `user_id=eq.${user.id}`,
+        },
         (payload) => {
           const n = payload.new as Notification;
           setItems((prev) => [n, ...prev].slice(0, 20));
           toast.success(n.title, { description: n.message });
-        }
+        },
       )
       .subscribe();
     return () => {
@@ -155,12 +160,14 @@ export function NotificationsBell() {
                             n.type === "success"
                               ? "bg-emerald-500"
                               : n.type === "error"
-                              ? "bg-red-500"
-                              : "bg-amber-500"
+                                ? "bg-red-500"
+                                : "bg-amber-500"
                           } ${n.read ? "opacity-30" : ""}`}
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="font-body font-semibold text-sm text-foreground">{n.title}</p>
+                          <p className="font-body font-semibold text-sm text-foreground">
+                            {n.title}
+                          </p>
                           <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
                             {n.message}
                           </p>

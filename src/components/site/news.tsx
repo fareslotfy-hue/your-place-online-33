@@ -7,7 +7,8 @@ const news = [
     id: 1,
     category: "إعلان هام",
     title: "بدء التسجيل في امتحانات منتصف الفصل الدراسي الأول",
-    excerpt: "يعلن قطاع الكلية عن فتح باب التسجيل لامتحانات منتصف الفصل الدراسي الأول للفرقة الإعدادية اعتباراً من الأسبوع القادم. يرجى من جميع الطلاب مراجعة الجداول والتسجيل في الموعد المحدد.",
+    excerpt:
+      "يعلن قطاع الكلية عن فتح باب التسجيل لامتحانات منتصف الفصل الدراسي الأول للفرقة الإعدادية اعتباراً من الأسبوع القادم. يرجى من جميع الطلاب مراجعة الجداول والتسجيل في الموعد المحدد.",
     date: "10 يوليو 2025",
     readTime: "3 دقائق",
     color: "from-red-500/20 to-rose-500/5",
@@ -17,7 +18,8 @@ const news = [
     id: 2,
     category: "محاضرات جديدة",
     title: "إضافة سلسلة محاضرات جديدة في مادة الرياضيات",
-    excerpt: "تمت إضافة سلسلة جديدة من المحاضرات المرئية في مادة الرياضيات ت covering التفاضل والتكامل المتقدم، يقدمها نخبة من أساتذة القسم. المحاضرات متاحة الآن في قسم المحاضرات.",
+    excerpt:
+      "تمت إضافة سلسلة جديدة من المحاضرات المرئية في مادة الرياضيات ت covering التفاضل والتكامل المتقدم، يقدمها نخبة من أساتذة القسم. المحاضرات متاحة الآن في قسم المحاضرات.",
     date: "8 يوليو 2025",
     readTime: "2 دقائق",
     color: "from-emerald-500/20 to-teal-500/5",
@@ -27,7 +29,8 @@ const news = [
     id: 3,
     category: "نشاط طلابي",
     title: "انطلاق فعاليات الأسبوع الهندسي السنوي",
-    excerpt: "تنطلق فعاليات الأسبوع الهندسي السنوي، ويشمل معارض طلابية، ومسابقات تقنية، وندوات علمية. ندعو جميع الطلاب للمشاركة والحضور.",
+    excerpt:
+      "تنطلق فعاليات الأسبوع الهندسي السنوي، ويشمل معارض طلابية، ومسابقات تقنية، وندوات علمية. ندعو جميع الطلاب للمشاركة والحضور.",
     date: "5 يوليو 2025",
     readTime: "4 دقائق",
     color: "from-amber-500/20 to-orange-500/5",
@@ -39,7 +42,7 @@ export function News() {
   return (
     <section id="news" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 pattern-islamic opacity-30" />
-      
+
       <div className="container mx-auto px-4 relative z-10">
         {/* Section header */}
         <motion.div
@@ -83,7 +86,9 @@ export function News() {
               className="group glass-card rounded-2xl overflow-hidden border border-border/50 hover:border-border transition-all duration-300 cursor-pointer"
             >
               {/* Image placeholder with gradient */}
-              <div className={`relative aspect-[16/10] bg-gradient-to-br ${item.color} overflow-hidden`}>
+              <div
+                className={`relative aspect-[16/10] bg-gradient-to-br ${item.color} overflow-hidden`}
+              >
                 <div
                   className="absolute inset-0 opacity-10"
                   style={{

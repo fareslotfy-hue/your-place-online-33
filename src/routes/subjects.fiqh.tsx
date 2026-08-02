@@ -8,7 +8,8 @@ import ogImage from "@/assets/og-image.jpg.asset.json";
 const URL = "https://your-place-online-33.lovable.app/subjects/fiqh";
 const OG = `https://your-place-online-33.lovable.app${ogImage.url}`;
 const TITLE = "الفقه — كتب الإمام الأكبر";
-const DESC = "سبع مراجع لمادة الفقه للفرقة الأولى هندسة الأزهر: الشرح، المذكرة، الملخّص، بنك الأسئلة، الخرائط الذهنية، كارت المراجعة، ودرس الخطبة.";
+const DESC =
+  "سبع مراجع لمادة الفقه للفرقة الأولى هندسة الأزهر: الشرح، المذكرة، الملخّص، بنك الأسئلة، الخرائط الذهنية، كارت المراجعة، ودرس الخطبة.";
 
 export const Route = createFileRoute("/subjects/fiqh")({
   head: () => ({

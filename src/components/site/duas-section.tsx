@@ -61,12 +61,12 @@ const nightlyReminders = [
   },
   {
     title: "أول النهار",
-    description: "ابدأ يومك بـ \"اللهم إني أسألك علماً نافعاً ورزقاً طيباً وعملاً متقبلاً\".",
+    description: 'ابدأ يومك بـ "اللهم إني أسألك علماً نافعاً ورزقاً طيباً وعملاً متقبلاً".',
     icon: Sparkles,
   },
   {
     title: "قبل المذاكرة",
-    description: "قل \"اللهم افتح لي أبواب رحمتك وانشر عليّ رحمتك ويسّر لي أمري\".",
+    description: 'قل "اللهم افتح لي أبواب رحمتك وانشر عليّ رحمتك ويسّر لي أمري".',
     icon: BookHeart,
   },
   {
@@ -81,7 +81,10 @@ export function DuasSection() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center mb-8">
-        <Badge variant="outline" className="mb-4 border-emerald-400/30 text-emerald-400 bg-emerald-400/5">
+        <Badge
+          variant="outline"
+          className="mb-4 border-emerald-400/30 text-emerald-400 bg-emerald-400/5"
+        >
           <BookHeart className="w-3 h-3 ml-1" />
           أدعية وتوجيهات
         </Badge>
@@ -90,8 +93,8 @@ export function DuasSection() {
           <span className="text-gradient-gold"> المذاكرة</span>
         </h2>
         <p className="text-muted-foreground font-body text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-          أدعية نبوية وقرآنية لتقوية الهمة على المذاكرة والاستمرارية. ابدأ مذاكرتك بالدعاء،
-          فببركة الدعاء يُيسّر الله لك الفهم والحفظ.
+          أدعية نبوية وقرآنية لتقوية الهمة على المذاكرة والاستمرارية. ابدأ مذاكرتك بالدعاء، فببركة
+          الدعاء يُيسّر الله لك الفهم والحفظ.
         </p>
       </div>
 
@@ -128,11 +131,14 @@ export function DuasSection() {
           >
             {/* Decorative element */}
             <div className="absolute -left-8 -top-8 w-32 h-32 rounded-full bg-gradient-to-br from-white/5 to-transparent blur-2xl group-hover:scale-150 transition-transform duration-700" />
-            
+
             <div className="relative z-10">
               {/* Occasion badge */}
               <div className="flex items-center justify-between mb-4">
-                <Badge variant="outline" className={`text-xs border-border/50 ${dua.iconColor} bg-background/50`}>
+                <Badge
+                  variant="outline"
+                  className={`text-xs border-border/50 ${dua.iconColor} bg-background/50`}
+                >
                   {dua.occasion}
                 </Badge>
                 <BookHeart className={`w-5 h-5 ${dua.iconColor}`} />
@@ -165,12 +171,11 @@ export function DuasSection() {
         className="glass-card rounded-2xl p-6 border border-amber-400/20 bg-gradient-to-br from-amber-500/10 to-emerald-500/10 text-center"
       >
         <BookHeart className="w-10 h-10 text-amber-400 mx-auto mb-3" />
-        <h3 className="font-display font-bold text-xl text-foreground mb-2">
-          التوفيق من عند الله
-        </h3>
+        <h3 className="font-display font-bold text-xl text-foreground mb-2">التوفيق من عند الله</h3>
         <p className="text-sm text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto">
-          اعمل بجهدك، واسأل ربك التوفيق. &quot;مَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ&quot;.
-          المذاكرة عبادة، وطلب العلم فريضة. اجعل نيتك خالصة لله، يكن عملك مباركاً.
+          اعمل بجهدك، واسأل ربك التوفيق. &quot;مَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا
+          وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ&quot;. المذاكرة عبادة، وطلب العلم فريضة. اجعل نيتك
+          خالصة لله، يكن عملك مباركاً.
         </p>
       </motion.div>
     </div>

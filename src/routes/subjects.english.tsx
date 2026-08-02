@@ -8,7 +8,8 @@ import ogImage from "@/assets/og-image.jpg.asset.json";
 const URL = "https://your-place-online-33.lovable.app/subjects/english";
 const OG = `https://your-place-online-33.lovable.app${ogImage.url}`;
 const TITLE = "اللغة الإنجليزية — كتب الإمام الأكبر";
-const DESC = "كتب مادة اللغة الإنجليزية للفرقة الإعدادية: الشرح الكامل، الشيت الأصفر والامتحانات بحلولها، وكتاب التدريبات والخرائط الذهنية.";
+const DESC =
+  "كتب مادة اللغة الإنجليزية للفرقة الإعدادية: الشرح الكامل، الشيت الأصفر والامتحانات بحلولها، وكتاب التدريبات والخرائط الذهنية.";
 
 export const Route = createFileRoute("/subjects/english")({
   head: () => ({

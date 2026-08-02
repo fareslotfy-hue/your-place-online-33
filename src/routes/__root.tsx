@@ -35,9 +35,7 @@ function NotFoundComponent() {
         <p className="mt-6 font-display text-[9rem] leading-none font-bold text-gradient-gold">
           404
         </p>
-        <h1 className="mt-2 font-display text-2xl font-bold text-foreground">
-          الصفحة غير موجودة
-        </h1>
+        <h1 className="mt-2 font-display text-2xl font-bold text-foreground">الصفحة غير موجودة</h1>
         <p className="mt-3 text-base leading-relaxed text-muted-foreground">
           يبدو أنّ الطريق الذي سلكته لا يؤدي إلى شيء.
           <br />
@@ -79,9 +77,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           حصلت مشكلة في تحميل الصفحة
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          حاول تحدث الصفحة أو ترجع للرئيسية.
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">حاول تحدث الصفحة أو ترجع للرئيسية.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {

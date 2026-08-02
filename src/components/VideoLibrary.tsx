@@ -48,9 +48,9 @@ type Subject = {
   color: string;
 };
 
-const data = videosData as { 
-  channels: Channel[]; 
-  topics: Topic[]; 
+const data = videosData as {
+  channels: Channel[];
+  topics: Topic[];
   subjects: Subject[];
   meta: {
     version: string;
@@ -81,15 +81,9 @@ export default function VideoLibrary() {
   const [playing, setPlaying] = useState<Video | null>(null);
   const [showSubscribeCta, setShowSubscribeCta] = useState(false);
 
-  const channelsById = useMemo(
-    () => Object.fromEntries(data.channels.map((c) => [c.id, c])),
-    [],
-  );
+  const channelsById = useMemo(() => Object.fromEntries(data.channels.map((c) => [c.id, c])), []);
 
-  const subjectsById = useMemo(
-    () => Object.fromEntries(data.subjects.map((s) => [s.id, s])),
-    [],
-  );
+  const subjectsById = useMemo(() => Object.fromEntries(data.subjects.map((s) => [s.id, s])), []);
 
   const filteredTopics = useMemo(() => {
     return data.topics
@@ -98,17 +92,15 @@ export default function VideoLibrary() {
       .filter((t) => (topicId === "all" ? true : t.id === topicId))
       .map((t) => ({
         ...t,
-        videos: t.videos.filter((v) =>
-          channelId === "all" ? true : v.channel_id === channelId,
-        ),
+        videos: t.videos.filter((v) => (channelId === "all" ? true : v.channel_id === channelId)),
       }))
       .filter((t) => t.videos.length > 0);
   }, [term, subjectId, topicId, channelId]);
 
   // Get available subjects based on current filter
   const availableSubjects = useMemo(() => {
-    const subjectIds = new Set(data.topics.map(t => t.subject_id));
-    return data.subjects.filter(s => subjectIds.has(s.id));
+    const subjectIds = new Set(data.topics.map((t) => t.subject_id));
+    return data.subjects.filter((s) => subjectIds.has(s.id));
   }, []);
 
   if (accessLoading) {
@@ -128,7 +120,8 @@ export default function VideoLibrary() {
           </div>
           <h2 className="text-2xl font-bold">مكتبة الفيديوهات مقفولة</h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            سجّل دخولك للمنصة عشان تقدر تشوف مكتبة فيديوهات المنهج لجميع المواد، وتفتح صور الشرح لكل موضوع.
+            سجّل دخولك للمنصة عشان تقدر تشوف مكتبة فيديوهات المنهج لجميع المواد، وتفتح صور الشرح لكل
+            موضوع.
           </p>
           <Link
             to="/auth"
@@ -186,7 +179,10 @@ export default function VideoLibrary() {
             </label>
             <select
               value={subjectId}
-              onChange={(e) => { setSubjectId(e.target.value); setTopicId("all"); }}
+              onChange={(e) => {
+                setSubjectId(e.target.value);
+                setTopicId("all");
+              }}
               className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
             >
               <option value="all">📚 كل المواد ({data.subjects.length})</option>
@@ -200,9 +196,7 @@ export default function VideoLibrary() {
 
           {/* Term */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-muted-foreground">
-              الترم
-            </label>
+            <label className="mb-2 block text-sm font-medium text-muted-foreground">الترم</label>
             <div className="flex gap-2">
               {[
                 { v: 0, l: "الكل" },
@@ -226,9 +220,7 @@ export default function VideoLibrary() {
 
           {/* Topic */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-muted-foreground">
-              الموضوع
-            </label>
+            <label className="mb-2 block text-sm font-medium text-muted-foreground">الموضوع</label>
             <select
               value={topicId}
               onChange={(e) => setTopicId(e.target.value)}
@@ -259,7 +251,8 @@ export default function VideoLibrary() {
               <option value="all">كل الدكاترة</option>
               {data.channels.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {c.badge ? `${c.badge} ` : ""}{c.name}
+                  {c.badge ? `${c.badge} ` : ""}
+                  {c.name}
                 </option>
               ))}
             </select>
@@ -275,10 +268,10 @@ export default function VideoLibrary() {
                 key={s.id}
                 onClick={() => setSubjectId(s.id)}
                 className="rounded-full border px-3 py-1 text-xs font-medium transition-all hover:shadow-md"
-                style={{ 
-                  borderColor: s.color + '40', 
-                  backgroundColor: s.color + '15',
-                  color: s.color 
+                style={{
+                  borderColor: s.color + "40",
+                  backgroundColor: s.color + "15",
+                  color: s.color,
                 }}
               >
                 {s.icon} {s.name}
@@ -296,16 +289,17 @@ export default function VideoLibrary() {
                 <div className="mb-4 flex items-baseline justify-between border-b pb-2">
                   <div className="flex items-center gap-3">
                     {subject && (
-                      <span 
+                      <span
                         className="rounded-lg px-2 py-1 text-xs font-bold"
-                        style={{ backgroundColor: subject.color + '20', color: subject.color }}
+                        style={{ backgroundColor: subject.color + "20", color: subject.color }}
                       >
                         {subject.icon} {subject.name}
                       </span>
                     )}
                     <div>
                       <h2 className="text-2xl font-bold">
-                        <span style={{ color: subject?.color || 'inherit' }}>#{topic.order}</span> {topic.title}
+                        <span style={{ color: subject?.color || "inherit" }}>#{topic.order}</span>{" "}
+                        {topic.title}
                       </h2>
                       {topic.subtitle && (
                         <p className="mt-1 text-sm text-muted-foreground">{topic.subtitle}</p>
@@ -324,9 +318,7 @@ export default function VideoLibrary() {
                     <div>
                       <p className="text-sm">
                         <span className="font-semibold text-primary">الأنسب ليك: </span>
-                        <span className="font-medium">
-                          {channelsById[topic.recommended]?.name}
-                        </span>
+                        <span className="font-medium">{channelsById[topic.recommended]?.name}</span>
                       </p>
                       <p className="mt-1 text-sm text-muted-foreground">
                         {topic.recommendation_reason}
@@ -461,7 +453,6 @@ function VideoCard({
 }) {
   const thumb = getThumb(v);
 
-
   return (
     <button
       onClick={onPlay}
@@ -491,7 +482,6 @@ function VideoCard({
           {locked ? <Lock className="h-5 w-5" /> : "▶"}
         </span>
       </div>
-
 
       {/* recommendation badge */}
       {isRec && (

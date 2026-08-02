@@ -1,20 +1,34 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Check, Crown, Sparkles, Copy, CheckCheck, Phone, 
-  CreditCard, Wallet, ShieldCheck, Clock, BookOpen, 
-  Video, FileText, MessageCircle, ArrowLeft, Star 
+import {
+  Check,
+  Crown,
+  Sparkles,
+  Copy,
+  CheckCheck,
+  Phone,
+  CreditCard,
+  Wallet,
+  ShieldCheck,
+  Clock,
+  BookOpen,
+  Video,
+  FileText,
+  MessageCircle,
+  ArrowLeft,
+  Star,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ReceiptUpload } from "./receipt-upload";
+import { SUBSCRIPTION_PACKAGES, type SubscriptionPackageId } from "@/lib/packages";
 
 const packages = [
   {
     id: "single",
-    name: "باقة الترم الواحد",
+    name: SUBSCRIPTION_PACKAGES.single.name,
     period: "ترم دراسي واحد",
-    price: 200,
+    price: SUBSCRIPTION_PACKAGES.single.price,
     currency: "ج.م",
     oldPrice: null,
     description: "اشتراك كامل لترم دراسي واحد يشمل جميع المواد والمحاضرات",
@@ -24,7 +38,8 @@ const packages = [
     glowColor: "shadow-emerald-glow",
     accentColor: "text-emerald-400",
     badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-    buttonColor: "bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white",
+    buttonColor:
+      "bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white",
     badge: null,
     features: [
       "وصول كامل لجميع مواد الترم",
@@ -39,9 +54,9 @@ const packages = [
   },
   {
     id: "double",
-    name: "باقة الترمين الكاملة",
+    name: SUBSCRIPTION_PACKAGES.double.name,
     period: "الترم الأول + الترم الثاني",
-    price: 300,
+    price: SUBSCRIPTION_PACKAGES.double.price,
     currency: "ج.م",
     oldPrice: 400,
     description: "اشتراك كامل للسنة الدراسية باقة موفرة تشمل الترمين الأول والثاني",
@@ -51,7 +66,8 @@ const packages = [
     glowColor: "shadow-glow",
     accentColor: "text-amber-400",
     badgeColor: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-    buttonColor: "bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white",
+    buttonColor:
+      "bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white",
     badge: "الأكثر طلباً",
     features: [
       "كل مزايا باقة الترم الواحد",
@@ -89,7 +105,7 @@ const paymentMethods = [
 export function Pricing() {
   const [copied, setCopied] = useState(false);
   const [receiptOpen, setReceiptOpen] = useState(false);
-  const [selectedPkg, setSelectedPkg] = useState<{ name: string; price: number } | null>(null);
+  const [selectedPkg, setSelectedPkg] = useState<SubscriptionPackageId | null>(null);
   const phoneNumber = "01070205859";
 
   const copyNumber = () => {
@@ -98,8 +114,8 @@ export function Pricing() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const openReceiptForm = (pkgName: string, pkgPrice: number) => {
-    setSelectedPkg({ name: pkgName, price: pkgPrice });
+  const openReceiptForm = (packageId: SubscriptionPackageId) => {
+    setSelectedPkg(packageId);
     setReceiptOpen(true);
   };
 
@@ -108,7 +124,7 @@ export function Pricing() {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/20 to-transparent" />
       <div className="absolute inset-0 pattern-islamic opacity-40" />
-      
+
       {/* Floating orbs */}
       <motion.div
         animate={{ x: [0, 60, 0], y: [0, -40, 0] }}
@@ -168,14 +184,16 @@ export function Pricing() {
 
               {/* Background gradient */}
               <div className={`absolute inset-0 bg-gradient-to-br ${pkg.color} opacity-50`} />
-              
+
               {/* Decorative element */}
               <div className="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-gradient-to-br from-white/5 to-transparent blur-3xl group-hover:scale-150 transition-transform duration-700" />
 
               <div className="relative z-10">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6 mt-2">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pkg.color} flex items-center justify-center border ${pkg.borderColor}`}>
+                  <div
+                    className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pkg.color} flex items-center justify-center border ${pkg.borderColor}`}
+                  >
                     <pkg.icon className={`w-8 h-8 ${pkg.accentColor}`} />
                   </div>
                   <Badge variant="outline" className={`${pkg.badgeColor} border`}>
@@ -185,16 +203,16 @@ export function Pricing() {
                 </div>
 
                 {/* Package name */}
-                <h3 className="font-display font-bold text-2xl text-foreground mb-2">
-                  {pkg.name}
-                </h3>
+                <h3 className="font-display font-bold text-2xl text-foreground mb-2">{pkg.name}</h3>
                 <p className="text-sm text-muted-foreground font-body mb-6 leading-relaxed">
                   {pkg.description}
                 </p>
 
                 {/* Price */}
                 <div className="flex items-end gap-3 mb-1">
-                  <span className={`font-display font-black text-5xl md:text-6xl ${pkg.accentColor}`}>
+                  <span
+                    className={`font-display font-black text-5xl md:text-6xl ${pkg.accentColor}`}
+                  >
                     {pkg.price}
                   </span>
                   <span className="text-xl text-muted-foreground font-body mb-2">
@@ -217,7 +235,7 @@ export function Pricing() {
                 <Button
                   size="lg"
                   className={`w-full h-14 text-base mb-6 ${pkg.buttonColor}`}
-                  onClick={() => openReceiptForm(pkg.name, pkg.price)}
+                  onClick={() => openReceiptForm(pkg.id as SubscriptionPackageId)}
                 >
                   اشترك الآن
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -238,7 +256,9 @@ export function Pricing() {
                         transition={{ delay: fi * 0.05 }}
                         className="flex items-start gap-3 text-sm font-body text-muted-foreground"
                       >
-                        <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${pkg.color} flex items-center justify-center flex-shrink-0 mt-0.5 border ${pkg.borderColor}`}>
+                        <div
+                          className={`w-5 h-5 rounded-full bg-gradient-to-br ${pkg.color} flex items-center justify-center flex-shrink-0 mt-0.5 border ${pkg.borderColor}`}
+                        >
                           <Check className={`w-3 h-3 ${pkg.accentColor}`} />
                         </div>
                         <span className="leading-relaxed">{feature}</span>
@@ -263,23 +283,21 @@ export function Pricing() {
           <div className="glass-card rounded-3xl p-8 md:p-12 border border-border/50 overflow-hidden relative">
             {/* Decorative gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-amber-500/5" />
-            
+
             <div className="relative z-10">
               {/* Header */}
               <div className="text-center mb-8">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-4">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span className="text-sm font-body text-foreground/80">
-                    طرق دفع آمنة وسهلة
-                  </span>
+                  <span className="text-sm font-body text-foreground/80">طرق دفع آمنة وسهلة</span>
                 </div>
                 <h3 className="font-display font-bold text-3xl md:text-4xl mb-3">
                   <span className="text-foreground">كيف</span>
                   <span className="text-gradient-gold"> تدفع؟</span>
                 </h3>
                 <p className="text-muted-foreground font-body text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-                  اختر إحدى طرق الدفع التالية، قم بتحويل المبلغ على الرقم الموضح،
-                  ثم أرسل إيصال التحويل عبر واتساب ليتم تفعيل اشتراكك خلال 24 ساعة.
+                  اختر إحدى طرق الدفع التالية، قم بتحويل المبلغ على الرقم الموضح، ثم أرسل إيصال
+                  التحويل عبر واتساب ليتم تفعيل اشتراكك خلال 24 ساعة.
                 </p>
               </div>
 
@@ -303,9 +321,7 @@ export function Pricing() {
                         <h4 className="font-display font-bold text-lg text-foreground">
                           {method.name}
                         </h4>
-                        <p className="text-xs text-muted-foreground font-body">
-                          {method.nameEn}
-                        </p>
+                        <p className="text-xs text-muted-foreground font-body">{method.nameEn}</p>
                       </div>
                       <ShieldCheck className="w-5 h-5 text-emerald-400" />
                     </div>
@@ -329,7 +345,10 @@ export function Pricing() {
                       <p className="text-xs text-muted-foreground font-body mb-1">
                         رقم الدفع (إنستا باي / فودافون كاش)
                       </p>
-                      <p dir="ltr" className="font-display font-bold text-2xl md:text-3xl text-foreground tracking-wider text-center sm:text-right">
+                      <p
+                        dir="ltr"
+                        className="font-display font-bold text-2xl md:text-3xl text-foreground tracking-wider text-center sm:text-right"
+                      >
                         {phoneNumber}
                       </p>
                     </div>
@@ -371,9 +390,24 @@ export function Pricing() {
               {/* Steps */}
               <div className="grid sm:grid-cols-3 gap-4 mt-8">
                 {[
-                  { step: "1", title: "اختر الباقة", desc: "حدد الباقة المناسبة لك", icon: BookOpen },
-                  { step: "2", title: "حوّل المبلغ", desc: "ادفع عبر إنستا باي أو فودافون كاش", icon: Wallet },
-                  { step: "3", title: "أرسل الإيصال", desc: "أرسل إيصال التحويل لتفعيل الاشتراك", icon: MessageCircle },
+                  {
+                    step: "1",
+                    title: "اختر الباقة",
+                    desc: "حدد الباقة المناسبة لك",
+                    icon: BookOpen,
+                  },
+                  {
+                    step: "2",
+                    title: "حوّل المبلغ",
+                    desc: "ادفع عبر إنستا باي أو فودافون كاش",
+                    icon: Wallet,
+                  },
+                  {
+                    step: "3",
+                    title: "أرسل الإيصال",
+                    desc: "أرسل إيصال التحويل لتفعيل الاشتراك",
+                    icon: MessageCircle,
+                  },
                 ].map((step, i) => (
                   <motion.div
                     key={i}
@@ -403,8 +437,9 @@ export function Pricing() {
               <div className="mt-8 p-4 rounded-xl bg-emerald-500/5 border border-emerald-400/20 flex items-start gap-3">
                 <ShieldCheck className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-muted-foreground font-body leading-relaxed">
-                  <span className="text-emerald-400 font-semibold">ملاحظة:</span> يتم تفعيل اشتراكك خلال 24 ساعة من إرسال إيصال التحويل. 
-                  للاستفسار أو الدعم، تواصل معنا عبر واتساب على نفس الرقم. جميع المعاملات آمنة ومشفرة بالكامل.
+                  <span className="text-emerald-400 font-semibold">ملاحظة:</span> يتم تفعيل اشتراكك
+                  خلال 24 ساعة من إرسال إيصال التحويل. للاستفسار أو الدعم، تواصل معنا عبر واتساب على
+                  نفس الرقم. جميع المعاملات آمنة ومشفرة بالكامل.
                 </p>
               </div>
             </div>
@@ -416,8 +451,7 @@ export function Pricing() {
       <ReceiptUpload
         open={receiptOpen}
         onOpenChange={setReceiptOpen}
-        selectedPackage={selectedPkg?.name}
-        packagePrice={selectedPkg?.price}
+        packageId={selectedPkg ?? undefined}
       />
     </section>
   );

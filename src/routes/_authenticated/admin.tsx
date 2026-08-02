@@ -3,13 +3,27 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
-  BarChart3, Users, Eye, TrendingUp, ShieldCheck, ArrowRight,
-  Globe, FileText, Clock, Package, Loader2, Home, CheckCircle2, XCircle, MessageCircle, ExternalLink,
+  BarChart3,
+  Users,
+  Eye,
+  TrendingUp,
+  ShieldCheck,
+  ArrowRight,
+  Globe,
+  FileText,
+  Clock,
+  Package,
+  Loader2,
+  Home,
+  CheckCircle2,
+  XCircle,
+  MessageCircle,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { getMyRoles, getAdminStats, claimFirstAdmin, updateEnrollmentStatus } from "@/lib/app.functions";
+import { getMyRoles, getAdminStats, updateEnrollmentStatus } from "@/lib/app.functions";
 import { Logo } from "@/components/site/logo";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -26,8 +40,6 @@ export const Route = createFileRoute("/_authenticated/admin")({
 function AdminPage() {
   const rolesFn = useServerFn(getMyRoles);
   const statsFn = useServerFn(getAdminStats);
-  const claimFn = useServerFn(claimFirstAdmin);
-  const qc = useQueryClient();
 
   const rolesQ = useQuery({ queryKey: ["my-roles"], queryFn: () => rolesFn() });
   const isAdmin = !!rolesQ.data?.roles.includes("admin");
@@ -36,19 +48,6 @@ function AdminPage() {
     queryKey: ["admin-stats"],
     queryFn: () => statsFn(),
     enabled: isAdmin,
-  });
-
-  const claim = useMutation({
-    mutationFn: () => claimFn(),
-    onSuccess: (res) => {
-      if (res.granted) {
-        toast.success("تم منحك صلاحية الأدمن");
-        qc.invalidateQueries({ queryKey: ["my-roles"] });
-      } else {
-        toast.error("فيه أدمن بالفعل — تواصل معاه");
-      }
-    },
-    onError: (e) => toast.error("فشل الطلب", { description: e instanceof Error ? e.message : "" }),
   });
 
   if (rolesQ.isLoading) {
@@ -64,21 +63,14 @@ function AdminPage() {
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <div className="max-w-md w-full glass-card rounded-2xl p-8 border border-border/50 text-center">
           <ShieldCheck className="w-14 h-14 mx-auto text-amber-400 mb-4" />
-          <h1 className="font-display font-bold text-2xl text-foreground mb-2">
-            صفحة الإدارة
-          </h1>
+          <h1 className="font-display font-bold text-2xl text-foreground mb-2">صفحة الإدارة</h1>
           <p className="text-sm text-muted-foreground font-body mb-6">
-            دي صفحة للمشرفين فقط. لو إنت أول مستخدم في الموقع، تقدر تطلب صلاحية الأدمن دلوقتي.
+            دي صفحة للمشرفين فقط. لو محتاج صلاحية، تواصل مع مالك المنصة.
           </p>
-          <Button
-            onClick={() => claim.mutate()}
-            disabled={claim.isPending}
-            className="w-full bg-gradient-to-r from-amber-500 to-emerald-500 hover:opacity-90"
+          <Link
+            to="/dashboard"
+            className="block mt-4 text-xs text-muted-foreground hover:text-foreground"
           >
-            {claim.isPending ? <Loader2 className="w-4 h-4 animate-spin ml-2" /> : <ShieldCheck className="w-4 h-4 ml-2" />}
-            اطلب صلاحية أدمن (أول مستخدم فقط)
-          </Button>
-          <Link to="/dashboard" className="block mt-4 text-xs text-muted-foreground hover:text-foreground">
             رجوع للوحة الطالب
           </Link>
         </div>
@@ -89,37 +81,50 @@ function AdminPage() {
   return <AdminView statsQ={statsQ} />;
 }
 
-function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<ReturnType<typeof getAdminStats>>>> }) {
+function AdminView({
+  statsQ,
+}: {
+  statsQ: ReturnType<typeof useQuery<Awaited<ReturnType<typeof getAdminStats>>>>;
+}) {
   const qc = useQueryClient();
   const updateFn = useServerFn(updateEnrollmentStatus);
   const updateM = useMutation({
-    mutationFn: (v: { id: string; status: "approved" | "rejected" | "pending" }) => updateFn({ data: v }),
+    mutationFn: (v: { id: string; status: "approved" | "rejected" | "pending" }) =>
+      updateFn({ data: v }),
     onSuccess: (_r, v) => {
-      toast.success(v.status === "approved" ? "تم تفعيل الاشتراك" : v.status === "rejected" ? "تم رفض الطلب" : "تم التحديث");
+      toast.success(
+        v.status === "approved"
+          ? "تم تفعيل الاشتراك"
+          : v.status === "rejected"
+            ? "تم رفض الطلب"
+            : "تم التحديث",
+      );
       qc.invalidateQueries({ queryKey: ["admin-stats"] });
     },
-    onError: (e) => toast.error("فشل التحديث", { description: e instanceof Error ? e.message : "" }),
+    onError: (e) =>
+      toast.error("فشل التحديث", { description: e instanceof Error ? e.message : "" }),
   });
 
   const waLink = (phone: string, name: string) => {
     const clean = phone.replace(/\D/g, "").replace(/^0/, "20");
-    const msg = encodeURIComponent(`السلام عليكم ${name}، بخصوص طلب اشتراكك في منصة الإمام الأكبر…`);
+    const msg = encodeURIComponent(
+      `السلام عليكم ${name}، بخصوص طلب اشتراكك في منصة الإمام الأكبر…`,
+    );
     return `https://wa.me/${clean}?text=${msg}`;
   };
   const data = statsQ.data;
   const loading = statsQ.isLoading;
 
-  const maxDaily = useMemo(
-    () => Math.max(1, ...(data?.daily ?? []).map((d) => d.count)),
-    [data],
-  );
+  const maxDaily = useMemo(() => Math.max(1, ...(data?.daily ?? []).map((d) => d.count)), [data]);
 
   return (
     <div className="min-h-screen bg-background">
       <div className="border-b border-border/50 bg-gradient-to-r from-emerald-950/30 via-background to-amber-950/20 sticky top-0 z-30 backdrop-blur">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
-            <Link to="/" className="hidden md:block"><Logo size="sm" /></Link>
+            <Link to="/" className="hidden md:block">
+              <Logo size="sm" />
+            </Link>
             <div className="hidden md:block h-8 w-px bg-border/50" />
             <div>
               <h1 className="font-display font-bold text-lg text-foreground flex items-center gap-2">
@@ -130,8 +135,18 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/dashboard"><Button variant="ghost" size="sm"><ArrowRight className="w-4 h-4 ml-1" />لوحة الطالب</Button></Link>
-            <Link to="/"><Button variant="ghost" size="sm"><Home className="w-4 h-4 ml-1" />الرئيسية</Button></Link>
+            <Link to="/dashboard">
+              <Button variant="ghost" size="sm">
+                <ArrowRight className="w-4 h-4 ml-1" />
+                لوحة الطالب
+              </Button>
+            </Link>
+            <Link to="/">
+              <Button variant="ghost" size="sm">
+                <Home className="w-4 h-4 ml-1" />
+                الرئيسية
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -146,16 +161,57 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
             {/* Stat cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {[
-                { icon: Eye, label: "زيارات (30 يوم)", value: data.totals.views, color: "text-emerald-400", bg: "from-emerald-500/20 to-teal-500/5" },
-                { icon: Clock, label: "زيارات آخر 24س", value: data.totals.viewsLast24h, color: "text-amber-400", bg: "from-amber-500/20 to-orange-500/5" },
-                { icon: Users, label: "طلاب مسجلين", value: data.totals.totalUsers, color: "text-blue-400", bg: "from-blue-500/20 to-cyan-500/5" },
-                { icon: TrendingUp, label: "زوار مميزين", value: data.totals.uniqueSignedInVisitors, color: "text-purple-400", bg: "from-purple-500/20 to-pink-500/5" },
-                { icon: Package, label: "اشتراكات", value: data.totals.enrollments, color: "text-rose-400", bg: "from-rose-500/20 to-red-500/5" },
-                { icon: FileText, label: "بانتظار المراجعة", value: data.totals.pendingEnrollments, color: "text-yellow-400", bg: "from-yellow-500/20 to-amber-500/5" },
+                {
+                  icon: Eye,
+                  label: "زيارات (30 يوم)",
+                  value: data.totals.views,
+                  color: "text-emerald-400",
+                  bg: "from-emerald-500/20 to-teal-500/5",
+                },
+                {
+                  icon: Clock,
+                  label: "زيارات آخر 24س",
+                  value: data.totals.viewsLast24h,
+                  color: "text-amber-400",
+                  bg: "from-amber-500/20 to-orange-500/5",
+                },
+                {
+                  icon: Users,
+                  label: "طلاب مسجلين",
+                  value: data.totals.totalUsers,
+                  color: "text-blue-400",
+                  bg: "from-blue-500/20 to-cyan-500/5",
+                },
+                {
+                  icon: TrendingUp,
+                  label: "زوار مميزين",
+                  value: data.totals.uniqueSignedInVisitors,
+                  color: "text-purple-400",
+                  bg: "from-purple-500/20 to-pink-500/5",
+                },
+                {
+                  icon: Package,
+                  label: "اشتراكات",
+                  value: data.totals.enrollments,
+                  color: "text-rose-400",
+                  bg: "from-rose-500/20 to-red-500/5",
+                },
+                {
+                  icon: FileText,
+                  label: "بانتظار المراجعة",
+                  value: data.totals.pendingEnrollments,
+                  color: "text-yellow-400",
+                  bg: "from-yellow-500/20 to-amber-500/5",
+                },
               ].map((s, i) => (
-                <div key={i} className={`glass-card rounded-2xl p-4 border border-border/50 bg-gradient-to-br ${s.bg}`}>
+                <div
+                  key={i}
+                  className={`glass-card rounded-2xl p-4 border border-border/50 bg-gradient-to-br ${s.bg}`}
+                >
                   <s.icon className={`w-5 h-5 ${s.color} mb-2`} />
-                  <div className="font-display font-bold text-2xl text-foreground">{s.value.toLocaleString("ar-EG")}</div>
+                  <div className="font-display font-bold text-2xl text-foreground">
+                    {s.value.toLocaleString("ar-EG")}
+                  </div>
                   <div className="text-xs text-muted-foreground font-body">{s.label}</div>
                 </div>
               ))}
@@ -197,8 +253,13 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                 ) : (
                   <div className="space-y-2">
                     {data.topPaths.map((p) => (
-                      <div key={p.path} className="flex items-center justify-between gap-2 p-2 rounded bg-muted/30">
-                        <span className="text-sm font-body text-foreground truncate" dir="ltr">{p.path}</span>
+                      <div
+                        key={p.path}
+                        className="flex items-center justify-between gap-2 p-2 rounded bg-muted/30"
+                      >
+                        <span className="text-sm font-body text-foreground truncate" dir="ltr">
+                          {p.path}
+                        </span>
                         <Badge variant="secondary">{p.count}</Badge>
                       </div>
                     ))}
@@ -216,8 +277,13 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                 ) : (
                   <div className="space-y-2">
                     {data.topReferrers.map((r) => (
-                      <div key={r.source} className="flex items-center justify-between gap-2 p-2 rounded bg-muted/30">
-                        <span className="text-sm font-body text-foreground truncate" dir="ltr">{r.source}</span>
+                      <div
+                        key={r.source}
+                        className="flex items-center justify-between gap-2 p-2 rounded bg-muted/30"
+                      >
+                        <span className="text-sm font-body text-foreground truncate" dir="ltr">
+                          {r.source}
+                        </span>
                         <Badge variant="secondary">{r.count}</Badge>
                       </div>
                     ))}
@@ -237,36 +303,76 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                   </Badge>
                 </h2>
                 <div className="space-y-3">
-                  {data.recentEnrollments.filter((e) => e.status === "pending").map((e) => (
-                    <div key={e.id} className="rounded-xl border border-border/50 bg-background/40 p-4 flex flex-wrap items-center gap-3 justify-between">
-                      <div className="min-w-0 flex-1">
-                        <div className="font-display font-bold text-foreground">{e.full_name}</div>
-                        <div className="text-xs text-muted-foreground font-body flex flex-wrap gap-x-3 gap-y-1 mt-1">
-                          <span dir="ltr">{e.phone}</span>
-                          {e.email && <span dir="ltr">{e.email}</span>}
-                          <span>{e.package_name} — <span className="text-emerald-400 font-semibold">{e.package_price} ج</span></span>
-                          <span>{e.payment_method === "instapay" ? "إنستا باي" : "فودافون كاش"}</span>
-                          <span>{new Date(e.created_at).toLocaleString("ar-EG")}</span>
+                  {data.recentEnrollments
+                    .filter((e) => e.status === "pending")
+                    .map((e) => (
+                      <div
+                        key={e.id}
+                        className="rounded-xl border border-border/50 bg-background/40 p-4 flex flex-wrap items-center gap-3 justify-between"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="font-display font-bold text-foreground">
+                            {e.full_name}
+                          </div>
+                          <div className="text-xs text-muted-foreground font-body flex flex-wrap gap-x-3 gap-y-1 mt-1">
+                            <span dir="ltr">{e.phone}</span>
+                            {e.email && <span dir="ltr">{e.email}</span>}
+                            <span>
+                              {e.package_name} —{" "}
+                              <span className="text-emerald-400 font-semibold">
+                                {e.package_price} ج
+                              </span>
+                            </span>
+                            <span>
+                              {e.payment_method === "instapay" ? "إنستا باي" : "فودافون كاش"}
+                            </span>
+                            <span>{new Date(e.created_at).toLocaleString("ar-EG")}</span>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {e.receipt_url && (
+                            <a href={e.receipt_url} target="_blank" rel="noopener noreferrer">
+                              <Button size="sm" variant="outline">
+                                <ExternalLink className="w-4 h-4 ml-1" />
+                                الإيصال
+                              </Button>
+                            </a>
+                          )}
+                          <a
+                            href={waLink(e.phone, e.full_name)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-emerald-500/40 text-emerald-400"
+                            >
+                              <MessageCircle className="w-4 h-4 ml-1" />
+                              واتساب
+                            </Button>
+                          </a>
+                          <Button
+                            size="sm"
+                            disabled={updateM.isPending}
+                            onClick={() => updateM.mutate({ id: e.id, status: "approved" })}
+                            className="bg-emerald-600 hover:bg-emerald-500 text-white"
+                          >
+                            <CheckCircle2 className="w-4 h-4 ml-1" />
+                            تفعيل
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            disabled={updateM.isPending}
+                            onClick={() => updateM.mutate({ id: e.id, status: "rejected" })}
+                          >
+                            <XCircle className="w-4 h-4 ml-1" />
+                            رفض
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-2">
-                        {e.receipt_url && (
-                          <a href={e.receipt_url} target="_blank" rel="noopener noreferrer">
-                            <Button size="sm" variant="outline"><ExternalLink className="w-4 h-4 ml-1" />الإيصال</Button>
-                          </a>
-                        )}
-                        <a href={waLink(e.phone, e.full_name)} target="_blank" rel="noopener noreferrer">
-                          <Button size="sm" variant="outline" className="border-emerald-500/40 text-emerald-400"><MessageCircle className="w-4 h-4 ml-1" />واتساب</Button>
-                        </a>
-                        <Button size="sm" disabled={updateM.isPending} onClick={() => updateM.mutate({ id: e.id, status: "approved" })} className="bg-emerald-600 hover:bg-emerald-500 text-white">
-                          <CheckCircle2 className="w-4 h-4 ml-1" />تفعيل
-                        </Button>
-                        <Button size="sm" variant="destructive" disabled={updateM.isPending} onClick={() => updateM.mutate({ id: e.id, status: "rejected" })}>
-                          <XCircle className="w-4 h-4 ml-1" />رفض
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             )}
@@ -277,7 +383,9 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                 <Package className="w-5 h-5 text-rose-400" /> كل الاشتراكات
               </h2>
               {data.recentEnrollments.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-6">لا توجد اشتراكات بعد</p>
+                <p className="text-sm text-muted-foreground text-center py-6">
+                  لا توجد اشتراكات بعد
+                </p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
@@ -297,9 +405,13 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                       {data.recentEnrollments.map((e) => (
                         <tr key={e.id} className="border-b border-border/30 hover:bg-muted/20">
                           <td className="p-2 text-foreground">{e.full_name}</td>
-                          <td className="p-2 text-muted-foreground" dir="ltr">{e.phone}</td>
+                          <td className="p-2 text-muted-foreground" dir="ltr">
+                            {e.phone}
+                          </td>
                           <td className="p-2 text-foreground">{e.package_name}</td>
-                          <td className="p-2 text-emerald-400 font-semibold">{e.package_price} ج</td>
+                          <td className="p-2 text-emerald-400 font-semibold">
+                            {e.package_price} ج
+                          </td>
                           <td className="p-2 text-muted-foreground">{e.payment_method}</td>
                           <td className="p-2">
                             <Badge
@@ -307,11 +419,15 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                                 e.status === "pending"
                                   ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
                                   : e.status === "approved"
-                                  ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                                  : "bg-rose-500/20 text-rose-400 border-rose-500/30"
+                                    ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                                    : "bg-rose-500/20 text-rose-400 border-rose-500/30"
                               }
                             >
-                              {e.status === "pending" ? "قيد المراجعة" : e.status === "approved" ? "مفعّل" : "مرفوض"}
+                              {e.status === "pending"
+                                ? "قيد المراجعة"
+                                : e.status === "approved"
+                                  ? "مفعّل"
+                                  : "مرفوض"}
                             </Badge>
                           </td>
                           <td className="p-2 text-xs text-muted-foreground">
@@ -320,20 +436,52 @@ function AdminView({ statsQ }: { statsQ: ReturnType<typeof useQuery<Awaited<Retu
                           <td className="p-2">
                             <div className="flex gap-1">
                               {e.receipt_url && (
-                                <a href={e.receipt_url} target="_blank" rel="noopener noreferrer" title="عرض الإيصال">
-                                  <Button size="icon" variant="ghost" className="h-7 w-7"><ExternalLink className="w-3.5 h-3.5" /></Button>
+                                <a
+                                  href={e.receipt_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title="عرض الإيصال"
+                                >
+                                  <Button size="icon" variant="ghost" className="h-7 w-7">
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                  </Button>
                                 </a>
                               )}
-                              <a href={waLink(e.phone, e.full_name)} target="_blank" rel="noopener noreferrer" title="واتساب">
-                                <Button size="icon" variant="ghost" className="h-7 w-7 text-emerald-400"><MessageCircle className="w-3.5 h-3.5" /></Button>
+                              <a
+                                href={waLink(e.phone, e.full_name)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="واتساب"
+                              >
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  className="h-7 w-7 text-emerald-400"
+                                >
+                                  <MessageCircle className="w-3.5 h-3.5" />
+                                </Button>
                               </a>
                               {e.status !== "approved" && (
-                                <Button size="icon" variant="ghost" className="h-7 w-7 text-emerald-400" title="تفعيل" disabled={updateM.isPending} onClick={() => updateM.mutate({ id: e.id, status: "approved" })}>
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  className="h-7 w-7 text-emerald-400"
+                                  title="تفعيل"
+                                  disabled={updateM.isPending}
+                                  onClick={() => updateM.mutate({ id: e.id, status: "approved" })}
+                                >
                                   <CheckCircle2 className="w-3.5 h-3.5" />
                                 </Button>
                               )}
                               {e.status !== "rejected" && (
-                                <Button size="icon" variant="ghost" className="h-7 w-7 text-rose-400" title="رفض" disabled={updateM.isPending} onClick={() => updateM.mutate({ id: e.id, status: "rejected" })}>
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  className="h-7 w-7 text-rose-400"
+                                  title="رفض"
+                                  disabled={updateM.isPending}
+                                  onClick={() => updateM.mutate({ id: e.id, status: "rejected" })}
+                                >
                                   <XCircle className="w-3.5 h-3.5" />
                                 </Button>
                               )}

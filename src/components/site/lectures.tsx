@@ -1,6 +1,17 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PlayCircle, FileText, Download, Clock, Eye, Search, Filter, BookOpen, ClipboardCheck, GraduationCap } from "lucide-react";
+import {
+  PlayCircle,
+  FileText,
+  Download,
+  Clock,
+  Eye,
+  Search,
+  Filter,
+  BookOpen,
+  ClipboardCheck,
+  GraduationCap,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,7 +31,7 @@ const allContent = [
     color: "from-emerald-500/20 to-teal-500/10",
     iconColor: "text-emerald-400",
     badge: "جديد",
-    description: "شرح مفصل لقواعد الاشتقاق الأساسية والتطبيقات"
+    description: "شرح مفصل لقواعد الاشتقاق الأساسية والتطبيقات",
   },
   {
     id: 2,
@@ -34,7 +45,7 @@ const allContent = [
     color: "from-cyan-500/20 to-blue-500/10",
     iconColor: "text-cyan-400",
     badge: "مميز",
-    description: "تطبيقات عملية على حركة المقذوفات في الهندسة"
+    description: "تطبيقات عملية على حركة المقذوفات في الهندسة",
   },
   {
     id: 3,
@@ -48,7 +59,7 @@ const allContent = [
     color: "from-purple-500/20 to-pink-500/10",
     iconColor: "text-purple-400",
     badge: null,
-    description: "شرح المساقط الأفقية والرأسية والجانبية"
+    description: "شرح المساقط الأفقية والرأسية والجانبية",
   },
   {
     id: 4,
@@ -62,9 +73,9 @@ const allContent = [
     color: "from-red-500/20 to-rose-500/10",
     iconColor: "text-red-400",
     badge: null,
-    description: "تحليل القوى وعزومها في التوازن الساكن"
+    description: "تحليل القوى وعزومها في التوازن الساكن",
   },
-  
+
   // ملخصات دروس
   {
     id: 5,
@@ -78,7 +89,7 @@ const allContent = [
     color: "from-amber-500/20 to-orange-500/10",
     iconColor: "text-amber-400",
     badge: "الأكثر تحميلاً",
-    description: "ملخص كامل يشمل جميع قوانين التفاضل والتكامل مع أمثلة محلولة"
+    description: "ملخص كامل يشمل جميع قوانين التفاضل والتكامل مع أمثلة محلولة",
   },
   {
     id: 6,
@@ -92,7 +103,7 @@ const allContent = [
     color: "from-blue-500/20 to-indigo-500/10",
     iconColor: "text-blue-400",
     badge: "جديد",
-    description: "جميع القوانين والمعادلات الأساسية في الفيزياء"
+    description: "جميع القوانين والمعادلات الأساسية في الفيزياء",
   },
   {
     id: 7,
@@ -106,7 +117,7 @@ const allContent = [
     color: "from-green-500/20 to-teal-500/10",
     iconColor: "text-green-400",
     badge: null,
-    description: "خريطة ذهانية تفاعلية لأنواع التفاعلات الكيميائية"
+    description: "خريطة ذهانية تفاعلية لأنواع التفاعلات الكيميائية",
   },
   {
     id: 8,
@@ -120,7 +131,7 @@ const allContent = [
     color: "from-pink-500/20 to-rose-500/10",
     iconColor: "text-pink-400",
     badge: "مميز",
-    description: "قواعد النحو والصرف مع أمثلة وتمارين"
+    description: "قواعد النحو والصرف مع أمثلة وتمارين",
   },
 
   // ملفات PDF
@@ -136,7 +147,7 @@ const allContent = [
     color: "from-emerald-600/20 to-green-500/10",
     iconColor: "text-emerald-500",
     badge: "حصري",
-    description: "شروحات مفصلة لجميع دروس الرياضيات مع حل أمثلة"
+    description: "شروحات مفصلة لجميع دروس الرياضيات مع حل أمثلة",
   },
   {
     id: 10,
@@ -150,7 +161,7 @@ const allContent = [
     color: "from-indigo-500/20 to-purple-500/10",
     iconColor: "text-indigo-400",
     badge: null,
-    description: "تدريبات شاملة على جميع أجزاء المنهج"
+    description: "تدريبات شاملة على جميع أجزاء المنهج",
   },
   {
     id: 11,
@@ -164,7 +175,7 @@ const allContent = [
     color: "from-amber-600/20 to-yellow-500/10",
     iconColor: "text-amber-500",
     badge: "جديد",
-    description: "ملخص فقهي شامل لأبواب العبادات والمعاملات"
+    description: "ملخص فقهي شامل لأبواب العبادات والمعاملات",
   },
 
   // امتحانات
@@ -180,7 +191,7 @@ const allContent = [
     color: "from-red-500/20 to-orange-500/10",
     iconColor: "text-red-400",
     badge: "أحدث",
-    description: "نموذج امتحان كامل مع الحل النموذجي"
+    description: "نموذج امتحان كامل مع الحل النموذجي",
   },
   {
     id: 13,
@@ -194,7 +205,7 @@ const allContent = [
     color: "from-blue-500/20 to-cyan-500/10",
     iconColor: "text-blue-400",
     badge: "شامل",
-    description: "جميع امتحانات السنوات الخمس الماضية مع الحلول"
+    description: "جميع امتحانات السنوات الخمس الماضية مع الحلول",
   },
   {
     id: 14,
@@ -208,7 +219,7 @@ const allContent = [
     color: "from-green-500/20 to-emerald-500/10",
     iconColor: "text-green-400",
     badge: null,
-    description: "نموذج تنبؤي بناءً على اتجاهات السنوات السابقة"
+    description: "نموذج تنبؤي بناءً على اتجاهات السنوات السابقة",
   },
   {
     id: 15,
@@ -222,8 +233,8 @@ const allContent = [
     color: "from-purple-500/20 to-violet-500/10",
     iconColor: "text-purple-400",
     badge: "الأكثر طلباً",
-    description: "اختبارات سريعة لمراجعة سريعة قبل الامتحان"
-  }
+    description: "اختبارات سريعة لمراجعة سريعة قبل الامتحان",
+  },
 ];
 
 const filters = [
@@ -238,7 +249,7 @@ export function Lectures() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
-  
+
   // عدد العناصر المعروضة في البداية
   const INITIAL_DISPLAY_COUNT = 4;
 
@@ -248,16 +259,17 @@ export function Lectures() {
 
     // تطبيق فلتر النوع
     if (activeFilter !== "all") {
-      filtered = filtered.filter(item => item.category === activeFilter);
+      filtered = filtered.filter((item) => item.category === activeFilter);
     }
 
     // تطبيق البحث
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(item =>
-        item.title.toLowerCase().includes(query) ||
-        item.subject.toLowerCase().includes(query) ||
-        item.description.toLowerCase().includes(query)
+      filtered = filtered.filter(
+        (item) =>
+          item.title.toLowerCase().includes(query) ||
+          item.subject.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query),
       );
     }
 
@@ -271,14 +283,14 @@ export function Lectures() {
   // إحصائيات لكل فئة
   const getCount = (categoryId: string) => {
     if (categoryId === "all") return allContent.length;
-    return allContent.filter(item => item.category === categoryId).length;
+    return allContent.filter((item) => item.category === categoryId).length;
   };
 
   return (
     <section id="lectures" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/20 to-transparent" />
-      
+
       <div className="container mx-auto px-4 relative z-10">
         {/* Section header */}
         <motion.div
@@ -288,7 +300,10 @@ export function Lectures() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-12"
         >
-          <Badge variant="outline" className="mb-4 border-emerald-400/30 text-emerald-400 bg-emerald-400/5">
+          <Badge
+            variant="outline"
+            className="mb-4 border-emerald-400/30 text-emerald-400 bg-emerald-400/5"
+          >
             المحاضرات والموارد
           </Badge>
           <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mb-4">
@@ -296,8 +311,8 @@ export function Lectures() {
             <span className="text-gradient-emerald"> المحاضرات</span>
           </h2>
           <p className="text-muted-foreground font-body text-base md:text-lg leading-relaxed">
-            مكتبة شاملة من المحاضرات المرئية، الملخصات، والملفات التعليمية
-            القابلة للتحميل، محدثة يومياً بواسطة نخبة من الأساتذة.
+            مكتبة شاملة من المحاضرات المرئية، الملخصات، والملفات التعليمية القابلة للتحميل، محدثة
+            يومياً بواسطة نخبة من الأساتذة.
           </p>
         </motion.div>
 
@@ -319,7 +334,7 @@ export function Lectures() {
               className="pr-12 h-12 glass-card border-border/50 text-foreground"
             />
           </div>
-          
+
           {/* Filter Buttons */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 order-1 lg:order-2">
             <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
@@ -339,11 +354,11 @@ export function Lectures() {
                 <span className="flex items-center gap-2">
                   {filter.icon && <filter.icon className="w-4 h-4" />}
                   {filter.label}
-                  <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                    activeFilter === filter.id 
-                      ? "bg-white/20" 
-                      : "bg-muted"
-                  }`}>
+                  <span
+                    className={`text-xs px-1.5 py-0.5 rounded-full ${
+                      activeFilter === filter.id ? "bg-white/20" : "bg-muted"
+                    }`}
+                  >
                     {getCount(filter.id)}
                   </span>
                 </span>
@@ -353,18 +368,23 @@ export function Lectures() {
         </motion.div>
 
         {/* Results count */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mb-6 text-center"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6 text-center">
           <p className="text-sm text-muted-foreground font-body">
             عرض <span className="text-foreground font-semibold">{filteredContent.length}</span> عنصر
             {activeFilter !== "all" && (
-              <span> في <span className="text-emerald-400">{filters.find(f => f.id === activeFilter)?.label}</span></span>
+              <span>
+                {" "}
+                في{" "}
+                <span className="text-emerald-400">
+                  {filters.find((f) => f.id === activeFilter)?.label}
+                </span>
+              </span>
             )}
             {searchQuery && (
-              <span> مطابق لـ "<span className="text-amber-400">{searchQuery}</span>"</span>
+              <span>
+                {" "}
+                مطابق لـ "<span className="text-amber-400">{searchQuery}</span>"
+              </span>
             )}
           </p>
         </motion.div>
@@ -373,102 +393,112 @@ export function Lectures() {
         <AnimatePresence mode="wait">
           {filteredContent.length > 0 ? (
             <motion.div
-              key={activeFilter + searchQuery + (showAll ? 'all' : 'limited')}
+              key={activeFilter + searchQuery + (showAll ? "all" : "limited")}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {(showAll ? filteredContent : filteredContent.slice(0, INITIAL_DISPLAY_COUNT)).map((item, i) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: i * 0.06 }}
-                  whileHover={{ y: -6 }}
-                  className="group glass-card rounded-2xl overflow-hidden border border-border/50 hover:border-border transition-all duration-300"
-                >
-                  {/* Thumbnail */}
-                  <div className={`relative aspect-video bg-gradient-to-br ${item.color} flex items-center justify-center overflow-hidden`}>
-                    {/* Pattern overlay */}
+              {(showAll ? filteredContent : filteredContent.slice(0, INITIAL_DISPLAY_COUNT)).map(
+                (item, i) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, delay: i * 0.06 }}
+                    whileHover={{ y: -6 }}
+                    className="group glass-card rounded-2xl overflow-hidden border border-border/50 hover:border-border transition-all duration-300"
+                  >
+                    {/* Thumbnail */}
                     <div
-                      className="absolute inset-0 opacity-10"
-                      style={{
-                        backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)`,
-                        backgroundSize: "20px 20px",
-                      }}
-                    />
-                    
-                    {/* Icon */}
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      className="relative z-10"
+                      className={`relative aspect-video bg-gradient-to-br ${item.color} flex items-center justify-center overflow-hidden`}
                     >
-                      {item.category === "محاضرات مرئية" ? (
-                        <PlayCircle className={`w-16 h-16 ${item.iconColor} drop-shadow-lg`} />
-                      ) : item.category === "امتحانات" ? (
-                        <ClipboardCheck className={`w-16 h-16 ${item.iconColor} drop-shadow-lg`} />
-                      ) : item.category === "ملخصات" ? (
-                        <BookOpen className={`w-16 h-16 ${item.iconColor} drop-shadow-lg`} />
-                      ) : (
-                        <FileText className={`w-16 h-16 ${item.iconColor} drop-shadow-lg`} />
-                      )}
-                    </motion.div>
+                      {/* Pattern overlay */}
+                      <div
+                        className="absolute inset-0 opacity-10"
+                        style={{
+                          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)`,
+                          backgroundSize: "20px 20px",
+                        }}
+                      />
 
-                    {/* Badge */}
-                    {item.badge && (
-                      <div className="absolute top-3 right-3">
-                        <Badge className="bg-gradient-to-r from-amber-500 to-amber-400 text-amber-950 border-0 text-xs">
-                          {item.badge}
+                      {/* Icon */}
+                      <motion.div whileHover={{ scale: 1.1 }} className="relative z-10">
+                        {item.category === "محاضرات مرئية" ? (
+                          <PlayCircle className={`w-16 h-16 ${item.iconColor} drop-shadow-lg`} />
+                        ) : item.category === "امتحانات" ? (
+                          <ClipboardCheck
+                            className={`w-16 h-16 ${item.iconColor} drop-shadow-lg`}
+                          />
+                        ) : item.category === "ملخصات" ? (
+                          <BookOpen className={`w-16 h-16 ${item.iconColor} drop-shadow-lg`} />
+                        ) : (
+                          <FileText className={`w-16 h-16 ${item.iconColor} drop-shadow-lg`} />
+                        )}
+                      </motion.div>
+
+                      {/* Badge */}
+                      {item.badge && (
+                        <div className="absolute top-3 right-3">
+                          <Badge className="bg-gradient-to-r from-amber-500 to-amber-400 text-amber-950 border-0 text-xs">
+                            {item.badge}
+                          </Badge>
+                        </div>
+                      )}
+
+                      {/* Duration/Size */}
+                      <div className="absolute bottom-3 left-3 glass px-2 py-1 rounded-md text-xs text-foreground font-body">
+                        {item.duration}
+                      </div>
+
+                      {/* Category indicator */}
+                      <div className="absolute top-3 left-3">
+                        <Badge
+                          variant="secondary"
+                          className="text-[10px] backdrop-blur-sm bg-background/50"
+                        >
+                          {item.type}
                         </Badge>
                       </div>
-                    )}
-
-                    {/* Duration/Size */}
-                    <div className="absolute bottom-3 left-3 glass px-2 py-1 rounded-md text-xs text-foreground font-body">
-                      {item.duration}
                     </div>
 
-                    {/* Category indicator */}
-                    <div className="absolute top-3 left-3">
-                      <Badge variant="secondary" className="text-[10px] backdrop-blur-sm bg-background/50">
-                        {item.type}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge variant="secondary" className="text-xs">
-                        {item.subject}
-                      </Badge>
-                    </div>
-                    <h3 className="font-display font-bold text-lg text-foreground mb-2 line-clamp-2 group-hover:text-gradient-gold transition-all">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground mb-3 line-clamp-2 font-body">
-                      {item.description}
-                    </p>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <div className="flex items-center gap-3">
-                        <span className="flex items-center gap-1">
-                          <Eye className="w-3.5 h-3.5" />
-                          {item.views.toLocaleString()}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5" />
-                          {item.date}
-                        </span>
+                    {/* Content */}
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge variant="secondary" className="text-xs">
+                          {item.subject}
+                        </Badge>
                       </div>
-                      <Button size="sm" variant="ghost" className="h-8 w-8 p-0 group-hover:bg-muted/50">
-                        <Download className="w-4 h-4" />
-                      </Button>
+                      <h3 className="font-display font-bold text-lg text-foreground mb-2 line-clamp-2 group-hover:text-gradient-gold transition-all">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mb-3 line-clamp-2 font-body">
+                        {item.description}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <div className="flex items-center gap-3">
+                          <span className="flex items-center gap-1">
+                            <Eye className="w-3.5 h-3.5" />
+                            {item.views.toLocaleString()}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3.5 h-3.5" />
+                            {item.date}
+                          </span>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 w-8 p-0 group-hover:bg-muted/50"
+                        >
+                          <Download className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ),
+              )}
             </motion.div>
           ) : (
             /* Empty State */
@@ -480,18 +510,15 @@ export function Lectures() {
               className="text-center py-16"
             >
               <GraduationCap className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-              <h3 className="font-display font-bold text-xl text-foreground mb-2">
-                لا توجد نتائج
-              </h3>
+              <h3 className="font-display font-bold text-xl text-foreground mb-2">لا توجد نتائج</h3>
               <p className="text-muted-foreground font-body">
-                {searchQuery 
+                {searchQuery
                   ? "جرب تغيير كلمات البحث أو اختر فلتر آخر"
-                  : "لا توجد عناصر في هذه الفئة حالياً"
-                }
+                  : "لا توجد عناصر في هذه الفئة حالياً"}
               </p>
               {(activeFilter !== "all" || searchQuery) && (
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="mt-4 glass"
                   onClick={() => {
                     setActiveFilter("all");
@@ -522,7 +549,9 @@ export function Lectures() {
               {showAll ? (
                 <>
                   <span>عرض أقل</span>
-                  <span className="mr-2 text-xs opacity-70">({INITIAL_DISPLAY_COUNT} من {filteredContent.length})</span>
+                  <span className="mr-2 text-xs opacity-70">
+                    ({INITIAL_DISPLAY_COUNT} من {filteredContent.length})
+                  </span>
                 </>
               ) : (
                 <>
