@@ -29,18 +29,30 @@ import { Button } from "@/components/ui/button";
 import { PdfCanvasViewer } from "@/components/site/english-books";
 import { useAccessLevel, FREE_PREVIEW_PAGES } from "@/lib/use-access-level";
 
-// Statics Books (الاستاتيكا)
-import staticsExamsAsset from "@/assets/statics-exams-book.pdf.asset.json";
-import staticsExercisesAsset from "@/assets/statics-exercises-book.pdf.asset.json";
-import staticsSummaryAsset from "@/assets/statics-summary-book.pdf.asset.json";
-import imamStaticsAsset from "@/assets/imam-statics-book.pdf.asset.json";
+// These PDFs are committed with the project. Importing them through Vite makes
+// the deployed site serve the real files instead of relying on Lovable asset
+// IDs that may not exist when the code is synced through GitHub.
+import staticsExamsUrl from "@/assets/statics-exams-book.pdf?url";
+import staticsExercisesUrl from "@/assets/statics-exercises-book.pdf?url";
+import staticsSummaryUrl from "@/assets/statics-summary-book.pdf?url";
+import imamStaticsUrl from "@/assets/imam-statics-book.pdf?url";
+import dynamicsExamsUrl from "@/assets/dynamics-exams-book.pdf?url";
+import dynamicsExercisesUrl from "@/assets/dynamics-exercises-book.pdf?url";
+import dynamicsSummaryUrl from "@/assets/dynamics-summary-book.pdf?url";
+import dynamicsSheetsUrl from "@/assets/dynamics-exams-sheets.pdf?url";
+import imamMechanicsUrl from "@/assets/imam-mechanics-book.pdf?url";
 
-// Dynamics Books (الديناميكا)
-import dynamicsExamsAsset from "@/assets/dynamics-exams-book.pdf.asset.json";
-import dynamicsExercisesAsset from "@/assets/dynamics-exercises-book.pdf.asset.json";
-import dynamicsSummaryAsset from "@/assets/dynamics-summary-book.pdf.asset.json";
-import dynamicsSheetsAsset from "@/assets/dynamics-exams-sheets.pdf.asset.json";
-import imamMechanicsAsset from "@/assets/imam-mechanics-book.pdf.asset.json";
+const localPdf = (url: string) => ({ url });
+
+const staticsExamsAsset = localPdf(staticsExamsUrl);
+const staticsExercisesAsset = localPdf(staticsExercisesUrl);
+const staticsSummaryAsset = localPdf(staticsSummaryUrl);
+const imamStaticsAsset = localPdf(imamStaticsUrl);
+const dynamicsExamsAsset = localPdf(dynamicsExamsUrl);
+const dynamicsExercisesAsset = localPdf(dynamicsExercisesUrl);
+const dynamicsSummaryAsset = localPdf(dynamicsSummaryUrl);
+const dynamicsSheetsAsset = localPdf(dynamicsSheetsUrl);
+const imamMechanicsAsset = localPdf(imamMechanicsUrl);
 
 const books = [
   // === كتاب الإمام الأكبر - الميكانيكا (الشامل) ===
