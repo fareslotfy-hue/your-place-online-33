@@ -35,6 +35,7 @@ type PdfPageProxyLike = {
     canvasContext: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     viewport: { width: number; height: number };
+    transform?: number[];
   }) => {
     promise: Promise<void>;
   };
@@ -69,6 +70,7 @@ export function PdfCanvasViewer({
   const [error, setError] = useState<string | null>(null);
   const [visiblePages, setVisiblePages] = useState(() => new Set<number>());
   const renderedPagesRef = useRef(new Set<string>());
+  const renderingPagesRef = useRef(new Set<string>());
   const canvasesRef = useRef(new Map<number, HTMLCanvasElement>());
   const observerRef = useRef<IntersectionObserver | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -82,6 +84,7 @@ export function PdfCanvasViewer({
     setError(null);
     setVisiblePages(new Set([1, 2]));
     renderedPagesRef.current.clear();
+    renderingPagesRef.current.clear();
     canvasesRef.current.clear();
 
     async function loadPdf() {
@@ -126,14 +129,14 @@ export function PdfCanvasViewer({
     async (pageNumber: number, canvas: HTMLCanvasElement) => {
       if (!pdf) return;
       const renderKey = `${pageNumber}-${zoom}-${rotation}`;
-      if (renderedPagesRef.current.has(renderKey)) return;
+      if (renderedPagesRef.current.has(renderKey) || renderingPagesRef.current.has(renderKey))
+        return;
 
-      renderedPagesRef.current.add(renderKey);
+      renderingPagesRef.current.add(renderKey);
       try {
         const page = await pdf.getPage(pageNumber);
-        // Preserve the PDF's own rotation and apply the user's manual rotation.
-        // The cover correction is applied directly to the first canvas below;
-        // doing it in getViewport can be cancelled by PDF.js rotation metadata.
+        // Preserve the PDF's own orientation and apply only the user's manual
+        // rotation. Cover pages do not need a special rotation.
         const intrinsicRotation = page.rotate ?? 0;
         const effectiveRotation = (intrinsicRotation + rotation) % 360;
         const viewport = page.getViewport({ scale: zoom, rotation: effectiveRotation });
@@ -145,11 +148,19 @@ export function PdfCanvasViewer({
         canvas.height = Math.floor(viewport.height * ratio);
         canvas.style.width = `${Math.floor(viewport.width)}px`;
         canvas.style.height = `${Math.floor(viewport.height)}px`;
-        context.setTransform(ratio, 0, 0, ratio, 0, 0);
-        context.clearRect(0, 0, viewport.width, viewport.height);
-        await page.render({ canvasContext: context, canvas, viewport }).promise;
-      } catch {
+        const outputTransform = ratio === 1 ? undefined : [ratio, 0, 0, ratio, 0, 0];
+        await page.render({
+          canvasContext: context,
+          canvas,
+          viewport,
+          transform: outputTransform,
+        }).promise;
+        renderedPagesRef.current.add(renderKey);
+      } catch (renderError) {
+        console.error(`PDF page ${pageNumber} render failed`, renderError);
         renderedPagesRef.current.delete(renderKey);
+      } finally {
+        renderingPagesRef.current.delete(renderKey);
       }
     },
     [pdf, rotation, zoom],
@@ -250,7 +261,6 @@ export function PdfCanvasViewer({
                 ref={registerCanvas(pageNumber)}
                 aria-label={`${title} — صفحة ${pageNumber}`}
                 className="mx-auto block max-w-full rounded-md bg-white shadow-2xl shadow-black/40"
-                style={{ transform: pageNumber === 1 ? "rotate(180deg)" : undefined }}
               />
               <figcaption className="mt-2 text-xs text-white/50" dir="rtl">
                 صفحة {pageNumber} من {pageCount}
