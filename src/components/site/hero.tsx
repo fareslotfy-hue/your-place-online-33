@@ -64,7 +64,7 @@ export function Hero() {
             className="mb-4"
           >
             <h2 className="font-display font-bold text-2xl md:text-4xl lg:text-5xl text-foreground mb-4">
-              منصة الفرقة الإعدادية
+              '''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
             </h2>
             <p className="font-body text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               رحلة تعليمية متكاملة تجمع بين الأصالة العلمية وحداثة الهندسة. محاضرات، ملخصات، وجداول
