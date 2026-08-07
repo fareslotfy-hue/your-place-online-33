@@ -129,7 +129,7 @@ export function PdfCanvasViewer({
     async (pageNumber: number, canvas: HTMLCanvasElement) => {
       if (!pdf) return;
       const renderKey = `${pageNumber}-${zoom}-${rotation}`;
-      if (renderedPagesRef.current.has(renderKey) || renderingPagesRef.current.has(renderKey))
+      if (renderingPagesRef.current.has(renderKey) || renderedPagesRef.current.has(renderKey))
         return;
 
       renderingPagesRef.current.add(renderKey);

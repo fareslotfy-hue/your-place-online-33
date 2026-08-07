@@ -1,11 +1,11 @@
 export const SUBSCRIPTION_PACKAGES = {
   single: {
     name: "باقة الترم الواحد",
-    price: 200,
+    price: 100,
   },
   double: {
     name: "باقة الترمين الكاملة",
-    price: 300,
+    price: 200,
   },
 } as const;
 
