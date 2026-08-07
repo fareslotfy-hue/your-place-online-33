@@ -217,47 +217,6 @@ export function StudentTips() {
         </div>
       </motion.div>
 
-      {/* Department Heads Tips Video Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="glass-card rounded-2xl overflow-hidden border border-purple-400/30 bg-gradient-to-br from-purple-500/10 to-indigo-500/5"
-      >
-        <div className="p-5 pb-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
-              <Award className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h3 className="font-display font-bold text-lg text-foreground">
-                نصائح رؤساء الأقسام
-              </h3>
-              <p className="text-sm text-muted-foreground font-body">
-                نصائح وتوجيهات قيّمة من أساتذة ورؤساء أقسام لتحقيق التفوق الدراسي
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* YouTube Video Embed - Department Heads Tips */}
-        <div className="relative w-full aspect-video bg-black">
-          <iframe
-            src="https://www.youtube.com/embed/pyBhUe-5jpE?rel=0"
-            title="نصائح رؤساء الأقسام - توجيهات الأساتذة"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="absolute inset-0 w-full h-full"
-          />
-        </div>
-
-        <div className="p-4 pt-3">
-          <p className="text-xs text-muted-foreground font-body text-center">
-            🎓 استمع لنصائح الخبراء وطبّقها في دراستك لتحقق أفضل النتائج
-          </p>
-        </div>
-      </motion.div>
-
       {/* Tips grid */}
       <div className="grid md:grid-cols-2 gap-4">
         {tips.map((tip, i) => (
