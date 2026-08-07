@@ -84,20 +84,20 @@ export function VideoFeatureSection() {
           </p>
         </motion.div>
 
-        {/* Main Video */}
+        {/* First Video - Original Department Heads Tips */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="max-w-5xl mx-auto mb-12"
+          className="max-w-5xl mx-auto mb-8"
         >
           <div className="relative w-full aspect-video rounded-2xl overflow-hidden border-2 border-blue-400/30 shadow-2xl shadow-black/20 glass-card">
             {/* Video overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 pointer-events-none" />
 
             <iframe
-              src="https://www.youtube.com/embed/pyBhUe-5jpE?rel=0"
+              src="https://www.youtube.com/embed/3z2kxCAZcHI?rel=0"
               title="نصائح رؤساء الأقسام الهندسية - جامعة الأزهر"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
@@ -108,7 +108,37 @@ export function VideoFeatureSection() {
             <div className="absolute top-4 right-4 z-20">
               <Badge className="bg-blue-600/90 text-white border-0 backdrop-blur-sm">
                 <PlayCircle className="w-3 h-3 ml-1" />
-                فيديو حصري
+                فيديو (1)
+              </Badge>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Second Video - New Department Heads Tips */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="max-w-5xl mx-auto mb-12"
+        >
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border-2 border-purple-400/30 shadow-2xl shadow-black/20 glass-card">
+            {/* Video overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 pointer-events-none" />
+
+            <iframe
+              src="https://www.youtube.com/embed/pyBhUe-5jpE?rel=0"
+              title="نصائح إضافية - اختيار القسم الهندسي المناسب"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full bg-black"
+            />
+
+            {/* Video badge */}
+            <div className="absolute top-4 right-4 z-20">
+              <Badge className="bg-purple-600/90 text-white border-0 backdrop-blur-sm">
+                <PlayCircle className="w-3 h-3 ml-1" />
+                فيديو (2)
               </Badge>
             </div>
           </div>
